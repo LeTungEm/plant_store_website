@@ -1,19 +1,22 @@
 <template>
-  <h1 class="text-blue-500">home</h1>
-  <font-awesome-icon class="text-yellow-400" icon="coffee" />
-  <button-atom :title="{text:'name', number:4}">
-    <ul>
-      <li>hai</li>
-      <li>hai</li>
-      <li>hai</li>
-      <li>hai</li>
-    </ul>
-  </button-atom>
+  <SubNavBarOrganism/>
+  <NavBarOrganism/>
+  <BannerOrganism/>
+  <WelcomMolecule/>
+  <HomeTemplate class="relative">
+    <CollectionOrganism/>
+    <NewProductsOrganism/>
+  </HomeTemplate>
 </template>
 
 <script>
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import ButtonAtom from '@/components/atoms/button/ButtonAtom.vue';
+import SubNavBarOrganism from '@/components/organisms/SubNavBarOrganism.vue';
+import NavBarOrganism from '@/components/organisms/NavBarOrganism.vue';
+import BannerOrganism from '@/components/organisms/BannerOrganism.vue';
+import CollectionOrganism from '@/components/organisms/CollectionOrganism.vue';
+import HomeTemplate from '@/components/templates/HomeTemplate.vue';
+import WelcomMolecule from '@/components/molecules/WelcomMolecule.vue';
+import NewProductsOrganism from '@/components/organisms/NewProductsOrganism.vue';
 
 
 export default {
@@ -27,9 +30,14 @@ export default {
     };
   },
   components:{
-    FontAwesomeIcon,
-    ButtonAtom
-  },
+    SubNavBarOrganism,
+    NavBarOrganism,
+    BannerOrganism,
+    CollectionOrganism,
+    HomeTemplate,
+    WelcomMolecule,
+    NewProductsOrganism,
+},
 
 };
 </script>

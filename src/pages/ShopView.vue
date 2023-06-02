@@ -1,18 +1,23 @@
 <template>
-  <h1>shop</h1>
+  <SubNavBarOrganism/>
+  <NavBarOrganism/>
+
 </template>
 
 <script>
+import NavBarOrganism from '@/components/organisms/NavBarOrganism.vue';
+import SubNavBarOrganism from '@/components/organisms/SubNavBarOrganism.vue';
+
 
 
 export default {
-  name: "ShopView",
-  data() {
-    return {
-      changeNumber: 0,
-    };
-  },
-  
+    name: "ShopView",
+    data() {
+        return {
+            changeNumber: 0,
+        };
+    },
+    components: { NavBarOrganism, SubNavBarOrganism }
 };
 </script>
 
