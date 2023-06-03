@@ -14,12 +14,14 @@ export default {
   props:{
     status: Boolean,
   },
+  methods:{
+  }
 };
 </script>
 
 <style>
 .router-link-exact-active {
-  color: rgb(22 163 74);
+  color: rgb(21 128 61);
   font-style: italic;
   font-weight: bolder;
   position: relative;

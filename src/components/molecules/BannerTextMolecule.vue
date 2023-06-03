@@ -3,18 +3,20 @@
     <AmberHeaderAtom class="text-lg md:text-3xl xl:text-4xl" :text="'Mầm xanh hạnh phúc ở đây'" />
     <h1 class="text-3xl my-2 md:my-5 md:text-6xl xl:text-[80px] 2xl:text-[6vw]">Hãy Chọn Mầm Non Của Bạn</h1>
     <div class="flex">
-      <GreenButtonAtom class="mr-5" :text="'Khuyến mãi'"/>
+      <GreenButtonAtom :text="'Khuyến mãi'"/>
+      <PingNodeAtom class="mr-5 -translate-y-1 -translate-x-1" />
       <WhiteButtonAtom :text="'Mua hàng nhanh'"/>
     </div>
   </div>
 </template>
 
 <script>
+import PingNodeAtom from "../atoms/PingNodeAtom.vue";
 import GreenButtonAtom from "../atoms/button/GreenButtonAtom.vue";
 import WhiteButtonAtom from '../atoms/button/WhiteButtonAtom.vue';
 import AmberHeaderAtom from "../atoms/header/AmberHeaderAtom.vue";
 export default {
-  components: { AmberHeaderAtom, GreenButtonAtom, WhiteButtonAtom },
+  components: { AmberHeaderAtom, GreenButtonAtom, WhiteButtonAtom, PingNodeAtom },
   name: "BannerTextMolecule",
 };
 </script>

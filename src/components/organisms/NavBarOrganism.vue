@@ -6,7 +6,9 @@
     <MainMenuMolecule :status="mainMenuStatus"/>
     <div class="flex items-center text-base border-l border-gray-400 pl-5 lg:px-10 md:text-2xl">
       <font-awesome-icon :onclick="changeMainMenuStatus" class="xl:hidden mr-5 md:mr-10" :icon="['fas', 'bars']" />
-      <font-awesome-icon :onclick="changeCartBarStatus" class="mr-5 md:mr-10" :icon="['fas', 'cart-shopping']" />
+      <font-awesome-icon class="mr-5 md:mr-10" :icon="['fas', 'user']" />
+      <font-awesome-icon :onclick="changeCartBarStatus" :icon="['fas', 'cart-shopping']" />
+      <span class="mr-5 md:mr-10 text-sm md:text-lg">(99)</span>
       <font-awesome-icon :onclick="changeSearchBarStatus" :icon="['fas', 'magnifying-glass']" />
     </div>
     <CartBarOrganisms :status="cartBarStatus"/>

@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full">
     <img
-      class="border object-center object-cover bg-white w-full duration-300 hover:shadow-lg hover:p-1"
+      class="border rounded-sm object-center object-cover bg-white w-full duration-300 hover:shadow-lg hover:p-1"
       :src="colectionItem.image"
       :alt="colectionItem.alt"
     />

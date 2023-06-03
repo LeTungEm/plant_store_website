@@ -6,6 +6,7 @@
   <HomeTemplate class="relative">
     <CollectionOrganism/>
     <NewProductsOrganism/>
+    <BestSellerOrganisms/>
   </HomeTemplate>
 </template>
 
@@ -17,6 +18,7 @@ import CollectionOrganism from '@/components/organisms/CollectionOrganism.vue';
 import HomeTemplate from '@/components/templates/HomeTemplate.vue';
 import WelcomMolecule from '@/components/molecules/WelcomMolecule.vue';
 import NewProductsOrganism from '@/components/organisms/NewProductsOrganism.vue';
+import BestSellerOrganisms from '@/components/organisms/BestSellerOrganisms.vue';
 
 
 export default {
@@ -37,6 +39,7 @@ export default {
     HomeTemplate,
     WelcomMolecule,
     NewProductsOrganism,
+    BestSellerOrganisms
 },
 
 };
