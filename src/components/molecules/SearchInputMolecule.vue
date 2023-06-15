@@ -3,7 +3,7 @@
     class="flex items-center w-full h-12 px-5 border hover:border-4 duration-300"
   >
     <FontAwesomeIcon class="mr-3" :icon="['fas', 'magnifying-glass']" />
-    <InputAtom :type="'text'" :placeholder="'Tìm kiếm...'"/>
+    <InputAtom @change="change" :type="'search'" :placeholder="'Tìm kiếm...'" />
   </div>
 </template>
 
@@ -15,8 +15,14 @@ export default {
   name: "SearchInputMolecule",
   components: {
     FontAwesomeIcon,
-    InputAtom
-},
+    InputAtom,
+  },
+  methods: {
+    change(value) {
+      this.$emit("change", value);
+    },
+  },
+  emits:['change'],
 };
 </script>
 

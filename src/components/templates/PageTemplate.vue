@@ -1,5 +1,5 @@
 <template>
-  <div class="m-5 md:m-10 overflow-hidden">
+  <div class="m-5 md:m-10">
     <slot></slot>
   </div>
 </template>

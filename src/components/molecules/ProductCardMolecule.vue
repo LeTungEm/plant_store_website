@@ -1,23 +1,35 @@
 <template>
-  <div class="relative w-full h-full">
-    <ProductLabelAtom v-if="product.labelText && product.labelIcon" class="absolute text-sm xl:text-lg top-[2%] left-0" :text="product.labelText" :icon="product.labelIcon"/>
+  <div :onclick="toDetail" class="relative w-full h-full">
+    <ProductLabelAtom
+      v-if="product.is_sale"
+      class="absolute text-sm xl:text-lg top-[2%] left-0"
+      :text="'Giảm giá'"
+    />
     <img
       class="border rounded-sm object-center object-cover bg-white w-full duration-300 hover:shadow-lg hover:p-1"
-      :src="product.image"
-      :alt="product.alt"
+      :src="`http://localhost:3000/images/${product.image?product.image:'default/default'}`"
+      :alt="product.name"
     />
+    <!-- <h1 class="hidden group-hover:block">cacs mau o day</h1> -->
     <h5 class="block text-base md:text-2xl">{{ product.name }}</h5>
     <GrayTextAtom :text="'Chọn loại và màu chậu'" />
-    <div class="flex justify-between text-xs md:text-lg">
-      <PriceTextAtom :price="currentPrice" />
-      <PriceTextWLineThroughAtom v-if="product.isSale" :price="oldPrice" />
+    <div class="text-xs md:text-lg ">
+      <PriceTextAtom
+        :minPrice="this.currentMinPrice"
+        :maxPrice="this.currentMaxPrice"
+      />
+      <PriceTextWLineThroughAtom
+        v-if="true"
+        :minPrice="this.oldMinPrice"
+        :maxPrice="this.oldMaxPrice"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import ProductLabelAtom from '../atoms/ProductLabelAtom.vue';
-import GrayTextAtom from '../atoms/text/GrayTextAtom.vue';
+import ProductLabelAtom from "../atoms/ProductLabelAtom.vue";
+import GrayTextAtom from "../atoms/text/GrayTextAtom.vue";
 import PriceTextAtom from "../atoms/text/PriceTextAtom.vue";
 import PriceTextWLineThroughAtom from "../atoms/text/PriceTextWLineThroughAtom.vue";
 
@@ -25,33 +37,39 @@ export default {
   name: "ProductCardMolecule",
   data() {
     return {
-      currentPrice: "",
-      oldPrice: "",
+      currentMinPrice: 0,
+      currentMaxPrice: 0,
+      oldMinPrice: 0,
+      oldMaxPrice: 0,
     };
   },
   props: {
-    product: {
-      image: String,
-      alt: String,
-      name: String,
-      price: Number,
-      isSale: Boolean,
-      salePrice: Number,
-      labelText: String,
-      labelIcon: String,
-    },
+    product: Object,
+    productType: String,
   },
   methods: {
     getCurrentPrice() {
-      if (this.product.isSale) {
-        this.currentPrice = this.product.salePrice;
-        this.oldPrice = this.product.price;
+      if (this.product.is_sale) {
+        this.currentMinPrice = this.product.min_sale_price;
+        this.currentMaxPrice = this.product.max_sale_price;
+        this.oldMinPrice = this.product.min_price;
+        this.oldMaxPrice = this.product.max_price;
       } else {
-        this.currentPrice = this.product.price;
+        this.currentMinPrice = this.product.min_price;
+        this.currentMaxPrice = this.product.max_price;
       }
     },
+
+    toDetail(){
+      this.$router.push(`/cua-hang/${this.productType}/${this.product.slug}`);
+    }
   },
-  components: { PriceTextAtom, PriceTextWLineThroughAtom, GrayTextAtom, ProductLabelAtom },
+  components: {
+    PriceTextAtom,
+    PriceTextWLineThroughAtom,
+    GrayTextAtom,
+    ProductLabelAtom,
+  },
   created() {
     this.getCurrentPrice();
   },

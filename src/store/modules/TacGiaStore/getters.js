@@ -6,7 +6,4 @@ export const getters = {
         return respon.data;
     },
 
-    logger(message){
-        console.log(message, "hhh");
-    }
 }

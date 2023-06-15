@@ -1,25 +1,20 @@
 import axios from "axios";
 
 const PRODUCT_API_URL =
-    "https://webbalo.online/data/Controllers/ProductsController.php";
+    "http://localhost:3000/plants";
 
-class ChiTietPhieuService {
+class PlantsService {
 
-    getAll() {
-        return axios.get(`${PRODUCT_API_URL}`, {
-            params: {
-                action: "getAll"
-            },
-        });
+    getAllActive() {
+        return axios.get(`${PRODUCT_API_URL}/active`);
     }
 
-    getByID(mads) {
-        return axios.get(`${PRODUCT_API_URL}`, {
-            params: {
-                action: "getByID",
-                mads: mads,
-            },
-        });
+    getDetail(plantSlug) {
+        return axios.get(`${PRODUCT_API_URL}/${plantSlug}`);
+    }
+
+    search(search){
+        return axios.get(`${PRODUCT_API_URL}/search/${search}`);
     }
 
     insertChiTietPhieu(soluong, ngatdat, sophieu, masach, iddocgia) {
@@ -59,4 +54,4 @@ class ChiTietPhieuService {
     }
 }
 
-export default new ChiTietPhieuService();
+export default new PlantsService();

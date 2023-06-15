@@ -2,6 +2,9 @@
   <SubNavBarOrganism />
   <NavBarOrganism />
   <PageTemplate class="relative" v-if="listProduct.length > 0">
+    <h1 class="text-4xl font-bold text-green-700 mb-5">
+      Kết quả cho từ khóa:&nbsp;{{ this.$route.params.search }}
+    </h1>
     <div class="xl:flex gap-5">
       <FilterBarOrganism
         v-if="getScreenWidth() > 1280"
@@ -31,22 +34,20 @@
     </div>
   </PageTemplate>
 </template>
-
-<script>
+  
+  <script>
 import NavBarOrganism from "@/components/organisms/NavBarOrganism.vue";
 import SubNavBarOrganism from "@/components/organisms/SubNavBarOrganism.vue";
 import PageTemplate from "@/components/templates/PageTemplate.vue";
-import PlantsService from "@/service/PlantsService";
 import GridProductOrganisms from "@/components/organisms/GridProductOrganisms.vue";
 import FilterBarOrganism from "@/components/organisms/FilterBarOrganism.vue";
 // import PlantsCategoriesService from "@/service/PlantsCategoriesService";
-import ToolsService from "@/service/ToolsService";
 import FilterBarMobieOrganism from "@/components/organisms/FilterBarMobieOrganism.vue";
 import WhiteButtonAtom from "@/components/atoms/button/WhiteButtonAtom.vue";
 // import ToolsCategoriesService from "@/service/ToolsCategoriesService";
 
 export default {
-  name: "ShopView",
+  name: "SearchView",
   data() {
     return {
       changeNumber: 0,
@@ -59,11 +60,23 @@ export default {
     };
   },
   watch: {
+    "$route.params.search": {
+      immediate: true,
+      handler(newParam, oldParam) {
+        if (newParam !== oldParam) {
+          this.productType = this.$route.params.productType;
+          this.indexCategory = "";
+          this.pickedColor = "";
+          this.getAllProduct();
+        }
+      },
+    },
+
     "$route.params.productType": {
       immediate: true,
       handler(newParam, oldParam) {
         if (newParam !== oldParam) {
-          this.productType = newParam;
+          this.productType = this.$route.params.productType;
           this.indexCategory = "";
           this.pickedColor = "";
           this.getAllProduct();
@@ -81,18 +94,10 @@ export default {
   },
   methods: {
     getAllProduct() {
-      if (this.productType == "cay") {
-        PlantsService.getAllActive().then((res) => {
-          this.listProduct = res.data;
-          this.filterProducts();
-        });
-      } else if (this.productType == "chau") {
-        ToolsService.getAllActive().then((res) => {
-          this.listProduct = res.data;
-          this.filterProducts();
-        });
-      } else {
-        this.listProduct = [];
+      let searchJson = sessionStorage.getItem("searchJson");
+      if (searchJson != null) {
+        this.listProduct = JSON.parse(searchJson);
+        this.filterProducts();
       }
     },
 
@@ -166,6 +171,6 @@ export default {
   },
 };
 </script>
-
-<style>
+  
+  <style>
 </style>

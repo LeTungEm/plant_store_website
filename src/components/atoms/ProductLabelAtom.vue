@@ -1,7 +1,7 @@
 <template>
   <!-- icon: paw/star/heart -->
-  <div class="py-1 px-2 text-white bg-sky-500">
-    <font-awesome-icon :icon="icon" />
+  <div class="py-1 px-2 max-w-2/3 text-white bg-sky-500">
+    <font-awesome-icon icon="star" />
     &nbsp;{{ text }}
   </div>
 </template>
@@ -15,7 +15,6 @@ export default {
     FontAwesomeIcon,
   },
   props:{
-    icon: String,
     text: String,
   }
 };

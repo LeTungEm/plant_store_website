@@ -3,7 +3,7 @@ import axios from "axios";
 const PRODUCT_API_URL =
   "http://localhost:3000";
 
-class UploadImageService {
+class UploadFileService {
 
   uploadImage(formData) {
     return axios.post(`${PRODUCT_API_URL}/uploadFile`,
@@ -15,18 +15,6 @@ class UploadImageService {
       }
     )
   }
-
-  getAll() {
-    return axios.get(`${PRODUCT_API_URL}/products`)
-  }
-
-  them() {
-    return axios.post(`${PRODUCT_API_URL}/products`, ({
-      cat_name: "jjjhvhj"
-    }),
-
-    )
-  }
 }
 
-export default new UploadImageService();
+export default new UploadFileService();

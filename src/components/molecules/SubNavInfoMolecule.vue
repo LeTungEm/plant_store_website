@@ -5,7 +5,7 @@
         class="text-lime-500"
         :icon="['fas', 'location-dot']"
       />
-      <span class="italic">&nbsp;180 Cao Lỗ, phường 4, quận 88, TP HCM</span>
+      <span class="italic">&nbsp;180 Cao Lỗ, phường 4, quận 8, TP HCM</span>
     </li>
     <li>
       <font-awesome-icon class="text-lime-500" :icon="['fas', 'envelope']" />

@@ -1,46 +1,57 @@
 <template>
-  <SubNavBarOrganism/>
-  <NavBarOrganism/>
-  <BannerOrganism/>
-  <WelcomMolecule/>
-  <HomeTemplate class="relative">
-    <CollectionOrganism/>
-    <NewProductsOrganism/>
-    <BestSellerOrganisms/>
-  </HomeTemplate>
+  <SubNavBarOrganism />
+  <NavBarOrganism />
+  <BannerOrganism />
+  <WelcomMolecule />
+  <PageTemplate class="relative">
+    <CollectionOrganism />
+    <listProductsOrganism
+      v-for="displayCategorie in displayCategories"
+      :key="displayCategorie.slug"
+      :categoryId="displayCategorie.category_id"
+      :header="displayCategorie.name"
+    />
+    <BenefitOrganisms/>
+  </PageTemplate>
 </template>
 
 <script>
-import SubNavBarOrganism from '@/components/organisms/SubNavBarOrganism.vue';
-import NavBarOrganism from '@/components/organisms/NavBarOrganism.vue';
-import BannerOrganism from '@/components/organisms/BannerOrganism.vue';
-import CollectionOrganism from '@/components/organisms/CollectionOrganism.vue';
-import HomeTemplate from '@/components/templates/HomeTemplate.vue';
-import WelcomMolecule from '@/components/molecules/WelcomMolecule.vue';
-import NewProductsOrganism from '@/components/organisms/NewProductsOrganism.vue';
-import BestSellerOrganisms from '@/components/organisms/BestSellerOrganisms.vue';
-
+import SubNavBarOrganism from "@/components/organisms/SubNavBarOrganism.vue";
+import NavBarOrganism from "@/components/organisms/NavBarOrganism.vue";
+import BannerOrganism from "@/components/organisms/BannerOrganism.vue";
+import CollectionOrganism from "@/components/organisms/CollectionOrganism.vue";
+import PageTemplate from "@/components/templates/PageTemplate.vue";
+import WelcomMolecule from "@/components/molecules/WelcomMolecule.vue";
+import listProductsOrganism from "@/components/organisms/listProductsOrganism.vue";
+import CategoriesService from "@/service/CategoriesService";
+import BenefitOrganisms from '@/components/organisms/benefitOrganisms.vue';
 
 export default {
   name: "HomeView",
-  data(){
+  data() {
     return {
-      lishBook: [],
-      bookTypes: [],
-      authors: [],
-      writedBy: [],
+      displayCategories: [],
     };
   },
-  components:{
+  methods: {
+    getAllDisplay() {
+      CategoriesService.getDisplayCategories().then((res) => {
+        this.displayCategories = res.data;
+      });
+    },
+  },
+  components: {
     SubNavBarOrganism,
     NavBarOrganism,
     BannerOrganism,
     CollectionOrganism,
-    HomeTemplate,
+    PageTemplate,
     WelcomMolecule,
-    NewProductsOrganism,
-    BestSellerOrganisms
-},
-
+    listProductsOrganism,
+    BenefitOrganisms,
+  },
+  created() {
+    this.getAllDisplay();
+  },
 };
 </script>

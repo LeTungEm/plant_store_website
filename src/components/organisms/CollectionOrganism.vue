@@ -1,45 +1,14 @@
 <template>
   <div>
-    <HeaderAtom class="my-2 md:my-5" :text="'Bộ sưu tập'" />
+    <HeaderAtom class="my-2 md:my-5" :text="'Danh mục nổi bật'" />
     <div class="grid grid-cols-3 md:grid-cols-5 gap-5 lg:gap-10">
-      <ColectionItemMolecule
+      <CollectionItemMolecule
+        v-for="category in listSpecialCategories"
+        :key="category"
         :colectionItem="{
-          image:
-            'https://cdn.shopify.com/s/files/1/0150/6262/products/the-sill_aglaonema-wishes_medium_hyde_cream.jpg?v=1678485669',
-          alt: 'hinh',
-          name: 'phan loaij',
-        }"
-      />
-      <ColectionItemMolecule
-        :colectionItem="{
-          image:
-            'http://garderia.wgl-demo.net/wp-content/uploads/2020/02/logo_3.png',
-          alt: 'hinh',
-          name: 'than thien voi dong vat',
-        }"
-      />
-      <ColectionItemMolecule
-        :colectionItem="{
-          image:
-            'http://garderia.wgl-demo.net/wp-content/uploads/2020/02/partners-1d.png',
-          alt: 'hinh',
-          name: 'cay ngoai troi',
-        }"
-      />
-      <ColectionItemMolecule
-        :colectionItem="{
-          image:
-            'https://cdn.shopify.com/s/files/1/0150/6262/products/the-sill_aglaonema-wishes_medium_hyde_cream.jpg?v=1678485669',
-          alt: 'hinh',
-          name: 'cay trong mat cay trong mat cay trong mat cay trong mat',
-        }"
-      />
-      <ColectionItemMolecule
-        :colectionItem="{
-          image:
-            'https://cdn.shopify.com/s/files/1/0150/6262/products/the-sill_aglaonema-wishes_medium_hyde_cream.jpg?v=1678485669',
-          alt: 'hinh',
-          name: 'phan loaij',
+          name: category.name,
+          image: category.image,
+          alt: category.slug,
         }"
       />
     </div>
@@ -47,14 +16,32 @@
 </template>
 
 <script>
+import CategoriesService from '@/service/CategoriesService';
 import HeaderAtom from "../atoms/header/HeaderAtom.vue";
-import ColectionItemMolecule from "../molecules/ColectionItemMolecule.vue";
+import CollectionItemMolecule from "../molecules/CollectionItemMolecule.vue";
+import { COLLECTION_DISPLAY_NUMBER } from '@/assets/js/config';
 export default {
-  components: { HeaderAtom, ColectionItemMolecule },
   name: "CollectionOrganism",
-  methods: {
-    // get all categories of plant category
+  data(){
+    return {
+      listSpecialCategories: [],
+    };
   },
+  components: { HeaderAtom, CollectionItemMolecule },
+  methods: {
+    getSpecialCategories(){
+      CategoriesService.getSpecialCategories().then(res => {
+        this.listSpecialCategories = this.sliceList(res.data);
+      });
+    },
+
+    sliceList(list){
+      return list.slice(0, COLLECTION_DISPLAY_NUMBER);
+    }
+  },
+  created(){
+    this.getSpecialCategories();
+  }
 };
 </script>
 
