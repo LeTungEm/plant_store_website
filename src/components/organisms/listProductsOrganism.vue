@@ -32,7 +32,7 @@ export default {
     };
   },
   props:{
-    categorySlug: Number,
+    categorySlug: String,
     header: String,
   },
   components: { ProductCardMolecule, HeaderAtom, AmberHeaderAtom },

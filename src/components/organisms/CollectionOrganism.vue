@@ -8,7 +8,8 @@
         :colectionItem="{
           name: category.name,
           image: category.image,
-          alt: category.slug,
+          alt: category.name,
+          slug: category.slug,
         }"
       />
     </div>

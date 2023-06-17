@@ -135,7 +135,7 @@ export default {
           }
         });
       }
-      console.log(this.product);
+      // console.log(this.product);
     },
 
     changeCurrentIndex(currentIndex) {
