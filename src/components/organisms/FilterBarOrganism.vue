@@ -59,7 +59,7 @@ export default {
     },
 
     getAllChildCategories() {
-      CategoriesService.getByParentId(this.productType).then((res) => {
+      CategoriesService.getByParentSlug(this.productType).then((res) => {
         this.listChildCategories = res.data;
         this.indexChildCategory = "";
       });

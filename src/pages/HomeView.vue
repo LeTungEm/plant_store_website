@@ -6,7 +6,7 @@
     <listProductsOrganism
       v-for="displayCategorie in displayCategories"
       :key="displayCategorie.slug"
-      :categoryId="displayCategorie.category_id"
+      :categorySlug="displayCategorie.slug"
       :header="displayCategorie.name"
     />
     <BenefitOrganisms />

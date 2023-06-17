@@ -5,8 +5,8 @@ const PRODUCT_API_URL =
 
 class PlantsCategoriesService {
     
-    getByCategoriesId(categoryId) {
-        return axios.get(`${PRODUCT_API_URL}/${categoryId}`);
+    getByCategoriesSlug(categorySlug) {
+        return axios.get(`${PRODUCT_API_URL}/${categorySlug}`);
     }
 
     insertChiTietPhieu(soluong, ngatdat, sophieu, masach, iddocgia) {

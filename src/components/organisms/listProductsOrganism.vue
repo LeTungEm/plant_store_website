@@ -32,13 +32,13 @@ export default {
     };
   },
   props:{
-    categoryId: Number,
+    categorySlug: Number,
     header: String,
   },
   components: { ProductCardMolecule, HeaderAtom, AmberHeaderAtom },
   methods: {
     getPlants() {
-      PlantsCategoriesService.getByCategoriesId(this.categoryId)
+      PlantsCategoriesService.getByCategoriesSlug(this.categorySlug)
         .then((res) => {
           this.plants = this.sliceList(res.data);
         })

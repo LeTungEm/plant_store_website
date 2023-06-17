@@ -161,7 +161,7 @@ export default {
     WhiteButtonAtom,
   },
   created() {
-    this.getAllProduct();
+    // this.getAllProduct();
   },
 };
 </script>

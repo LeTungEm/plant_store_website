@@ -17,8 +17,8 @@ class CategoriesService {
         return axios.get(`${PRODUCT_API_URL}/special`);
     }
     
-    getByParentId(parentId) {
-        return axios.get(`${PRODUCT_API_URL}/parent/${parentId}`);
+    getByParentSlug(parentSlug) {
+        return axios.get(`${PRODUCT_API_URL}/parent/${parentSlug}`);
     }
     
 
