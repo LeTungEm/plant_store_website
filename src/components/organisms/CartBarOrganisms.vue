@@ -1,6 +1,6 @@
 <template>
-  <RightSidebarMolecule class="pb-0" :status="status">
-    <h1 class="text-xl font-bold mb-5 xl:text-3xl">
+  <RightSidebarMolecule class="py-0" :status="status">
+    <h1 class="sticky top-0 bg-white text-xl font-bold py-5 xl:text-3xl">
       Giỏ hàng&nbsp;({{ totalQuantity }})
     </h1>
     <div class="grid grid-cols-1 gap-5">
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import GreenButtonAtom from "../atoms/button/GreenButtonAtom.vue";
 import CartItemMolecule from "../molecules/CartItemMolecule.vue";
 import RightSidebarMolecule from "../molecules/RightSidebarMolecule.vue";
@@ -36,14 +37,16 @@ export default {
   },
   props: {
     status: Boolean,
-    cartchangeNumber: Number,
   },
   watch: {
-    cartchangeNumber: function () {
+    getCartChangeNumber: function () {
       this.getAllProduct();
     },
   },
   emits:['closeCartBar', 'changeToTalQuantity'],
+  computed: {
+    ...mapGetters(["getCartChangeNumber"]),
+  },
   methods: {
     closeCartBar(){
       this.$emit('closeCartBar');

@@ -40,7 +40,7 @@ export default {
     productType: String,
     index: Number,
   },
-  emits:['changeProductQuantity', 'removeProduct'],
+  emits:['changeProductQuantity', 'removeProduct', 'closeCartBar'],
   methods: {
     toDetail(slug) {
       this.$emit('closeCartBar');

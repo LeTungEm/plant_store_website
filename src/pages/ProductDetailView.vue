@@ -1,6 +1,4 @@
 <template>
-  <SubNavBarOrganism />
-  <NavBarOrganism :cartchangeNumber="cartchangeNumber" />
   <PageTemplate class="xl:flex">
     <div class="flex-1 xl:sticky top-24 h-[80vh] mb-5 xl:mb-0">
       <img
@@ -14,17 +12,14 @@
       />
     </div>
     <ProductDetailInfoOrganism
-      @addToCart="addToCart"
       @changeCurrentIndex="changeCurrentIndex"
       :product="product"
     />
   </PageTemplate>
-  <CropImageMolecule class="hidden" />
+  <CropImageMolecule class="w-3/4 hidden" />
 </template>
 
 <script>
-import NavBarOrganism from "@/components/organisms/NavBarOrganism.vue";
-import SubNavBarOrganism from "@/components/organisms/SubNavBarOrganism.vue";
 import PlantsService from "@/service/PlantsService";
 import ProductDetailInfoOrganism from "@/components/organisms/ProductDetailInfoOrganism.vue";
 import CropImageMolecule from "@/components/molecules/CropImageMolecule.vue";
@@ -51,6 +46,7 @@ export default {
         sadPlantSigns: null,
         water: null,
         score: 5,
+        plantSetId: [],
         plantId: null,
         toolId: [],
         tool: [],
@@ -61,7 +57,6 @@ export default {
         size: [],
       },
       currentIndex: null,
-      cartchangeNumber: 0,
     };
   },
   watch: {
@@ -76,9 +71,6 @@ export default {
     },
   },
   methods: {
-    addToCart() {
-      this.cartchangeNumber++;
-    },
 
     getProductDetail() {
       let productSlug = this.$route.params.productSlug;
@@ -103,6 +95,7 @@ export default {
               this.product.sadPlantSigns = plantSet.sad_plant_signs;
               this.product.water = plantSet.water;
               this.product.score = plantSet.score;
+              this.product.plantSetId.push(plantSet.plant_set_id);
               this.product.plantId = plantSet.plant_id;
               this.product.toolId.push(plantSet.tool_id);
               this.product.tool.push(plantSet.tool);
@@ -129,6 +122,7 @@ export default {
               this.product.isSale.push(plantSet.is_sale);
               this.product.salePrice.push(plantSet.sale_price);
               this.product.score = plantSet.score;
+              this.product.plantSetId.push(plantSet.plant_set_id);
               this.product.plantId = plantSet.plant_id;
               this.product.toolId.push(plantSet.tool_id);
               this.product.tool.push(plantSet.name);
@@ -141,7 +135,7 @@ export default {
           }
         });
       }
-      // console.log(this.product);
+      console.log(this.product);
     },
 
     changeCurrentIndex(currentIndex) {
@@ -153,6 +147,7 @@ export default {
       this.product = {
         name: "",
         type: "",
+        slug: "",
         plantQuantity: 0,
         toolQuantity: [],
         description: "",
@@ -166,6 +161,8 @@ export default {
         sadPlantSigns: null,
         water: null,
         score: 5,
+        plantSetId: [],
+        plantId: null,
         toolId: [],
         tool: [],
         toolColorId: [],
@@ -177,8 +174,6 @@ export default {
     },
   },
   components: {
-    NavBarOrganism,
-    SubNavBarOrganism,
     ProductDetailInfoOrganism,
     CropImageMolecule,
     PageTemplate,

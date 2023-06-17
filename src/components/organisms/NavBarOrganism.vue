@@ -28,10 +28,12 @@
     <CartBarOrganisms
       @closeCartBar="changeCartBarStatus"
       @changeToTalQuantity="changeToTalQuantity"
-      :cartchangeNumber="cartchangeNumber"
       :status="cartBarStatus"
     />
-    <SearchBarOrganisms :status="searchBarStatus" />
+    <SearchBarOrganisms
+      @closeSearchBar="changeSearchBarStatus"
+      :status="searchBarStatus"
+    />
     <div
       v-bind:class="
         mainMenuStatus || searchBarStatus || cartBarStatus ? '' : 'hidden'
@@ -50,6 +52,7 @@ import MainMenuMolecule from "../molecules/MainMenuMolecule.vue";
 import LogoAtom from "../atoms/LogoAtom.vue";
 import SearchBarOrganisms from "./SearchBarOrganisms.vue";
 import CartBarOrganisms from "./CartBarOrganisms.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "NavBarOrganism",
@@ -61,15 +64,10 @@ export default {
       totalQuantityOfCart: 0,
     };
   },
-  props: {
-    cartchangeNumber: Number,
-  },
-  watch:{
-    cartchangeNumber: function(){
-      if(this.cartchangeNumber){
-        this.cartBarStatus = true;
-      }
-    }
+  watch: {
+    getCartChangeNumber() {
+      this.cartBarStatus = true;
+    },
   },
   components: {
     FontAwesomeIcon,
@@ -77,6 +75,9 @@ export default {
     LogoAtom,
     SearchBarOrganisms,
     CartBarOrganisms,
+  },
+  computed: {
+    ...mapGetters(["getCartChangeNumber"]),
   },
   methods: {
     changeMainMenuStatus() {
@@ -88,7 +89,7 @@ export default {
     changeCartBarStatus() {
       this.cartBarStatus = !this.cartBarStatus;
     },
-    changeToTalQuantity(totalQuantity){
+    changeToTalQuantity(totalQuantity) {
       this.totalQuantityOfCart = totalQuantity;
     },
     closeAllTab() {

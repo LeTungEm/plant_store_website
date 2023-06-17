@@ -1,6 +1,4 @@
 <template>
-  <SubNavBarOrganism />
-  <NavBarOrganism />
   <PageTemplate class="relative" v-if="listProduct.length > 0">
     <h1 class="text-4xl font-bold text-green-700 mb-5">
       Kết quả cho từ khóa:&nbsp;{{ this.$route.params.search }}
@@ -36,14 +34,13 @@
 </template>
   
   <script>
-import NavBarOrganism from "@/components/organisms/NavBarOrganism.vue";
-import SubNavBarOrganism from "@/components/organisms/SubNavBarOrganism.vue";
 import PageTemplate from "@/components/templates/PageTemplate.vue";
 import GridProductOrganisms from "@/components/organisms/GridProductOrganisms.vue";
 import FilterBarOrganism from "@/components/organisms/FilterBarOrganism.vue";
 // import PlantsCategoriesService from "@/service/PlantsCategoriesService";
 import FilterBarMobieOrganism from "@/components/organisms/FilterBarMobieOrganism.vue";
 import WhiteButtonAtom from "@/components/atoms/button/WhiteButtonAtom.vue";
+import { mapGetters } from 'vuex';
 // import ToolsCategoriesService from "@/service/ToolsCategoriesService";
 
 export default {
@@ -93,12 +90,11 @@ export default {
     },
   },
   methods: {
+    ...mapGetters(['getListSearch']),
+
     getAllProduct() {
-      let searchJson = sessionStorage.getItem("searchJson");
-      if (searchJson != null) {
-        this.listProduct = JSON.parse(searchJson);
-        this.filterProducts();
-      }
+      this.listProduct = this.getListSearch();
+      this.filterProducts();
     },
 
     filterProducts() {
@@ -158,8 +154,6 @@ export default {
     },
   },
   components: {
-    NavBarOrganism,
-    SubNavBarOrganism,
     PageTemplate,
     GridProductOrganisms,
     FilterBarOrganism,

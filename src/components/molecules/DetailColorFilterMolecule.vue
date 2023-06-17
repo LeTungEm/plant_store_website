@@ -7,7 +7,7 @@
     <div class="flex flex-wrap gap-5">
       <div
         v-for="(colorId, index) in uniqueIdArr"
-        :onclick="() => changeColor(colorId, uniqueNameArr[index])"
+        @click.passive="() => changeColor(colorId, uniqueNameArr[index])"
         :key="colorId"
         v-bind:class="currentColorId == colorId ? 'border-black font-bold' : ''"
         class="text-lg p-1 rounded-full border hover:shadow-lg"

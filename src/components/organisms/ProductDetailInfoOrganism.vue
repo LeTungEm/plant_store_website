@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import GreenButtonAtom from "../atoms/button/GreenButtonAtom.vue";
 import PriceTextAtom from "../atoms/text/PriceTextAtom.vue";
 import PriceTextWLineThroughAtom from "../atoms/text/PriceTextWLineThroughAtom.vue";
@@ -117,7 +118,7 @@ export default {
       this.$emit("changeCurrentIndex", this.currentIndex);
     },
   },
-  emits: ["changeCurrentIndex", "addToCart"],
+  emits: ["changeCurrentIndex"],
   components: {
     PriceTextAtom,
     PriceTextWLineThroughAtom,
@@ -127,6 +128,8 @@ export default {
     DropTextMolecule,
   },
   methods: {
+    ...mapActions(["changeCartChangeNumber"]),
+
     changePlanter(planterId) {
       this.currentToolId = planterId;
     },
@@ -156,11 +159,14 @@ export default {
       });
     },
 
-    getMaximumQuantity(){
+    getMaximumQuantity() {
       let maximumQuantity = 0;
-      if(this.product.type == 'cay'){
-        maximumQuantity = Math.min(this.product.plantQuantity, this.currentToolQuantity);
-      }else{
+      if (this.product.type == "cay") {
+        maximumQuantity = Math.min(
+          this.product.plantQuantity,
+          this.currentToolQuantity
+        );
+      } else {
         maximumQuantity = this.currentToolQuantity;
       }
       return maximumQuantity;
@@ -182,12 +188,7 @@ export default {
     findProductInCart(listProduct, newProduct) {
       let listIndex = null;
       listProduct.forEach((product, index) => {
-        if (
-          product.plantId == newProduct.plantId &&
-          product.toolId == newProduct.toolId &&
-          product.sizeId == newProduct.sizeId &&
-          product.colorId == newProduct.colorId
-        ) {
+        if (product.plantSetId == newProduct.plantSetId) {
           listIndex = index;
         }
       });
@@ -199,10 +200,7 @@ export default {
         type: this.product.type,
         slug: this.product.slug,
         maximumQuantity: this.getMaximumQuantity(),
-        plantId: this.product.plantId,
-        toolId: this.currentToolId,
-        sizeId: this.currentSizeId,
-        colorId: this.currentColorId,
+        plantSetId: this.product.plantSetId[this.currentIndex],
         price: this.currentPrice,
         quantity: this.productQuantity,
         image: this.product.image[this.currentIndex],
@@ -221,16 +219,46 @@ export default {
         list = JSON.parse(cartJson);
         let productPosition = this.findProductInCart(list, productItem);
         if (productPosition != null) {
-          list[productPosition].quantity += productItem.quantity;
+          list = this.updateProductQuantityInCart(
+            list,
+            productPosition,
+            productItem
+          );
         } else {
           list.push(productItem);
+          this.changeCartChangeNumber(1);
         }
       } else {
         list.push(productItem);
+        this.changeCartChangeNumber(1);
       }
       let jsonString = JSON.stringify(list);
       localStorage.setItem("cartJson", jsonString);
-      this.$emit("addToCart");
+    },
+
+    updateProductQuantityInCart(list, productPosition, productItem) {
+      let newList = list;
+      let maximumStatus = this.isMaxQuantityOfProduct(
+        newList[productPosition].quantity,
+        productItem.quantity,
+        newList[productPosition].maximumQuantity
+      );
+      if (maximumStatus) {
+        alert("Tối đa rồi!!!");
+      } else {
+        newList[productPosition].quantity += productItem.quantity;
+        this.changeCartChangeNumber(1);
+      }
+      return newList;
+    },
+
+    isMaxQuantityOfProduct(currentQuantity, additionQuantity, maximumQuantity) {
+      let result = false;
+      let sum = currentQuantity + additionQuantity;
+      if (sum > maximumQuantity) {
+        result = true;
+      }
+      return result;
     },
   },
 };

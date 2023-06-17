@@ -1,6 +1,4 @@
 <template>
-  <SubNavBarOrganism />
-  <NavBarOrganism />
   <PageTemplate class="relative" v-if="listProduct.length > 0">
     <div class="xl:flex gap-5">
       <FilterBarOrganism
@@ -33,8 +31,6 @@
 </template>
 
 <script>
-import NavBarOrganism from "@/components/organisms/NavBarOrganism.vue";
-import SubNavBarOrganism from "@/components/organisms/SubNavBarOrganism.vue";
 import PageTemplate from "@/components/templates/PageTemplate.vue";
 import PlantsService from "@/service/PlantsService";
 import GridProductOrganisms from "@/components/organisms/GridProductOrganisms.vue";
@@ -153,8 +149,6 @@ export default {
     },
   },
   components: {
-    NavBarOrganism,
-    SubNavBarOrganism,
     PageTemplate,
     GridProductOrganisms,
     FilterBarOrganism,

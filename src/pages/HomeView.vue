@@ -1,6 +1,4 @@
 <template>
-  <SubNavBarOrganism />
-  <NavBarOrganism />
   <BannerOrganism />
   <WelcomMolecule />
   <PageTemplate class="relative">
@@ -11,20 +9,18 @@
       :categoryId="displayCategorie.category_id"
       :header="displayCategorie.name"
     />
-    <BenefitOrganisms/>
+    <BenefitOrganisms />
   </PageTemplate>
 </template>
 
 <script>
-import SubNavBarOrganism from "@/components/organisms/SubNavBarOrganism.vue";
-import NavBarOrganism from "@/components/organisms/NavBarOrganism.vue";
 import BannerOrganism from "@/components/organisms/BannerOrganism.vue";
 import CollectionOrganism from "@/components/organisms/CollectionOrganism.vue";
 import PageTemplate from "@/components/templates/PageTemplate.vue";
 import WelcomMolecule from "@/components/molecules/WelcomMolecule.vue";
 import listProductsOrganism from "@/components/organisms/listProductsOrganism.vue";
 import CategoriesService from "@/service/CategoriesService";
-import BenefitOrganisms from '@/components/organisms/benefitOrganisms.vue';
+import BenefitOrganisms from "@/components/organisms/benefitOrganisms.vue";
 
 export default {
   name: "HomeView",
@@ -39,10 +35,9 @@ export default {
         this.displayCategories = res.data;
       });
     },
+
   },
   components: {
-    SubNavBarOrganism,
-    NavBarOrganism,
     BannerOrganism,
     CollectionOrganism,
     PageTemplate,
