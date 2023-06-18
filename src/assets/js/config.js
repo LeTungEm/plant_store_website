@@ -1,19 +1,4 @@
-// const changeAnimation = ({ className, from, to }) => {
-//     let arrElement = document.getElementsByClassName(className);
-//     if (arrElement) {
-//         for (var i = 0; i < arrElement.length; i++) {
-//             arrElement[i].classList.toggle(from);
-//             arrElement[i].classList.toggle(to);
-//         }
-//     }
-// }
-
-// const formatPrice = (price) => {
-//     return Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(
-//       price
-//     );
-// }
-
+// google api login-key: AIzaSyBWjcS2c2SzX5E2nDU2i5c8Nyy4F2Ap5nI
 const PRODUCT_EACH_PAGE = 5;
 const COLLECTION_DISPLAY_NUMBER = 5;
 const PRODUCT_DISPLAY_NUMBER = 4;

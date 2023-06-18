@@ -6,10 +6,11 @@
         v-for="category in listSpecialCategories"
         :key="category"
         :colectionItem="{
-          name: category.name,
           image: category.image,
+          name: category.name,
           alt: category.name,
-          slug: category.slug,
+          id: category.category_id,
+          productType: category.parent_slug
         }"
       />
     </div>

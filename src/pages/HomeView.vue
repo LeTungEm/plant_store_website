@@ -7,6 +7,7 @@
       v-for="displayCategorie in displayCategories"
       :key="displayCategorie.slug"
       :categorySlug="displayCategorie.slug"
+      :productType="'cay'"
       :header="displayCategorie.name"
     />
     <BenefitOrganisms />

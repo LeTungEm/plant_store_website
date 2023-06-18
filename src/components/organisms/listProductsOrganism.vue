@@ -12,7 +12,7 @@
         v-for="plant in plants"
         :key="plant.plant_id"
         :product="plant"
-        :productType="'cay'"
+        :productType="productType"
       />
     </div>
   </div>
@@ -33,6 +33,7 @@ export default {
   },
   props:{
     categorySlug: String,
+    productType: String,
     header: String,
   },
   components: { ProductCardMolecule, HeaderAtom, AmberHeaderAtom },

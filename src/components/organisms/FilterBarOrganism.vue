@@ -35,6 +35,7 @@
 <script>
 import CategoriesService from "@/service/CategoriesService";
 import FilterColorBarMolecule from "../molecules/FilterColorBarMolecule.vue";
+import { mapActions, mapGetters } from "vuex";
 export default {
   components: { FilterColorBarMolecule },
   name: "FilterBarOrganism",
@@ -61,9 +62,14 @@ export default {
     getAllChildCategories() {
       CategoriesService.getByParentSlug(this.productType).then((res) => {
         this.listChildCategories = res.data;
-        this.indexChildCategory = "";
+        this.changeCategory(this.getSpecialCategoryId());
+        this.changeSpecialCategoryId("");
       });
     },
+
+    ...mapGetters(["getSpecialCategoryId"]),
+
+    ...mapActions(["changeSpecialCategoryId"]),
 
     changePickedColor(pickedColor) {
       this.$emit("pickedColor", pickedColor);
@@ -71,6 +77,7 @@ export default {
   },
   created() {
     this.getAllChildCategories();
+    // this.getSpecialCategoryId();
   },
 };
 </script>

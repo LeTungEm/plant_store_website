@@ -37,11 +37,10 @@
 import PageTemplate from "@/components/templates/PageTemplate.vue";
 import GridProductOrganisms from "@/components/organisms/GridProductOrganisms.vue";
 import FilterBarOrganism from "@/components/organisms/FilterBarOrganism.vue";
-// import PlantsCategoriesService from "@/service/PlantsCategoriesService";
 import FilterBarMobieOrganism from "@/components/organisms/FilterBarMobieOrganism.vue";
 import WhiteButtonAtom from "@/components/atoms/button/WhiteButtonAtom.vue";
-import { mapGetters } from 'vuex';
-// import ToolsCategoriesService from "@/service/ToolsCategoriesService";
+import { mapGetters } from "vuex";
+import { scrollToTop } from "@/assets/js/quickFunction.js";
 
 export default {
   name: "SearchView",
@@ -90,11 +89,12 @@ export default {
     },
   },
   methods: {
-    ...mapGetters(['getListSearch']),
+    ...mapGetters(["getListSearch"]),
 
     getAllProduct() {
       this.listProduct = this.getListSearch();
       this.filterProducts();
+      scrollToTop();
     },
 
     filterProducts() {

@@ -3,6 +3,7 @@ import { createStore } from 'vuex'
 const store = createStore({
     state() {
         return {
+            specialCategoryId: '',
             cartChangeNumber: 0,
             listSearch: [],
         };
@@ -13,14 +14,20 @@ const store = createStore({
         },
         getListSearch(state) {
             return state.listSearch;
+        },
+        getSpecialCategoryId(state) {
+            return state.specialCategoryId;
         }
     },
     mutations: {
         changeCartChangeNumber(state, cartChangeNumber) {
             state.cartChangeNumber += cartChangeNumber;
         },
-        changeListSearch(state, listSearch){
+        changeListSearch(state, listSearch) {
             state.listSearch = listSearch;
+        },
+        changeSpecialCategoryId(state, specialCategoryId) {
+            state.specialCategoryId = specialCategoryId;
         }
     },
     actions: {
@@ -29,6 +36,9 @@ const store = createStore({
         },
         changeListSearch({ commit }, listSearch) {
             commit('changeListSearch', listSearch);
+        },
+        changeSpecialCategoryId({ commit }, specialCategoryId) {
+            commit('changeSpecialCategoryId', specialCategoryId);
         }
     }
 })

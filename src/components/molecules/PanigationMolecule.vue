@@ -21,6 +21,7 @@
 
 <script>
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { scrollToTop } from "@/assets/js/quickFunction.js";
 import { PRODUCT_EACH_PAGE } from "@/assets/js/config";
 
 export default {
@@ -33,10 +34,13 @@ export default {
   props: {
     length: Number,
   },
-  watch:{
-    length: function(){
+  watch: {
+    length: function () {
       this.currentPage = 1;
-    }
+    },
+    currentPage: function () {
+      scrollToTop();
+    },
   },
   methods: {
     splitPage() {

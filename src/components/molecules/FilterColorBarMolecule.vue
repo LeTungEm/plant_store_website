@@ -5,8 +5,8 @@
         `(${pickedColor.length})`
       }}</span>
     </h1>
-    <div class="grid grid-cols-4 xl:grid-cols-3">
-      <div v-for="color in colors" :key="color">
+    <div class="grid gap-5 grid-cols-4 xl:grid-cols-3">
+      <div class="flex flex-col items-center" v-for="color in colors" :key="color">
         <input
           class="peer"
           v-model="pickedColor"
@@ -19,12 +19,16 @@
           :for="color.color_id"
           type="checkbox"
           class="inline-block w-8 h-8 p-1 rounded-full border-2 peer-checked:border-black peer-checked:border-2"
-          ><span
+        >
+          <span
             :style="`background-color: ${color.code}`"
             class="inline-block w-full h-full rounded-full"
-            >&nbsp;</span
-          ></label
-        >
+            >&nbsp;
+          </span>
+        </label>
+        <span class="peer-checked:font-bold">
+          {{ color.name }}
+        </span>
       </div>
     </div>
   </div>

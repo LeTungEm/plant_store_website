@@ -9,6 +9,7 @@
         class="hidden xl:block xl:flex-[2]"
       />
       <FilterBarMobieOrganism
+        v-if="getScreenWidth() <= 1280"
         :filterBarMobieStatus="filterBarMobieStatus"
         :productType="productType"
         @closeFilterBarMobie="this.filterBarMobieStatus = false"
