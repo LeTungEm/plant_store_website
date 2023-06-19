@@ -1,7 +1,7 @@
 <template>
-  <div class="flex justify-center items-center w-[100vw] h-[100vh] p-5">
+  <div class="flex justify-center items-center w-[100vw] h-[100vh] px-5 py-5 md:py-10">
     <div class="flex flex-col justify-center w-full md:w-2/3">
-      <LogoAtom class="inline-block mx-auto my-5 xl:my-10" />
+      <LogoAtom class="inline-block text-4xl lg:text-6xl mx-auto my-5 xl:my-10" />
       <div class="text-center text-lg my-2 xl:text-xl">
         <span v-bind:class="isLogin ? 'text-green-700 font-bold' : ''" @click="changeLoginStatus">Đăng nhập</span>&nbsp;|&nbsp;
         <span v-bind:class="isLogin ? '' : 'text-green-700 font-bold'" @click="changeLoginStatus">Đăng ký</span>
