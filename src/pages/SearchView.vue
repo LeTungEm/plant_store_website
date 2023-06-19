@@ -1,5 +1,5 @@
 <template>
-  <PageTemplate class="relative" v-if="listProduct.length > 0">
+  <PageTemplate class="relative" v-if="toHomePage()">
     <h1 class="text-4xl font-bold text-green-700 mb-5">
       Kết quả cho từ khóa:&nbsp;{{ this.$route.params.search }}
     </h1>
@@ -152,6 +152,13 @@ export default {
     getScreenWidth() {
       return window.innerWidth;
     },
+    toHomePage(){
+      if(this.listProduct.length > 0){
+        return true;
+      }
+      this.$router.push('/');
+      return false;
+    }
   },
   components: {
     PageTemplate,

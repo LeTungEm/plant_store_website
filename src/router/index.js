@@ -3,13 +3,13 @@ import HomeView from '../pages/HomeView.vue'
 
 const routes = [
   {
-    path: '/',
     name: 'home',
+    path: '/',
     component: HomeView,
   },
   {
-    path: '/cua-hang/:productType',
     name: 'shop',
+    path: '/cua-hang/:productType',
     component: () => import(/* webpackChunkName: "about" */ '../pages/ShopView.vue'),
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -25,6 +25,18 @@ const routes = [
     name: 'search',
     path: '/tim-kiem/:productType/:search',
     component: () => import(/* webpackChunkName: "about" */ '../pages/SearchView.vue')
+  },
+  {
+    name: 'user',
+    path: '/nguoi-dung',
+    // component: () => import(/* webpackChunkName: "about" */ '../pages/SearchView.vue')
+    children: [
+      {
+        name: 'login',
+        path: 'dang-nhap',
+        component: () => import(/* webpackChunkName: "about" */ '../pages/LoginView.vue')
+      },
+    ]
   }
 
 ]

@@ -36,7 +36,6 @@ export default {
         this.displayCategories = res.data;
       });
     },
-
   },
   components: {
     BannerOrganism,
@@ -45,7 +44,7 @@ export default {
     WelcomMolecule,
     listProductsOrganism,
     BenefitOrganisms,
-  },
+},
   created() {
     this.getAllDisplay();
   },

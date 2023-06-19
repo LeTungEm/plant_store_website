@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="hiddenNavBar()"
     class="flex sticky top-0 bg-white z-[10] justify-between py-2 px-5 shadow-lg md:py-5 lg:px-20"
   >
     <LogoAtom />
@@ -9,18 +10,24 @@
     >
       <font-awesome-icon
         :onclick="changeMainMenuStatus"
-        class="xl:hidden mr-5 md:mr-10"
+        class="xl:hidden mr-5 md:mr-10 cursor-pointer"
         :icon="['fas', 'bars']"
       />
-      <font-awesome-icon class="mr-5 md:mr-10" :icon="['fas', 'user']" />
       <font-awesome-icon
+        @click="toLoginView"
+        class="mr-5 md:mr-10 cursor-pointer"
+        :icon="['fas', 'user']"
+      />
+      <font-awesome-icon
+        class="cursor-pointer"
         :onclick="changeCartBarStatus"
         :icon="['fas', 'cart-shopping']"
       />
-      <span class="mr-5 md:mr-10 text-sm md:text-lg"
-        >({{ totalQuantityOfCart }})</span
-      >
+      <span class="mr-5 md:mr-10 text-sm md:text-lg">
+        ({{ totalQuantityOfCart }})
+      </span>
       <font-awesome-icon
+        class="cursor-pointer"
         :onclick="changeSearchBarStatus"
         :icon="['fas', 'magnifying-glass']"
       />
@@ -96,6 +103,17 @@ export default {
       this.mainMenuStatus = false;
       this.searchBarStatus = false;
       this.cartBarStatus = false;
+    },
+    hiddenNavBar() {
+      let result = true;
+      let routerName = this.$route.name;
+      if (routerName == "login") {
+        result = false;
+      }
+      return result;
+    },
+    toLoginView() {
+      this.$router.push("/nguoi-dung/dang-nhap");
     },
   },
 };

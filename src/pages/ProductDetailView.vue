@@ -25,6 +25,8 @@ import ProductDetailInfoOrganism from "@/components/organisms/ProductDetailInfoO
 import CropImageMolecule from "@/components/molecules/CropImageMolecule.vue";
 import PageTemplate from "@/components/templates/PageTemplate.vue";
 import ToolsService from "@/service/ToolsService";
+import { scrollToTop } from "@/assets/js/quickFunction.js";
+
 export default {
   name: "ProductDetailView",
   data() {
@@ -66,6 +68,7 @@ export default {
         if (newParam !== oldParam) {
           this.setDefault();
           this.getProductDetail();
+          scrollToTop();
         }
       },
     },

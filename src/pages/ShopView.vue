@@ -36,7 +36,6 @@ import PageTemplate from "@/components/templates/PageTemplate.vue";
 import PlantsService from "@/service/PlantsService";
 import GridProductOrganisms from "@/components/organisms/GridProductOrganisms.vue";
 import FilterBarOrganism from "@/components/organisms/FilterBarOrganism.vue";
-// import PlantsCategoriesService from "@/service/PlantsCategoriesService";
 import ToolsService from "@/service/ToolsService";
 import FilterBarMobieOrganism from "@/components/organisms/FilterBarMobieOrganism.vue";
 import WhiteButtonAtom from "@/components/atoms/button/WhiteButtonAtom.vue";
