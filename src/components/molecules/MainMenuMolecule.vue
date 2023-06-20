@@ -3,8 +3,8 @@
     <li :onclick="closeMenu" class="py-1 ml-5 border-b xl:border-0"><router-link class="block" to="/">Trang chủ</router-link></li>
     <li :onclick="closeMenu" class="py-1 ml-5 border-b xl:border-0"><router-link class="block" to="/cua-hang/cay">Cây</router-link></li>
     <li :onclick="closeMenu" class="py-1 ml-5 border-b xl:border-0"><router-link class="block" to="/cua-hang/chau">Chậu</router-link></li>
-    <li :onclick="closeMenu" class="py-1 ml-5 border-b xl:border-0"><router-link class="block" to="/cua-hang/cay">Giới thiệu</router-link></li>
-    <li :onclick="closeMenu" class="py-1 ml-5 border-b xl:border-0"><router-link class="block" to="/cua-hang/cay">Chăm sóc cây</router-link></li>
+    <li :onclick="closeMenu" class="py-1 ml-5 border-b xl:border-0"><router-link class="block" to="/gioi-thieu">Giới thiệu</router-link></li>
+    <li :onclick="closeMenu" class="py-1 ml-5 border-b xl:border-0"><router-link class="block" to="/dich-vu">Dịch vụ</router-link></li>
   </ul>
 </template>
 

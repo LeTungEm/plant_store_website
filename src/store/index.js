@@ -17,7 +17,7 @@ const store = createStore({
         },
         getSpecialCategoryId(state) {
             return state.specialCategoryId;
-        }
+        },
     },
     mutations: {
         changeCartChangeNumber(state, cartChangeNumber) {
@@ -28,7 +28,7 @@ const store = createStore({
         },
         changeSpecialCategoryId(state, specialCategoryId) {
             state.specialCategoryId = specialCategoryId;
-        }
+        },
     },
     actions: {
         changeCartChangeNumber({ commit }, cartChangeNumber) {
@@ -39,7 +39,7 @@ const store = createStore({
         },
         changeSpecialCategoryId({ commit }, specialCategoryId) {
             commit('changeSpecialCategoryId', specialCategoryId);
-        }
+        },
     }
 })
 

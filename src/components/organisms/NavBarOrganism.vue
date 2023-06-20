@@ -113,7 +113,16 @@ export default {
       return result;
     },
     toLoginView() {
-      this.$router.push("/nguoi-dung/dang-nhap");
+      let userJson = sessionStorage.getItem("user");
+      let date = new Date();
+      console.log(date.toLocaleDateString());
+      console.log(new Date(date.toLocaleDateString()));
+      if (userJson) {
+        let user = JSON.parse(userJson);
+        if (user.date) this.$router.push("/nguoi-dung/thong-tin");
+      } else {
+        this.$router.push("/nguoi-dung/thong-tin");
+      }
     },
   },
 };

@@ -36,14 +36,55 @@ const routes = [
         path: 'dang-nhap',
         component: () => import(/* webpackChunkName: "about" */ '../pages/LoginView.vue')
       },
+      {
+        name: 'profile',
+        path: 'thong-tin',
+        component: () => import(/* webpackChunkName: "about" */ '../pages/UserProfileView.vue'),
+        meta: { requiresAuth: true }
+      },
     ]
-  }
-
+  },
+  {
+    name: 'introduce',
+    path: '/gioi-thieu',
+    component: () => import(/* webpackChunkName: "about" */ '../pages/HomeView.vue')
+  },
+  {
+    name: 'service',
+    path: '/dich-vu',
+    component: () => import(/* webpackChunkName: "about" */ '../pages/HomeView.vue')
+  },
 ]
+function checkAuthentication(to, from, next) {
+  if (to.matched.some(route => route.meta.requiresAuth)) {
+    // Kiểm tra trạng thái đăng nhập từ Vuex store
+    let userJson = sessionStorage.getItem("user");
+    if (userJson) {
+
+      let user = JSON.parse(userJson);
+      let date = new Date();
+      if (user <= date) {
+        // Nếu đã đăng nhập, cho phép điều hướng tiếp
+        next();
+      } else {
+        // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
+        next('/nguoi-dung/dang-nhap');
+      }
+    } else {
+      // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
+      next('/nguoi-dung/dang-nhap');
+    }
+  } else {
+    // Nếu route không yêu cầu đăng nhập, cho phép điều hướng tiếp
+    next();
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+router.beforeEach(checkAuthentication);
+
 
 export default router

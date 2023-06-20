@@ -1,7 +1,7 @@
 <template>
   <form
     @submit.prevent="register"
-    v-bind:class="isLogin ? 'translate-x-[100%] absolute' : 'relative'"
+    v-bind:class="isLogin ? 'translate-x-[100%] absolute z-[1]' : 'relative z-[2]'"
     class="w-full duration-300 p-3 md:p-5"
   >
     <div class="flex mb-5">
@@ -25,12 +25,12 @@
     </div>
     <div class="flex mb-5">
       <input
-        @click="() => (phoneErr = false)"
-        v-bind:class="phoneErr ? 'border border-red-700' : ''"
-        v-model="phone"
-        placeholder="Số điện thoại*"
+        @click="() => (emailErr = false)"
+        v-bind:class="emailErr ? 'border border-red-700' : ''"
+        v-model="email"
+        placeholder="Email*"
         class="border rounded-sm w-full outline-0 focus:outline-2 focus:outline-green-700 py-1 lg:py-2 px-2 lg:px-4"
-        type="text"
+        type="email"
       />
     </div>
     <div class="flex mb-5">
@@ -102,8 +102,8 @@ export default {
       nameErr: false,
       gender: 1,
       genderErr: false,
-      phone: "",
-      phoneErr: false,
+      email: "",
+      emailErr: false,
       date: "",
       dateErr: false,
       passW: "",
@@ -128,7 +128,7 @@ export default {
       if (
         this.name &&
         this.gender &&
-        this.phone &&
+        this.email &&
         this.date &&
         this.passW &&
         this.rePassW
@@ -137,7 +137,7 @@ export default {
       }
       if (this.name == "") this.nameErr = true;
       if (this.gender == "") this.genderErr = true;
-      if (this.phone == "") this.phoneErr = true;
+      if (this.email == "") this.emailErr = true;
       if (this.date == "") this.dateErr = true;
       if (this.passW == "") this.passWErr = true;
       if (this.rePassW == "") this.rePassWErr = true;
@@ -164,19 +164,10 @@ export default {
       }
       return result;
     },
-    isPhoneNumberCorrect() {
-      if (this.phone.length != 10) {
-        this.showNotification("Số điện thoại phải có đủ 10 ký tự !!!");
-        return false;
-      }
-      return true;
-    },
     validateForm() {
       let result = true;
       if (this.isFullData()) {
         if (this.isPassWCorrect() == false) {
-          return false;
-        } else if (this.isPhoneNumberCorrect() == false) {
           return false;
         }
       } else {
@@ -185,17 +176,41 @@ export default {
       }
       return result;
     },
+    async isEmailExists(email) {
+      let result = await AccountsService.isEmailExists(email);
+      if (result) return result.data.message;
+      return false;
+    },
+    insertAccount() {
+      AccountsService.insert(
+        "",
+        this.gender,
+        this.date,
+        "",
+        this.passW,
+        this.name,
+        this.email,
+        2
+      ).then((res) => {
+        if (res.data) {
+          if (res.data.message == true) {
+            this.$emit("isRegisterd", this.email);
+          } else {
+            this.showNotification("Đăng ký không thành công !!!");
+          }
+        }
+      });
+    },
     register() {
-      AccountsService;
       if (this.validateForm()) {
-        console.log(
-          this.name,
-          this.gender,
-          this.phone,
-          this.date,
-          this.passW,
-          this.rePassW
-        );
+        let isExist = this.isEmailExists(this.email);
+        isExist.then((res) => {
+          if (res) {
+            this.showNotification("Email đã tồn tại !!!");
+          } else {
+            this.insertAccount();
+          }
+        });
       }
     },
   },
