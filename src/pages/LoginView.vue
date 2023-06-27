@@ -6,7 +6,7 @@
         <span class=" cursor-pointer" v-bind:class="isLogin ? 'text-green-700 font-bold' : ''" @click="changeLoginStatus">Đăng nhập</span>&nbsp;|&nbsp;
         <span class=" cursor-pointer" v-bind:class="isLogin ? '' : 'text-green-700 font-bold'" @click="changeLoginStatus">Đăng ký</span>
       </div>
-      <div class="flex relative w-full overflow-hidden bg-gray-100 border rounded-sm">
+      <div class="flex relative w-full overflow-hidden bg-gray-100 border rounded-sm xl:w-1/2 mx-auto">
         <LoginFormMolecule :registeredEmail="registeredEmail" :isLogin="isLogin"/>
         <RegisterFormMolecule @isRegisterd="isRegisterd" :isLogin="isLogin"/>       
       </div>

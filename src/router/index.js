@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../pages/HomeView.vue'
+import store from '../store/index'
 
 const routes = [
   {
@@ -19,27 +20,26 @@ const routes = [
   {
     name: 'shopDetail',
     path: '/cua-hang/:productType/:productSlug',
-    component: () => import(/* webpackChunkName: "about" */ '../pages/ProductDetailView.vue')
+    component: () => import('../pages/ProductDetailView.vue')
   },
   {
     name: 'search',
     path: '/tim-kiem/:productType/:search',
-    component: () => import(/* webpackChunkName: "about" */ '../pages/SearchView.vue')
+    component: () => import('../pages/SearchView.vue')
   },
   {
     name: 'user',
     path: '/nguoi-dung',
-    // component: () => import(/* webpackChunkName: "about" */ '../pages/SearchView.vue')
     children: [
       {
         name: 'login',
         path: 'dang-nhap',
-        component: () => import(/* webpackChunkName: "about" */ '../pages/LoginView.vue')
+        component: () => import('../pages/LoginView.vue')
       },
       {
         name: 'profile',
         path: 'thong-tin',
-        component: () => import(/* webpackChunkName: "about" */ '../pages/UserProfileView.vue'),
+        component: () => import('../pages/UserProfileView.vue'),
         meta: { requiresAuth: true }
       },
     ]
@@ -47,29 +47,30 @@ const routes = [
   {
     name: 'introduce',
     path: '/gioi-thieu',
-    component: () => import(/* webpackChunkName: "about" */ '../pages/HomeView.vue')
+    component: () => import('../pages/AboutView.vue')
   },
   {
     name: 'service',
     path: '/dich-vu',
-    component: () => import(/* webpackChunkName: "about" */ '../pages/HomeView.vue')
+    component: () => import('../pages/ServiceView.vue')
+  },
+  {
+    name: 'checkout',
+    path: '/giao-hang',
+    component: () => import('../pages/CheckoutView.vue'),
+    meta: { requiresAuth: true }
   },
 ]
+
 function checkAuthentication(to, from, next) {
   if (to.matched.some(route => route.meta.requiresAuth)) {
+    let loginStatus = store.state.loginStatus;
     // Kiểm tra trạng thái đăng nhập từ Vuex store
-    let userJson = sessionStorage.getItem("user");
-    if (userJson) {
+    if (loginStatus) {
+      next();
 
-      let user = JSON.parse(userJson);
-      let date = new Date();
-      if (user <= date) {
-        // Nếu đã đăng nhập, cho phép điều hướng tiếp
-        next();
-      } else {
-        // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
-        next('/nguoi-dung/dang-nhap');
-      }
+      // Nếu đã đăng nhập, cho phép điều hướng tiếp
+
     } else {
       // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
       next('/nguoi-dung/dang-nhap');

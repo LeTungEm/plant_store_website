@@ -4,7 +4,7 @@
     <div class="flex flex-wrap gap-5">
       <DetailOptionButtonAtom
         v-for="(planterId, index) in uniqueIdArr"
-        @click.passive="() => changePlanter(planterId)"
+        @click="() => changePlanter(planterId)"
         :key="planterId"
         v-bind:class="currentId == planterId ? 'border-black font-bold' : ''"
         :text="uniqueNameArr[index]"

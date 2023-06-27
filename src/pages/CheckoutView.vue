@@ -1,31 +1,30 @@
 <template>
-  <div v-if="status" class="flex-col gap-5 p-5 md:gap-10 md:p-10 relative">
-    <OverViewUserProfileMolecule :name="name"/>
-    <FormUpdateUserMolecule @changeName="changeName" />
+  <div>
+    <LogoAtom class="px-5 md:px-10 my-5" />
+    <div v-if="status" class="flex flex-col-reverse md:flex-row md:border-t">
+      <CheckoutUserOrganism class="px-5 md:px-10"/>
+      <CheckoutProductOrganism />
+    </div>
   </div>
 </template>
 
 <script>
-import OverViewUserProfileMolecule from "@/components/molecules/OverViewUserProfileMolecule.vue";
-import FormUpdateUserMolecule from "@/components/molecules/FormUpdateUserMolecule.vue";
-import AccountsService from "@/service/AccountsService";
 import { decodeEmail } from "@/assets/js/quickFunction";
+import AccountsService from "@/service/AccountsService";
 import { mapActions } from "vuex";
-
+import CheckoutUserOrganism from "@/components/organisms/CheckoutUserOrganism.vue";
+import CheckoutProductOrganism from "@/components/organisms/CheckoutProductOrganism.vue";
+import LogoAtom from "@/components/atoms/LogoAtom.vue";
 export default {
-  name: "UserProfileView",
+  components: { CheckoutUserOrganism, CheckoutProductOrganism, LogoAtom },
+  name: "CheckoutView",
   data() {
     return {
       status: false,
-      name: "",
     };
   },
-  components: { OverViewUserProfileMolecule, FormUpdateUserMolecule },
   methods: {
     ...mapActions(["setUserLoginStatus"]),
-    changeName(name) {
-      this.name = name;
-    },
     checkLogin() {
       let email = null;
       let userSession = sessionStorage.getItem("EMUR");
@@ -63,4 +62,3 @@ export default {
 
 <style>
 </style>
-    FormUpdateUserMolecule

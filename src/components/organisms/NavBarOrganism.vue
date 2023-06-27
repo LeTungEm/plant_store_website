@@ -107,23 +107,16 @@ export default {
     hiddenNavBar() {
       let result = true;
       let routerName = this.$route.name;
-      if (routerName == "login") {
+      if (routerName == "login" || routerName == 'checkout') {
         result = false;
       }
       return result;
     },
     toLoginView() {
-      let userJson = sessionStorage.getItem("user");
-      let date = new Date();
-      console.log(date.toLocaleDateString());
-      console.log(new Date(date.toLocaleDateString()));
-      if (userJson) {
-        let user = JSON.parse(userJson);
-        if (user.date) this.$router.push("/nguoi-dung/thong-tin");
-      } else {
-        this.$router.push("/nguoi-dung/thong-tin");
-      }
+      this.$router.push("/nguoi-dung/thong-tin");
     },
+  },
+  mounted() {
   },
 };
 </script>

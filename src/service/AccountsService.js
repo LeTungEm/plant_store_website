@@ -16,6 +16,15 @@ class AccountsService {
             roleId: roleId
         });
     }
+    update(name, address, phone, gender, birthday, email) {
+        return axios.put(`${PRODUCT_API_URL}/${email}`, {
+            name: name,
+            address: address,
+            phone: phone,
+            gender: gender,
+            birthday: birthday,
+        });
+    }
     isEmailExists(email) {
         return axios.post(`${PRODUCT_API_URL}/email/exists`, {
             email: email
@@ -27,6 +36,12 @@ class AccountsService {
             password: password
         });
     }
+    detailUser(email) {
+        return axios.get(`${PRODUCT_API_URL}/${email}`);
+    }
+    // isRemember(){
+    //     return axios.get(`${PRODUCT_API_URL}/isRemember`);
+    // }
 
 }
 

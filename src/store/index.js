@@ -6,6 +6,7 @@ const store = createStore({
             specialCategoryId: '',
             cartChangeNumber: 0,
             listSearch: [],
+            loginStatus: true,
         };
     },
     getters: {
@@ -18,6 +19,9 @@ const store = createStore({
         getSpecialCategoryId(state) {
             return state.specialCategoryId;
         },
+        getUserLoginStatus(state){
+            return state.loginStatus;
+        }
     },
     mutations: {
         changeCartChangeNumber(state, cartChangeNumber) {
@@ -29,6 +33,9 @@ const store = createStore({
         changeSpecialCategoryId(state, specialCategoryId) {
             state.specialCategoryId = specialCategoryId;
         },
+        setUserLoginStatus(state, loginStatus){
+            state.loginStatus = loginStatus;
+        }
     },
     actions: {
         changeCartChangeNumber({ commit }, cartChangeNumber) {
@@ -40,6 +47,9 @@ const store = createStore({
         changeSpecialCategoryId({ commit }, specialCategoryId) {
             commit('changeSpecialCategoryId', specialCategoryId);
         },
+        setUserLoginStatus({ commit }, loginStatus){
+            commit('setUserLoginStatus', loginStatus);
+        }
     }
 })
 

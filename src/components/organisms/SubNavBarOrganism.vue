@@ -16,7 +16,7 @@ export default {
     hiddenNavBar() {
       let result = true;
       let routerName = this.$route.name;
-      if (routerName == "login") {
+      if (routerName == "login" || routerName == 'checkout') {
         result = false;
       }
       return result;

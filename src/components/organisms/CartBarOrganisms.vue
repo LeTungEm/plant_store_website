@@ -1,10 +1,11 @@
 <template>
   <RightSidebarMolecule class="py-0" :status="status">
-    <h1 class="sticky top-0 bg-white text-xl font-bold py-5 xl:text-3xl">
+    <h1 class="sticky top-0 bg-white text-xl font-bold py-5 xl:text-3xl z-10">
       Giỏ hàng&nbsp;({{ totalQuantity }})
     </h1>
     <div class="grid grid-cols-1 gap-5">
       <CartItemMolecule
+        :quantityBarStatus="true"
         @closeCartBar="closeCartBar"
         @changeProductQuantity="changeProductQuantity"
         @removeProduct="removeProduct"
@@ -16,17 +17,18 @@
         :productType="product.type"
       />
     </div>
-    <div class="sticky bottom-0 w-full bg-white pb-5 mt-10">
-      <GreenButtonAtom class="w-full py-[4%] xl:text-2xl" :text="'Mua hàng'"/>
+    <div class="sticky bottom-0 w-full bg-white pb-5 mt-10 z-10">
+      <GreenButtonAtom @click="checkout" class="w-full py-[4%] xl:text-2xl" :text="'Mua hàng'" />
     </div>
   </RightSidebarMolecule>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 import GreenButtonAtom from "../atoms/button/GreenButtonAtom.vue";
 import CartItemMolecule from "../molecules/CartItemMolecule.vue";
 import RightSidebarMolecule from "../molecules/RightSidebarMolecule.vue";
+import { decodeEmail, encodeEmail } from "@/assets/js/quickFunction";
 export default {
   name: "CartBarOrganisms",
   data() {
@@ -43,18 +45,23 @@ export default {
       this.getAllProduct();
     },
   },
-  emits:['closeCartBar', 'changeToTalQuantity'],
+  emits: ["closeCartBar", "changeToTalQuantity"],
   computed: {
     ...mapGetters(["getCartChangeNumber"]),
   },
   methods: {
-    closeCartBar(){
-      this.$emit('closeCartBar');
+    checkout(){
+      this.$router.push('/giao-hang');
+      this.closeCartBar();
+    },
+    closeCartBar() {
+      this.$emit("closeCartBar");
     },
 
     writeToLocalStorage(list) {
       let jsonString = JSON.stringify(list);
-      localStorage.setItem("cartJson", jsonString);
+      let jsonEncode = encodeEmail(jsonString);
+      localStorage.setItem("CTUR", jsonEncode);
     },
 
     setTotalQuantity() {
@@ -84,10 +91,11 @@ export default {
     },
 
     getAllProduct() {
-      let cartJson = localStorage.getItem("cartJson");
+      let cartJson = localStorage.getItem("CTUR");
       let list = [];
       if (cartJson != null) {
-        list = JSON.parse(cartJson);
+        let jsonDecode = decodeEmail(cartJson);
+        list = JSON.parse(jsonDecode);
       }
       this.list = list;
       this.setTotalQuantity();

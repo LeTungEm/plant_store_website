@@ -12,21 +12,21 @@
         @click="() => (emailErr = false)"
         v-bind:class="emailErr ? 'border border-red-700' : ''"
         placeholder="Email"
-        class="border w-full outline-0 focus:outline-2 focus:outline-green-700 py-1 lg:py-2 px-2 lg:px-4"
+        class="border rounded-md w-full outline-0 focus:outline-2 focus:outline-green-700 py-1 lg:py-2 px-2 lg:px-4"
         type="email"
       />
     </div>
-    <div class="flex mb-5">
+    <div class="flex mb-5 relative">
       <input
         autocomplete
         @click="() => (passWErr = false)"
         v-bind:class="passWErr ? 'border border-red-700' : ''"
         v-model="passW"
         placeholder="Mật khẩu"
-        class="border w-full outline-0 focus:outline-2 focus:outline-green-700 py-1 lg:py-2 px-2 lg:px-4"
+        class="border rounded-md w-full outline-0 focus:outline-2 focus:outline-green-700 py-1 lg:py-2 px-2 lg:px-4"
         :type="hiddenPassW ? 'password' : 'text'"
       />
-      <span class="flex justify-center items-center ml-2">
+      <span class="flex justify-center items-center absolute top-0 right-0 bottom-0 mr-4">
         <font-awesome-icon
           @click="changePassWStatus"
           :icon="['fas', `${hiddenPassW ? 'eye-slash' : 'eye'}`]"
@@ -44,6 +44,7 @@
     </div>
     <GreenButtonAtom class="w-full py-3" :text="'Đăng nhập'" />
     <NotificationAtom
+      isWarning
       :status="notificationStatus"
       :text="notificationMessage"
     />
@@ -55,7 +56,8 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import GreenButtonAtom from "../atoms/button/GreenButtonAtom.vue";
 import NotificationAtom from "../atoms/NotificationAtom.vue";
 import AccountsService from "@/service/AccountsService";
-import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
+import { encodeEmail } from "@/assets/js/quickFunction";
 
 export default {
   name: "LoginFormMolecule",
@@ -68,7 +70,7 @@ export default {
       emailErr: false,
       passW: "",
       passWErr: false,
-      remember: false,
+      remember: true,
     };
   },
   props: {
@@ -86,7 +88,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['setUser']),
+    ...mapActions(["setUserLoginStatus"]),
     showNotification(message) {
       this.notificationMessage = message;
       this.notificationStatus = !this.notificationStatus;
@@ -106,9 +108,16 @@ export default {
     authenticate() {
       AccountsService.authenticate(this.email, this.passW).then((res) => {
         if (res.data.message) {
-          this.setUser({id:res.data.userId, isLogin: true});
-          this.$router.push('/');
+          this.setUserLoginStatus(true);
+          let encodeEmailData = encodeEmail(this.email);
+          sessionStorage.setItem("EMUR", encodeEmailData);
+          if (this.remember) {
+            localStorage.setItem("CEMURK", encodeEmailData);
+          }
+          this.$router.push("/");
         } else {
+          this.emailErr = true;
+          this.passWErr = true;
           this.showNotification("Thông tin đăng nhập sai !!!");
         }
       });

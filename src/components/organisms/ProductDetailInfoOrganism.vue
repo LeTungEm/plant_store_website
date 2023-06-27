@@ -85,6 +85,7 @@ import PriceTextWLineThroughAtom from "../atoms/text/PriceTextWLineThroughAtom.v
 import DropTextMolecule from "../molecules/DropTextMolecule.vue";
 import QuantityBarMolecule from "../molecules/QuantityBarMolecule.vue";
 import PlanterSelectionOrganism from "./PlanterSelectionOrganism.vue";
+import { decodeEmail, encodeEmail } from "@/assets/js/quickFunction";
 
 export default {
   name: "ProductDetailInfoOrganism",
@@ -212,11 +213,12 @@ export default {
     },
 
     addToCart() {
-      let cartJson = localStorage.getItem("cartJson");
+      let cartJson = localStorage.getItem("CTUR");
       let list = [];
       let productItem = this.createCartObject();
       if (cartJson != null) {
-        list = JSON.parse(cartJson);
+        let jsonDecode = decodeEmail(cartJson);
+        list = JSON.parse(jsonDecode);
         let productPosition = this.findProductInCart(list, productItem);
         if (productPosition != null) {
           list = this.updateProductQuantityInCart(
@@ -233,7 +235,8 @@ export default {
         this.changeCartChangeNumber(1);
       }
       let jsonString = JSON.stringify(list);
-      localStorage.setItem("cartJson", jsonString);
+      let jsonEncode = encodeEmail(jsonString);
+      localStorage.setItem("CTUR", jsonEncode);
     },
 
     updateProductQuantityInCart(list, productPosition, productItem) {

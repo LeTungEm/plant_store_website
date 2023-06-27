@@ -4,7 +4,7 @@
     <div class="flex flex-wrap gap-5">
       <DetailOptionButtonAtom
         v-for="(sizeId, index) in uniqueIdArr"
-        @click.passive="() => changeSize(sizeId)"
+        @click="() => changeSize(sizeId)"
         :key="sizeId"
         v-bind:class="currentSizeId == sizeId ? 'border-black font-bold' : ''"
         :text="uniqueNameArr[index]"

@@ -1,6 +1,6 @@
 <template>
   <RightSidebarMolecule :status="status">
-    <SearchInputMolecule @change="changeValue" />
+    <SearchInputMolecule v-bind:class="search?'[&>:first-child]:text-green-700':''" :status="status" @change="changeValue" />
     <h1
       v-bind:class="
         plants.length == 0 && tools.length == 0 && search != '' ? '' : 'hidden'
