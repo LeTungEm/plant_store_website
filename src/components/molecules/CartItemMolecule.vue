@@ -8,21 +8,42 @@
         }`"
         :alt="product.name"
       />
-      <div v-if="quantityBarStatus == false" class="absolute text-sm flex justify-center items-center -top-2 -right-2 px-[10px] py-[1px] font-bold text-white bg-gray-500 rounded-full">
+      <div
+        v-if="quantityBarStatus == false"
+        class="absolute text-sm flex justify-center items-center -top-2 -right-2 px-[10px] py-[1px] font-bold text-white bg-gray-500 rounded-full"
+      >
         {{ product.quantity }}
       </div>
     </div>
     <div class="flex-[7] lg:flex-[8]">
-      <h5 v-if="quantityBarStatus" :onclick="() => toDetail(product.slug)" class="block text-base md:text-2xl cursor-pointer hover:underline duration-300">{{ product.name }}</h5>
-      <h5 v-else class="block text-base md:text-2xl cursor-pointer hover:underline duration-300">{{ product.name }}</h5>
+      <h5
+        :onclick="() => toDetail(product.slug)"
+        class="block text-base md:text-2xl cursor-pointer hover:underline duration-300"
+      >
+        {{ product.name }}
+      </h5>
       <GrayTextAtom
         :text="`${product.toolName}&nbsp;/&nbsp;${product.size}&nbsp;/&nbsp;${product.color}`"
       />
       <div class="flex justify-between text-xs md:text-lg">
-        <PriceTextAtom v-if="quantityBarStatus" :minPrice="product.price" :maxPrice="product.price" />
+        <PriceTextAtom
+          v-if="quantityBarStatus"
+          :minPrice="product.price"
+          :maxPrice="product.price"
+        />
         <span v-else>&nbsp;</span>
-        <button v-if="quantityBarStatus" :onclick="removeProduct" class="italic underline text-gray-500">xóa</button>
-        <PriceTextAtom v-else :minPrice="product.quantity*product.price" :maxPrice="product.quantity*product.price" />
+        <button
+          v-if="quantityBarStatus"
+          :onclick="removeProduct"
+          class="italic underline text-gray-500"
+        >
+          xóa
+        </button>
+        <PriceTextAtom
+          v-else
+          :minPrice="product.quantity * product.price"
+          :maxPrice="product.quantity * product.price"
+        />
       </div>
       <QuantityBarMolecule
         v-if="quantityBarStatus"
@@ -48,18 +69,20 @@ export default {
     index: Number,
     quantityBarStatus: Boolean,
   },
-  emits:['changeProductQuantity', 'removeProduct', 'closeCartBar'],
+  emits: ["changeProductQuantity", "removeProduct", "closeCartBar"],
   methods: {
     toDetail(slug) {
-      this.$emit('closeCartBar');
-      this.$router.push(`/cua-hang/${this.productType}/${slug}`);
+      if (this.quantityBarStatus) {
+        this.$emit("closeCartBar");
+        this.$router.push(`/cua-hang/${this.productType}/${slug}`);
+      }
     },
 
-    changeProductQuantity(quantity){
-      this.$emit('changeProductQuantity', this.index, quantity);
+    changeProductQuantity(quantity) {
+      this.$emit("changeProductQuantity", this.index, quantity);
     },
 
-    removeProduct(){
+    removeProduct() {
       this.$emit("removeProduct", this.index);
     },
   },

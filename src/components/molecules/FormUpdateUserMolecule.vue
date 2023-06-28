@@ -54,17 +54,17 @@
     </div>
     <div :onclick="openFormAddress">
       <label class="text-gray-500" for="address">Địa chỉ</label>
-      <input
-        v-if="!formAddresStatus"
-        v-model="userInfo.address"
-        id="address"
-        class="border rounded-md w-full outline-0 focus:outline-2 focus:outline-green-700 py-1 lg:py-2 px-2 lg:px-4"
-        type="text"
-      />
       <SiteFormMolecule
         :defaultAddressData="userInfo.address"
         @changeAddress="changeAddress"
         v-if="formAddresStatus"
+      />
+      <input
+        v-else
+        v-model="userInfo.address"
+        id="address"
+        class="border rounded-md w-full outline-0 focus:outline-2 focus:outline-green-700 py-1 lg:py-2 px-2 lg:px-4"
+        type="text"
       />
     </div>
     <GreenButtonAtom
@@ -124,7 +124,7 @@ export default {
             this.userInfo = res.data;
             this.userInfo.birthday = res.data.birthday.substr(0, 10);
             this.address = res.data.address;
-            this.$emit('changeName', res.data.name);
+            this.$emit("changeName", res.data.name);
           }
         });
       }

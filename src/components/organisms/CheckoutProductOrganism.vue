@@ -46,8 +46,22 @@ export default {
       total: 0,
     };
   },
+  props: {
+    createOrderStatus: Boolean,
+  },
+  watch: {
+    createOrderStatus: function () {
+      if (this.createOrderStatus) {
+        this.createOrderDetail();
+      }
+    },
+  },
+  emits:['createOrderDetail'],
   components: { CartItemMolecule, CouponFieldMolecule, PriceTextAtom },
   methods: {
+    createOrderDetail() {
+      this.$emit("createOrderDetail", this.list, this.total);
+    },
     getTotal() {
       this.total = this.subTotal - this.discountPrice;
     },

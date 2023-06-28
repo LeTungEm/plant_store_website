@@ -24,7 +24,14 @@
         <label class="text-gray-500" for="addressShipping"
           >Địa chỉ nhận hàng</label
         >
+        <SiteFormMolecule
+          :defaultAddressData="user.address"
+          @changeAddress="changeAddress"
+          v-if="formAddresStatus"
+        />
         <input
+          v-else
+          @click="openFormAddress"
           id="addressShipping"
           v-model="user.address"
           class="border rounded-md w-full outline-0 focus:outline-2 focus:outline-green-700 py-1 lg:py-2 px-2 lg:px-4"
@@ -33,10 +40,29 @@
       </div>
       <div class="mb-3">
         <label class="text-gray-500" for="shippingMethod"
+          >Đơn vị vận chuyển</label
+        >
+        <select
+          v-model="shippingProviderId"
+          id="shippingMethod"
+          class="border rounded-md w-full outline-0 focus:outline-2 focus:outline-green-700 py-1 lg:py-2 px-2 lg:px-4"
+        >
+          <option
+            v-for="shippingProvider in shippingProviders"
+            :key="shippingProvider"
+            :value="shippingProvider.shipping_provider_id"
+          >
+            {{ shippingProvider.name }}
+          </option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="text-gray-500" for="paymentMethods"
           >Phương thức thanh toán</label
         >
         <select
-          id="shippingMethod"
+          v-model="paymentMethodId"
+          id="paymentMethods"
           class="border rounded-md w-full outline-0 focus:outline-2 focus:outline-green-700 py-1 lg:py-2 px-2 lg:px-4"
         >
           <option
@@ -48,6 +74,11 @@
           </option>
         </select>
       </div>
+      <GreenButtonAtom
+        @click="createOrder"
+        class="float-right py-4 px-6 rounded-lg my-5"
+        :text="'Tạo đơn hàng'"
+      />
     </div>
   </div>
 </template>
@@ -56,20 +87,52 @@
 import { decodeEmail } from "@/assets/js/quickFunction";
 import PaymentMethodsService from "@/service/PaymentMethodsService";
 import AccountsService from "@/service/AccountsService";
+import SiteFormMolecule from "../molecules/SiteFormMolecule.vue";
+import ShippingProvidersService from "@/service/ShippingProvidersService";
+import GreenButtonAtom from "../atoms/button/GreenButtonAtom.vue";
 
 export default {
   name: "CheckoutUserOrganism",
   data() {
     return {
       paymentMethods: [],
+      paymentMethodId: "",
+      shippingProviders: [],
+      shippingProviderId: "",
       user: {},
+      formAddresStatus: false,
+      address: "",
     };
   },
+  emits: ["createOrder"],
   methods: {
+    createOrder() {
+      this.user.address = this.address;
+      this.user.paymentMethodId = this.paymentMethodId;
+      this.user.shippingProviderId = this.shippingProviderId;
+      this.$emit("createOrder", this.user);
+    },
+    openFormAddress() {
+      this.formAddresStatus = true;
+    },
+    changeAddress(address) {
+      this.address = address;
+    },
+    getShippingProviders() {
+      ShippingProvidersService.getAll().then((res) => {
+        if (res.data) {
+          this.shippingProviders = res.data;
+          if (res.data.length > 0)
+            this.shippingProviderId = res.data[0].shipping_provider_id;
+        }
+      });
+    },
     getPaymentMethods() {
       PaymentMethodsService.getAll().then((res) => {
         if (res.data) {
           this.paymentMethods = res.data;
+          if (res.data.length > 0)
+            this.paymentMethodId = res.data[0].payment_method_id;
         }
       });
     },
@@ -79,6 +142,7 @@ export default {
       AccountsService.detailUser(email).then((res) => {
         if (res.data) {
           this.user = res.data;
+          this.address = res.data.address;
         }
       });
     },
@@ -86,7 +150,9 @@ export default {
   created() {
     this.getUserInfo();
     this.getPaymentMethods();
+    this.getShippingProviders();
   },
+  components: { SiteFormMolecule, GreenButtonAtom },
 };
 </script>
 

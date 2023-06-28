@@ -1,0 +1,157 @@
+<template>
+  <div>
+    <LogoAtom class="px-5 md:px-10 my-5" />
+    <div v-if="status" class="flex flex-col-reverse md:flex-row md:border-t">
+      <CheckoutUserOrganism @createOrder="getOrderInfo" class="px-5 md:px-10" />
+      <CheckoutProductOrganism
+        @createOrderDetail="getOrderDetailInfo"
+        :createOrderStatus="createOrderStatus"
+      />
+    </div>
+    <LoadingAtom :status="loadingStatus" />
+  </div>
+</template>
+
+<script>
+import { decodeEmail } from "@/assets/js/quickFunction";
+import AccountsService from "@/service/AccountsService";
+import { mapActions } from "vuex";
+import CheckoutUserOrganism from "@/components/organisms/CheckoutUserOrganism.vue";
+import CheckoutProductOrganism from "@/components/organisms/CheckoutProductOrganism.vue";
+import LogoAtom from "@/components/atoms/LogoAtom.vue";
+import LoadingAtom from "@/components/atoms/LoadingAtom.vue";
+import OrderService from "@/service/OrderService";
+import OrderDetailService from "@/service/OrderDetailService";
+export default {
+  components: {
+    CheckoutUserOrganism,
+    CheckoutProductOrganism,
+    LogoAtom,
+    LoadingAtom,
+  },
+  name: "CheckoutView",
+  data() {
+    return {
+      status: false,
+      loadingStatus: false,
+      createOrderStatus: false,
+      createOrderDetailStatus: false,
+      order: {},
+      orderTotal: "",
+      orderDetails: [],
+      success: 0,
+    };
+  },
+  watch: {
+    createOrderDetailStatus: function () {
+      if (
+        this.createOrderStatus == true &&
+        this.createOrderDetailStatus == true
+      )
+        this.createOrder();
+    },
+    success: function () {
+      if (this.success == 2) {
+        this.success = 0;
+        this.changeLoadingStatus(false);
+      }
+    },
+  },
+  methods: {
+    ...mapActions(["setUserLoginStatus"]),
+    createOrder() {
+      this.changeLoadingStatus(true);
+      OrderService.createOrder(
+        0,
+        this.order.name,
+        this.order.phone,
+        this.order.address,
+        0,
+        "",
+        "",
+        "",
+        this.order.account_id,
+        1,
+        this.order.shippingProviderId,
+        this.order.paymentMethodId,
+        this.orderTotal
+      )
+        .then((res) => {
+          if (res.data.message) {
+            this.createOrderDetail(res.data.orderId);
+            console.log('orderId', res.data.orderId);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          this.success++;
+        })
+        .finally(() => {
+          this.success++;
+          console.log('createOrder');
+        });
+      console.log("this.order", this.order);
+      console.log("this.orderTotal", this.orderTotal);
+      console.log("this.orderDetails", this.orderDetails);
+    },
+    createOrderDetail(orderId) {
+      console.log('start createOrderDetail');
+      OrderDetailService.createOrderDetail(orderId, this.orderDetails)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .finally(() => {
+          this.success++;
+          console.log('createOrderDetail');
+
+        });
+    },
+    getOrderInfo(orderInfo) {
+      this.order = orderInfo;
+      this.createOrderStatus = true;
+    },
+    getOrderDetailInfo(orderDetails, orderTotal) {
+      this.orderDetails = orderDetails;
+      this.orderTotal = orderTotal;
+      this.createOrderDetailStatus = true;
+    },
+    changeLoadingStatus(status) {
+      this.loadingStatus = status;
+    },
+    checkLogin() {
+      let email = null;
+      let userSession = sessionStorage.getItem("EMUR");
+      let userLocal = localStorage.getItem("CEMURK");
+      if (userSession) {
+        email = userSession;
+      } else if (userLocal) {
+        email = userLocal;
+        sessionStorage.setItem("EMUR", email);
+      }
+      if (email != null) {
+        let emailDecode = decodeEmail(email);
+        AccountsService.isEmailExists(emailDecode).then((res) => {
+          if (res.data.message) {
+            this.setUserLoginStatus(true);
+            this.status = true;
+          } else {
+            this.setUserLoginStatus(false);
+            this.status = false;
+            this.$router.push("/nguoi-dung/dang-nhap");
+          }
+        });
+      } else {
+        this.setUserLoginStatus(false);
+        this.status = false;
+        this.$router.push("/nguoi-dung/dang-nhap");
+      }
+    },
+  },
+  created() {
+    this.checkLogin();
+  },
+};
+</script>
+
+<style>
+</style>

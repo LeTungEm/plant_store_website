@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../pages/HomeView.vue'
+import HomeView from '../pages/User/HomeView.vue'
 import store from '../store/index'
 
 const routes = [
@@ -11,7 +11,7 @@ const routes = [
   {
     name: 'shop',
     path: '/cua-hang/:productType',
-    component: () => import(/* webpackChunkName: "about" */ '../pages/ShopView.vue'),
+    component: () => import(/* webpackChunkName: "about" */ '../pages/User/ShopView.vue'),
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -20,12 +20,12 @@ const routes = [
   {
     name: 'shopDetail',
     path: '/cua-hang/:productType/:productSlug',
-    component: () => import('../pages/ProductDetailView.vue')
+    component: () => import('../pages/User/ProductDetailView.vue')
   },
   {
     name: 'search',
     path: '/tim-kiem/:productType/:search',
-    component: () => import('../pages/SearchView.vue')
+    component: () => import('../pages/User/SearchView.vue')
   },
   {
     name: 'user',
@@ -34,12 +34,12 @@ const routes = [
       {
         name: 'login',
         path: 'dang-nhap',
-        component: () => import('../pages/LoginView.vue')
+        component: () => import('../pages/User/LoginView.vue')
       },
       {
         name: 'profile',
         path: 'thong-tin',
-        component: () => import('../pages/UserProfileView.vue'),
+        component: () => import('../pages/User/UserProfileView.vue'),
         meta: { requiresAuth: true }
       },
     ]
@@ -47,17 +47,17 @@ const routes = [
   {
     name: 'introduce',
     path: '/gioi-thieu',
-    component: () => import('../pages/AboutView.vue')
+    component: () => import('../pages/User/AboutView.vue')
   },
   {
     name: 'service',
     path: '/dich-vu',
-    component: () => import('../pages/ServiceView.vue')
+    component: () => import('../pages/User/ServiceView.vue')
   },
   {
     name: 'checkout',
     path: '/giao-hang',
-    component: () => import('../pages/CheckoutView.vue'),
+    component: () => import('../pages/User/CheckoutView.vue'),
     meta: { requiresAuth: true }
   },
 ]
