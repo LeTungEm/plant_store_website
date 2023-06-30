@@ -120,11 +120,11 @@ export default {
       if (encodeEmail) {
         let email = decodeEmail(encodeEmail);
         AccountsService.detailUser(email).then((res) => {
-          if (res.data) {
-            this.userInfo = res.data;
-            this.userInfo.birthday = res.data.birthday.substr(0, 10);
-            this.address = res.data.address;
-            this.$emit("changeName", res.data.name);
+          if (res.data.message) {
+            this.userInfo = res.data.data;
+            this.userInfo.birthday = res.data.data.birthday.substr(0, 10);
+            this.address = res.data.data.address;
+            this.$emit("changeName", res.data.data.name);
           }
         });
       }

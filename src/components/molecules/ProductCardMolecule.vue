@@ -7,13 +7,13 @@
     />
     <img
       class="border rounded-sm object-center object-cover bg-white w-full duration-300 hover:shadow-lg hover:p-1"
-      :src="`http://localhost:3000/images/${product.image?product.image:'default/default'}`"
+      :src="`http://localhost/LeTungEm/plant_store_api__php/api/controllers/GetFileController.php?imgURL=${product.image}`"
       :alt="product.name"
     />
     <!-- <h1 class="hidden group-hover:block">cacs mau o day</h1> -->
     <h5 class="block text-base md:text-2xl">{{ product.name }}</h5>
     <GrayTextAtom :text="'Chọn loại và màu chậu'" />
-    <div class="text-xs md:text-lg ">
+    <div class="text-xs md:text-lg">
       <PriceTextAtom
         :minPrice="this.currentMinPrice"
         :maxPrice="this.currentMaxPrice"
@@ -60,9 +60,9 @@ export default {
       }
     },
 
-    toDetail(){
+    toDetail() {
       this.$router.push(`/cua-hang/${this.productType}/${this.product.slug}`);
-    }
+    },
   },
   components: {
     PriceTextAtom,

@@ -3,11 +3,7 @@
     <div class="flex-1 xl:sticky top-24 h-[80vh] mb-5 xl:mb-0">
       <img
         class="object-cover h-full max-h-full mx-auto rounded-sm"
-        :src="`http://localhost:3000/images/${
-          product.image[currentIndex]
-            ? product.image[currentIndex]
-            : 'default/default'
-        }`"
+        :src="`http://localhost/LeTungEm/plant_store_api__php/api/controllers/GetFileController.php?imgURL=${product.image[currentIndex]}`"
         :alt="product.name"
       />
     </div>
@@ -74,14 +70,13 @@ export default {
     },
   },
   methods: {
-
     getProductDetail() {
       let productSlug = this.$route.params.productSlug;
       let productType = this.$route.params.productType;
       if (productType == "cay") {
         PlantsService.getDetail(productSlug).then((res) => {
-          if (res.data) {
-            res.data.map((plantSet) => {
+          if (res.data.message) {
+            res.data.data.map((plantSet) => {
               this.product.name = plantSet.name;
               this.product.type = productType;
               this.product.slug = plantSet.slug;
@@ -112,8 +107,8 @@ export default {
         });
       } else {
         ToolsService.getDetail(productSlug).then((res) => {
-          if (res.data) {
-            res.data.map((plantSet) => {
+          if (res.data.message) {
+            res.data.data.map((plantSet) => {
               this.product.name = plantSet.name;
               this.product.type = productType;
               this.product.slug = plantSet.slug;
@@ -143,6 +138,7 @@ export default {
 
     changeCurrentIndex(currentIndex) {
       this.currentIndex = currentIndex;
+      this.imgErr = false;
     },
 
     setDefault() {

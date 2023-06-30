@@ -1,12 +1,14 @@
 import axios from "axios";
 
 const PRODUCT_API_URL =
-    "http://localhost:3000/shipping_providers";
+    "http://localhost/LeTungEm/plant_store_api__php/api/Controllers/ShippingProvidersController.php";
 
 class ShippingProvidersService {
 
     getAll() {
-        return axios.get(`${PRODUCT_API_URL}`);
+        let formData = new FormData();
+        formData.append('action', 'getAll');
+        return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
     checkFeeGHN() {

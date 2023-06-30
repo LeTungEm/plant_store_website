@@ -1,20 +1,28 @@
 import axios from "axios";
 
 const PRODUCT_API_URL =
-    "http://localhost:3000/tools";
+    "http://localhost/LeTungEm/plant_store_api__php/api/Controllers/ToolsController.php";
 
 class ToolsService {
 
     getAllActive() {
-        return axios.get(`${PRODUCT_API_URL}/active`);
+        let formData = new FormData();
+        formData.append('action', 'getByStatus');
+        return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
     getDetail(toolSlug) {
-        return axios.get(`${PRODUCT_API_URL}/${toolSlug}`);
+        let formData = new FormData();
+        formData.append('action', 'detail');
+        formData.append('toolSlug', toolSlug);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
     search(search){
-        return axios.get(`${PRODUCT_API_URL}/search/${search}`);
+        let formData = new FormData();
+        formData.append('action', 'search');
+        formData.append('search', search);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
 

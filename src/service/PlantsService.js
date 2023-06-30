@@ -1,56 +1,28 @@
 import axios from "axios";
 
 const PRODUCT_API_URL =
-    "http://localhost:3000/plants";
+    "https://tenebrific-crust.000webhostapp.com/api/Controllers/PlantsController.php";
 
 class PlantsService {
 
     getAllActive() {
-        return axios.get(`${PRODUCT_API_URL}/active`);
+        let formData = new FormData();
+        formData.append('action', 'getByStatus');
+        return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
     getDetail(plantSlug) {
-        return axios.get(`${PRODUCT_API_URL}/${plantSlug}`);
+        let formData = new FormData();
+        formData.append('action', 'detail');
+        formData.append('plantSlug', plantSlug);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
-    search(search){
-        return axios.get(`${PRODUCT_API_URL}/search/${search}`);
-    }
-
-    insertChiTietPhieu(soluong, ngatdat, sophieu, masach, iddocgia) {
-        return axios.get(`${PRODUCT_API_URL}`, {
-            params: {
-                action: "insertChiTietPhieu",
-                soluong: soluong,
-                ngatdat: ngatdat,
-                sophieu: sophieu,
-                masach: masach,
-                iddocgia: iddocgia,
-            },
-        });
-    }
-
-    deleteChiTietPhieu(mads) {
-        return axios.get(`${PRODUCT_API_URL}`, {
-            params: {
-                action: "deleteChiTietPhieu",
-                mads: mads,
-            },
-        });
-    }
-
-    updateChiTietPhieu(soluong, ngatdat, sophieu, masach, iddocgia, mads) {
-        return axios.get(`${PRODUCT_API_URL}`, {
-            params: {
-                action: "updateChiTietPhieu",
-                soluong: soluong,
-                ngatdat: ngatdat,
-                sophieu: sophieu,
-                masach: masach,
-                iddocgia: iddocgia,
-                mads: mads,
-            },
-        });
+    search(search) {
+        let formData = new FormData();
+        formData.append('action', 'search');
+        formData.append('search', search);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 }
 

@@ -1,61 +1,33 @@
 import axios from "axios";
 
 const PRODUCT_API_URL =
-    "http://localhost:3000/categories";
+    "http://localhost/LeTungEm/plant_store_api__php/api/Controllers/CategoriesController.php";
 
 class CategoriesService {
 
     getAll() {
-        return axios.get(`${PRODUCT_API_URL}/active`);
+        let formData = new FormData();
+        formData.append('action', 'getAll');
+        return axios.post(`${PRODUCT_API_URL}`, formData);
     }
-    
+
     getDisplayCategories() {
-        return axios.get(`${PRODUCT_API_URL}/display`);
+        let formData = new FormData();
+        formData.append('action', 'getDisplayCategories');
+        return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
     getSpecialCategories() {
-        return axios.get(`${PRODUCT_API_URL}/special`);
+        let formData = new FormData();
+        formData.append('action', 'getSpecialCategories');
+        return axios.post(`${PRODUCT_API_URL}`, formData);
     }
-    
+
     getByParentSlug(parentSlug) {
-        return axios.get(`${PRODUCT_API_URL}/parent/${parentSlug}`);
-    }
-    
-
-    insertChiTietPhieu(soluong, ngatdat, sophieu, masach, iddocgia) {
-        return axios.get(`${PRODUCT_API_URL}`, {
-            params: {
-                action: "insertChiTietPhieu",
-                soluong: soluong,
-                ngatdat: ngatdat,
-                sophieu: sophieu,
-                masach: masach,
-                iddocgia: iddocgia,
-            },
-        });
-    }
-
-    deleteChiTietPhieu(mads) {
-        return axios.get(`${PRODUCT_API_URL}`, {
-            params: {
-                action: "deleteChiTietPhieu",
-                mads: mads,
-            },
-        });
-    }
-
-    updateChiTietPhieu(soluong, ngatdat, sophieu, masach, iddocgia, mads) {
-        return axios.get(`${PRODUCT_API_URL}`, {
-            params: {
-                action: "updateChiTietPhieu",
-                soluong: soluong,
-                ngatdat: ngatdat,
-                sophieu: sophieu,
-                masach: masach,
-                iddocgia: iddocgia,
-                mads: mads,
-            },
-        });
+        let formData = new FormData();
+        formData.append('action', 'getByParentSlug');
+        formData.append('parentSlug', parentSlug);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 }
 

@@ -3,9 +3,7 @@
     <div class="relative flex-[3] lg:flex-[2]">
       <img
         class="border rounded-sm object-center object-cover bg-white duration-300 hover:shadow-lg hover:p-1"
-        :src="`http://localhost:3000/images/${
-          product.image ? product.image : 'default/default'
-        }`"
+        :src="`https://tenebrific-crust.000webhostapp.com/api/controllers/GetFileController.php?imgURL=${product.image}`"
         :alt="product.name"
       />
       <div

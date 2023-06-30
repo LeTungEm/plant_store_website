@@ -107,6 +107,7 @@ export default {
     },
     authenticate() {
       AccountsService.authenticate(this.email, this.passW).then((res) => {
+        console.log(res.data);
         if (res.data.message) {
           this.setUserLoginStatus(true);
           let encodeEmailData = encodeEmail(this.email);

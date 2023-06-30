@@ -1,56 +1,20 @@
 import axios from "axios";
 
 const PRODUCT_API_URL =
-    "http://localhost:3000/colors";
+    "http://localhost/LeTungEm/plant_store_api__php/api/Controllers/ColorsController.php";
 
 class ColorsService {
 
     getUsedByPlants() {
-        return axios.get(`${PRODUCT_API_URL}/used_by_plants`);
+        let formData = new FormData();
+        formData.append('action', 'getUsedByPlants');
+        return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
     getUsedByTools() {
-        return axios.get(`${PRODUCT_API_URL}/used_by_tools`);
-    }
-
-    // getNewPlants() {
-    //     return axios.get(`${PRODUCT_API_URL}/new`);
-    // }
-
-    insertChiTietPhieu(soluong, ngatdat, sophieu, masach, iddocgia) {
-        return axios.get(`${PRODUCT_API_URL}`, {
-            params: {
-                action: "insertChiTietPhieu",
-                soluong: soluong,
-                ngatdat: ngatdat,
-                sophieu: sophieu,
-                masach: masach,
-                iddocgia: iddocgia,
-            },
-        });
-    }
-
-    deleteChiTietPhieu(mads) {
-        return axios.get(`${PRODUCT_API_URL}`, {
-            params: {
-                action: "deleteChiTietPhieu",
-                mads: mads,
-            },
-        });
-    }
-
-    updateChiTietPhieu(soluong, ngatdat, sophieu, masach, iddocgia, mads) {
-        return axios.get(`${PRODUCT_API_URL}`, {
-            params: {
-                action: "updateChiTietPhieu",
-                soluong: soluong,
-                ngatdat: ngatdat,
-                sophieu: sophieu,
-                masach: masach,
-                iddocgia: iddocgia,
-                mads: mads,
-            },
-        });
+        let formData = new FormData();
+        formData.append('action', 'getUsedByTools');
+        return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 }
 

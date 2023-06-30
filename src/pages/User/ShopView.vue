@@ -111,7 +111,7 @@ export default {
     },
 
     checkProductCategory(categories, currentCategoryId) {
-      let arrCategories = categories.split(",");
+      let arrCategories = categories.toString().split(",");
       let result = false;
       if (arrCategories.indexOf(currentCategoryId.toString()) != -1)
         result = true;
@@ -130,7 +130,7 @@ export default {
     },
 
     checkProductColor(productColors, arrPickedColor) {
-      let arrColor = productColors.split(",");
+      let arrColor = productColors.toString().split(",");
       let result = false;
       arrColor.forEach((color) => {
         if (arrPickedColor.indexOf(parseInt(color)) != -1) {

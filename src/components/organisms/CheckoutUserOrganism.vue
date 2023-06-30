@@ -140,9 +140,9 @@ export default {
       let encodeEmail = sessionStorage.getItem("EMUR");
       let email = decodeEmail(encodeEmail);
       AccountsService.detailUser(email).then((res) => {
-        if (res.data) {
-          this.user = res.data;
-          this.address = res.data.address;
+        if (res.data.message) {
+          this.user = res.data.data;
+          this.address = res.data.data.address;
         }
       });
     },

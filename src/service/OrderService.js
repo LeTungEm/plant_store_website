@@ -1,30 +1,31 @@
 import axios from "axios";
 
 const PRODUCT_API_URL =
-    "http://localhost:3000/order";
+    "http://localhost/LeTungEm/plant_store_api__php/api/Controllers/OrderController.php";
 
 class OrderService {
 
-    getAll() {
-        return axios.get(`${PRODUCT_API_URL}`);
-    }
+    // getAll() {
+    //     return axios.get(`${PRODUCT_API_URL}`);
+    // }
 
     createOrder(transportFee, nameReceiver, phoneReceiver, addressReceiver, isPay, note, deleteReason, payDate, accountId, couponId, shippingProviderId, paymentMethodId, total) {
-        return axios.post(`${PRODUCT_API_URL}`, {
-            transportFee: transportFee,
-            nameReceiver: nameReceiver,
-            phoneReceiver: phoneReceiver,
-            addressReceiver: addressReceiver,
-            isPay: isPay,
-            note: note,
-            deleteReason: deleteReason,
-            payDate: payDate,
-            accountId: accountId,
-            couponId: couponId,
-            shippingProviderId: shippingProviderId,
-            paymentMethodId: paymentMethodId,
-            total: total
-        });
+        let formData = new FormData();
+        formData.append('action', 'insertOrder');
+        formData.append('transportFee', transportFee);
+        formData.append('nameReceiver', nameReceiver);
+        formData.append('phoneReceiver', phoneReceiver);
+        formData.append('addressReceiver', addressReceiver);
+        formData.append('isPay', isPay);
+        formData.append('note', note);
+        formData.append('deleteReason', deleteReason);
+        formData.append('payDate', payDate);
+        formData.append('accountId', accountId);
+        formData.append('couponId', couponId);
+        formData.append('shippingProviderId', shippingProviderId);
+        formData.append('paymentMethodId', paymentMethodId);
+        formData.append('total', total);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 }
 

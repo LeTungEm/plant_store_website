@@ -1,12 +1,14 @@
 import axios from "axios";
 
 const PRODUCT_API_URL =
-    "http://localhost:3000/payment_methods";
+    "http://localhost/LeTungEm/plant_store_api__php/api/Controllers/PaymentMethodsController.php";
 
 class PaymentMethodsService {
 
     getAll() {
-        return axios.get(`${PRODUCT_API_URL}`);
+        let formData = new FormData();
+        formData.append('action', 'getAll');
+        return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 }
 
