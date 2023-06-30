@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const PRODUCT_API_URL =
-    "https://tenebrific-crust.000webhostapp.com/api/Controllers/PlantsController.php";
+    "http://localhost/LeTungEm/plant_store_api__php/api/Controllers/PlantsController.php";
 
 class PlantsService {
 
