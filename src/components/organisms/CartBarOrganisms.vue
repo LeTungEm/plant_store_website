@@ -1,8 +1,11 @@
 <template>
   <RightSidebarMolecule class="py-0" :status="status">
-    <h1 class="sticky top-0 bg-white text-xl font-bold py-5 xl:text-3xl z-10">
-      Giỏ hàng&nbsp;({{ totalQuantity }})
-    </h1>
+    <div class="flex justify-between items-center">
+      <h1 class="sticky top-0 bg-white text-xl font-bold py-5 xl:text-3xl z-10">
+        Giỏ hàng&nbsp;({{ totalQuantity }})
+      </h1>
+      <font-awesome-icon class="text-xl xl:text-3xl hover:text-green-700 cursor-pointer" :onclick="closeCartBar" :icon="['fas', 'xmark']" />
+    </div>
     <div class="grid grid-cols-1 gap-5">
       <CartItemMolecule
         :quantityBarStatus="true"
@@ -18,12 +21,17 @@
       />
     </div>
     <div class="sticky bottom-0 w-full bg-white pb-5 mt-10 z-10">
-      <GreenButtonAtom @click="checkout" class="w-full py-[4%] xl:text-2xl" :text="'Mua hàng'" />
+      <GreenButtonAtom
+        @click="checkout"
+        class="w-full py-[4%] xl:text-2xl"
+        :text="'Mua hàng'"
+      />
     </div>
   </RightSidebarMolecule>
 </template>
 
 <script>
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { mapGetters } from "vuex";
 import GreenButtonAtom from "../atoms/button/GreenButtonAtom.vue";
 import CartItemMolecule from "../molecules/CartItemMolecule.vue";
@@ -50,8 +58,8 @@ export default {
     ...mapGetters(["getCartChangeNumber"]),
   },
   methods: {
-    checkout(){
-      this.$router.push('/giao-hang');
+    checkout() {
+      this.$router.push("/giao-hang");
       this.closeCartBar();
     },
     closeCartBar() {
@@ -101,7 +109,7 @@ export default {
       this.setTotalQuantity();
     },
   },
-  components: { RightSidebarMolecule, CartItemMolecule, GreenButtonAtom },
+  components: { RightSidebarMolecule, CartItemMolecule, GreenButtonAtom, FontAwesomeIcon },
   created() {
     this.getAllProduct();
   },

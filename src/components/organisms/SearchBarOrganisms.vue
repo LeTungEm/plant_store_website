@@ -1,5 +1,8 @@
 <template>
   <RightSidebarMolecule :status="status">
+    <div class="flex justify-end mb-5">
+      <font-awesome-icon class="text-xl xl:text-3xl hover:text-green-700 cursor-pointer" :onclick="closeSearchBar" :icon="['fas', 'xmark']" />
+    </div>
     <SearchInputMolecule v-bind:class="search?'[&>:first-child]:text-green-700':''" :status="status" @change="changeValue" />
     <h1
       v-bind:class="
@@ -55,6 +58,7 @@ import SearchInputMolecule from "../molecules/SearchInputMolecule.vue";
 import ToolsService from "@/service/ToolsService";
 import ProductCardMolecule from "../molecules/ProductCardMolecule.vue";
 import { PRODUCT_SHOW_IN_SEARCH } from "@/assets/js/config";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { mapActions } from "vuex";
 export default {
   name: "SearchBarOrganisms",
@@ -72,6 +76,7 @@ export default {
     RightSidebarMolecule,
     SearchInputMolecule,
     ProductCardMolecule,
+    FontAwesomeIcon
   },
   emits: ["closeSearchBar"],
   methods: {
