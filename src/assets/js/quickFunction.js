@@ -1,4 +1,3 @@
-
 const Buffer = require('buffer').Buffer;
 // const setDefaultImage = (img) => {
 //     let defaultImg = require('../image/default.jpg');
@@ -29,4 +28,21 @@ const getCurrentTime = () => {
     let year = date.getFullYear();
     return `${year}-${month}-${day}`;
 }
-export { scrollToTop, encodeEmail, decodeEmail, getCurrentTime }
+
+const getEmail = () => {
+    let email = null;
+    let userSession = sessionStorage.getItem("EMUR");
+    let userLocal = localStorage.getItem("CEMURK");
+    if (userSession) {
+        email = userSession;
+    } else if (userLocal) {
+        email = userLocal;
+        sessionStorage.setItem("EMUR", email);
+    }
+    if (email != null) {
+        return decodeEmail(email);
+    } else {
+        return null;
+    }
+}
+export { scrollToTop, encodeEmail, decodeEmail, getCurrentTime, getEmail }

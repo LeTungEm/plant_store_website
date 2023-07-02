@@ -1,7 +1,7 @@
 <template>
   <div>
     <LogoAtom class="px-5 md:px-10 my-5" />
-    <div v-if="status" class="flex flex-col-reverse md:flex-row md:border-t">
+    <div class="flex flex-col-reverse md:flex-row md:border-t">
       <CheckoutUserOrganism @createOrder="getOrderInfo" class="px-5 md:px-10" />
       <CheckoutProductOrganism
         @createOrderDetail="getOrderDetailInfo"
@@ -13,8 +13,6 @@
 </template>
 
 <script>
-import { decodeEmail } from "@/assets/js/quickFunction";
-import AccountsService from "@/service/AccountsService";
 import { mapActions } from "vuex";
 import CheckoutUserOrganism from "@/components/organisms/CheckoutUserOrganism.vue";
 import CheckoutProductOrganism from "@/components/organisms/CheckoutProductOrganism.vue";
@@ -32,7 +30,6 @@ export default {
   name: "CheckoutView",
   data() {
     return {
-      status: false,
       loadingStatus: false,
       createOrderStatus: false,
       createOrderDetailStatus: false,
@@ -79,7 +76,7 @@ export default {
         .then((res) => {
           if (res.data.message) {
             this.createOrderDetail(res.data.orderId);
-            console.log('orderId', res.data.orderId);
+            console.log("orderId", res.data.orderId);
           }
         })
         .catch((err) => {
@@ -88,22 +85,21 @@ export default {
         })
         .finally(() => {
           this.success++;
-          console.log('createOrder');
+          console.log("createOrder");
         });
       console.log("this.order", this.order);
       console.log("this.orderTotal", this.orderTotal);
       console.log("this.orderDetails", this.orderDetails);
     },
     createOrderDetail(orderId) {
-      console.log('start createOrderDetail');
+      console.log("start createOrderDetail");
       OrderDetailService.createOrderDetail(orderId, this.orderDetails)
         .then((res) => {
           console.log(res.data);
         })
         .finally(() => {
           this.success++;
-          console.log('createOrderDetail');
-
+          console.log("createOrderDetail");
         });
     },
     getOrderInfo(orderInfo) {
@@ -118,37 +114,6 @@ export default {
     changeLoadingStatus(status) {
       this.loadingStatus = status;
     },
-    checkLogin() {
-      let email = null;
-      let userSession = sessionStorage.getItem("EMUR");
-      let userLocal = localStorage.getItem("CEMURK");
-      if (userSession) {
-        email = userSession;
-      } else if (userLocal) {
-        email = userLocal;
-        sessionStorage.setItem("EMUR", email);
-      }
-      if (email != null) {
-        let emailDecode = decodeEmail(email);
-        AccountsService.isEmailExists(emailDecode).then((res) => {
-          if (res.data.message) {
-            this.setUserLoginStatus(true);
-            this.status = true;
-          } else {
-            this.setUserLoginStatus(false);
-            this.status = false;
-            this.$router.push("/nguoi-dung/dang-nhap");
-          }
-        });
-      } else {
-        this.setUserLoginStatus(false);
-        this.status = false;
-        this.$router.push("/nguoi-dung/dang-nhap");
-      }
-    },
-  },
-  created() {
-    this.checkLogin();
   },
 };
 </script>

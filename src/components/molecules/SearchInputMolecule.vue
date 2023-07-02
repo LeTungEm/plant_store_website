@@ -15,7 +15,7 @@
       :status="status"
       @change="change"
       :type="'search'"
-      :placeholder="'Tìm kiếm...'"
+      :placeholder="'Nhập thông tin...'"
     />
   </div>
 </template>

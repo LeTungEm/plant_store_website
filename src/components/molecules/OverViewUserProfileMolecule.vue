@@ -7,11 +7,11 @@
         alt=""
       />
     </div>
-    <div class="flex-grow">
+    <div>
+      <h1 class="text-3xl">{{ name }}</h1>
+    </div>
+    <!-- <div class="flex-grow">
       <div class="flex flex-wrap items-center justify-between">
-        <div>
-          <h1 class="text-3xl">{{ name }}</h1>
-        </div>
         <div
           @click="logout"
           class="flex items-center gap-1 md:gap-5 text-green-700 cursor-pointer"
@@ -23,30 +23,17 @@
           />
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { mapActions } from "vuex";
-import { googleLogout } from "vue3-google-login";
-
 export default {
   name: "OverViewUserProfileMolecule",
   props: {
     name: String,
   },
-  components: { FontAwesomeIcon },
-  methods: {
-    ...mapActions(["setUserLoginStatus"]),
-    logout() {
-      this.setUserLoginStatus(false);
-      sessionStorage.removeItem("EMUR");
-      localStorage.removeItem("CEMURK");
-      googleLogout();
-      this.$router.push("/");
-    },
+  methods: {   
   },
 };
 </script>

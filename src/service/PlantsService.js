@@ -5,6 +5,12 @@ const PRODUCT_API_URL =
 
 class PlantsService {
 
+    getAll() {
+        let formData = new FormData();
+        formData.append('action', 'getAll');
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
     getAllActive() {
         let formData = new FormData();
         formData.append('action', 'getByStatus');

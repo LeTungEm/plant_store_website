@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../pages/User/HomeView.vue'
-import store from '../store/index'
+import { getEmail } from '@/assets/js/quickFunction';
+import AccountsService from '@/service/AccountsService';
+// import store from '../store/index'
 
 const routes = [
   {
@@ -60,17 +62,48 @@ const routes = [
     component: () => import('../pages/User/CheckoutView.vue'),
     meta: { requiresAuth: true }
   },
+  {
+    name: 'admin',
+    path: '/quan-ly',
+    meta: { requiresAuth: true },
+    children: [
+      {
+        name: 'dashboard',
+        path: 'trang-chu',
+        component: () => import('../pages/Admin/DashBoardView.vue')
+      },
+      {
+        name: 'plantManager',
+        path: 'quan-ly-cay',
+        component: () => import('../pages/Admin/PlantsManagerView.vue'),
+      },
+    ],
+  },
 ]
+
+function checkLogin(email, to, next) {
+  AccountsService.isEmailExists(email).then((res) => {
+    if (res.data.message) {
+      if (to.matched.some(route => route.name == 'admin')) {
+        if (res.data.role_id.toString() == '1') {
+          next();
+        } else {
+          next('/');
+        }
+      } else {
+        next();
+      }
+    }
+  });
+}
 
 function checkAuthentication(to, from, next) {
   if (to.matched.some(route => route.meta.requiresAuth)) {
-    let loginStatus = store.state.loginStatus;
     // Kiểm tra trạng thái đăng nhập từ Vuex store
-    if (loginStatus) {
-      next();
-
+    let email = getEmail();
+    if (email != null) {
+      checkLogin(email, to, next);
       // Nếu đã đăng nhập, cho phép điều hướng tiếp
-
     } else {
       // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
       next('/nguoi-dung/dang-nhap');

@@ -1,6 +1,7 @@
 <template>
   <RightSidebarMolecule :status="status">
-    <div class="flex justify-end mb-5">
+    <div class="flex justify-between items-center mb-5">
+      <h1 class="text-xl font-bold xl:text-3xl">Tìm kiếm</h1>
       <font-awesome-icon class="text-xl xl:text-3xl hover:text-green-700 cursor-pointer" :onclick="closeSearchBar" :icon="['fas', 'xmark']" />
     </div>
     <SearchInputMolecule v-bind:class="search?'[&>:first-child]:text-green-700':''" :status="status" @change="changeValue" />

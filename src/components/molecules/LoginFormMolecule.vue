@@ -107,7 +107,6 @@ export default {
     },
     authenticate() {
       AccountsService.authenticate(this.email, this.passW).then((res) => {
-        console.log(res.data);
         if (res.data.message) {
           this.setUserLoginStatus(true);
           let encodeEmailData = encodeEmail(this.email);
@@ -115,7 +114,11 @@ export default {
           if (this.remember) {
             localStorage.setItem("CEMURK", encodeEmailData);
           }
-          this.$router.push("/");
+          if(res.data.role_id.toString() == '1'){
+            this.$router.push("/quan-ly/trang-chu");
+          }else{
+            this.$router.push("/");
+          }
         } else {
           this.emailErr = true;
           this.passWErr = true;

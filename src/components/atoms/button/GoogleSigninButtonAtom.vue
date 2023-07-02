@@ -23,13 +23,19 @@ export default {
         sessionStorage.setItem("EMUR", encodeEmailData);
         localStorage.setItem("CEMURK", encodeEmailData);
         this.checkEmailExist(userData);
-        this.$router.push("/");
       }
     },
     checkEmailExist(userData) {
       AccountsService.isEmailExists(userData.email).then((res) => {
-        if (res.data.message == false) {
+        if (res.data.message) {
+          if (res.data.role_id.toString() == "1") {
+            this.$router.push("/quan-ly/trang-chu");
+          } else {
+            this.$router.push("/");
+          }
+        } else {
           this.insertAccount(userData);
+          this.$router.push("/");
         }
       });
     },

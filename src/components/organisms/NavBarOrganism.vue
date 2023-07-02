@@ -41,9 +41,13 @@
       @closeSearchBar="changeSearchBarStatus"
       :status="searchBarStatus"
     />
+    <AccountUserBarOrganism
+      @closeAccountUserBar="changeAccountUserBarStatus"
+      :status="accountUserBarStatus"
+    />
     <div
       v-bind:class="
-        mainMenuStatus || searchBarStatus || cartBarStatus ? '' : 'hidden'
+        mainMenuStatus || searchBarStatus || cartBarStatus || accountUserBarStatus ? '' : 'hidden'
       "
       :onclick="closeAllTab"
       class="fixed bg-black bg-opacity-70 inset-0 w-full h-full z-[1]"
@@ -55,11 +59,12 @@
 
 <script>
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { mapGetters } from "vuex";
 import MainMenuMolecule from "../molecules/MainMenuMolecule.vue";
 import LogoAtom from "../atoms/LogoAtom.vue";
+import AccountUserBarOrganism from "./AccountUserBarOrganism.vue";
 import SearchBarOrganisms from "./SearchBarOrganisms.vue";
 import CartBarOrganisms from "./CartBarOrganisms.vue";
-import { mapGetters } from "vuex";
 
 export default {
   name: "NavBarOrganism",
@@ -68,6 +73,7 @@ export default {
       mainMenuStatus: false,
       searchBarStatus: false,
       cartBarStatus: false,
+      accountUserBarStatus: false,
       totalQuantityOfCart: 0,
     };
   },
@@ -82,9 +88,11 @@ export default {
     LogoAtom,
     SearchBarOrganisms,
     CartBarOrganisms,
+    AccountUserBarOrganism,
   },
   computed: {
     ...mapGetters(["getCartChangeNumber"]),
+    ...mapGetters(["getUserLoginStatus"]),
   },
   methods: {
     changeMainMenuStatus() {
@@ -96,6 +104,9 @@ export default {
     changeCartBarStatus() {
       this.cartBarStatus = !this.cartBarStatus;
     },
+    changeAccountUserBarStatus() {
+      this.accountUserBarStatus = !this.accountUserBarStatus;
+    },
     changeToTalQuantity(totalQuantity) {
       this.totalQuantityOfCart = totalQuantity;
     },
@@ -103,21 +114,27 @@ export default {
       this.mainMenuStatus = false;
       this.searchBarStatus = false;
       this.cartBarStatus = false;
+      this.accountUserBarStatus = false;
     },
     hiddenNavBar() {
       let result = true;
       let routerName = this.$route.name;
-      if (routerName == "login" || routerName == 'checkout') {
+      if (routerName == "login" || routerName == "checkout" || this.$route.matched.some(route => route.name == 'admin')) {
         result = false;
       }
       return result;
     },
     toLoginView() {
-      this.$router.push("/nguoi-dung/thong-tin");
+      let userSession = sessionStorage.getItem("EMUR");
+      let userLocal = localStorage.getItem("CEMURK");
+      if (userSession || userLocal) {
+        this.changeAccountUserBarStatus();
+      } else {
+        this.$router.push("/nguoi-dung/dang-nhap");
+      }
     },
   },
-  mounted() {
-  },
+  mounted() {},
 };
 </script>
 
