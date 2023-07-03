@@ -26,7 +26,9 @@
         class="border rounded-md w-full outline-0 focus:outline-2 focus:outline-green-700 py-1 lg:py-2 px-2 lg:px-4"
         :type="hiddenPassW ? 'password' : 'text'"
       />
-      <span class="flex justify-center items-center absolute top-0 right-0 bottom-0 mr-4">
+      <span
+        class="flex justify-center items-center absolute top-0 right-0 bottom-0 mr-4"
+      >
         <font-awesome-icon
           @click="changePassWStatus"
           :icon="['fas', `${hiddenPassW ? 'eye-slash' : 'eye'}`]"
@@ -111,12 +113,12 @@ export default {
           this.setUserLoginStatus(true);
           let encodeEmailData = encodeEmail(this.email);
           sessionStorage.setItem("EMUR", encodeEmailData);
-          if (this.remember) {
-            localStorage.setItem("CEMURK", encodeEmailData);
-          }
-          if(res.data.role_id.toString() == '1'){
+          if (res.data.role_id.toString() == "1") {
             this.$router.push("/quan-ly/trang-chu");
-          }else{
+          } else {
+            if (this.remember) {
+              localStorage.setItem("CEMURK", encodeEmailData);
+            }
             this.$router.push("/");
           }
         } else {

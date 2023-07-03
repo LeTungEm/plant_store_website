@@ -77,6 +77,11 @@ const routes = [
         path: 'quan-ly-cay',
         component: () => import('../pages/Admin/PlantsManagerView.vue'),
       },
+      {
+        name: 'plantForm',
+        path: 'quan-ly-cay/:slug',
+        component: () => import('../pages/Admin/PlantsEditerView.vue')
+      },
     ],
   },
 ]

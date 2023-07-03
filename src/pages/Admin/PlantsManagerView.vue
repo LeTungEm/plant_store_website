@@ -1,10 +1,13 @@
 <template>
   <div>
-    <div class="flex justify-between">
+    <div class="flex justify-between text-2xl">
       <div>Thêm mới</div>
       <div>Sắp xếp</div>
     </div>
-    <PlantsTableOrganism :plants="plants" />
+    <PlantsTableOrganism
+      @changePlantStatus="changePlantStatus"
+      :plants="plants"
+    />
   </div>
 </template>
 
@@ -21,6 +24,9 @@ export default {
     };
   },
   methods: {
+    changePlantStatus(plantIndex, status) {
+      this.plants[plantIndex].status = status;
+    },
     getAllPlants() {
       PlantsService.getAll().then((res) => {
         this.plants = res.data;

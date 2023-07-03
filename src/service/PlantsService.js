@@ -30,6 +30,14 @@ class PlantsService {
         formData.append('search', search);
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
+
+    setPlantStatus(status, plantId) {
+        let formData = new FormData();
+        formData.append('action', 'setPlantStatus');
+        formData.append('status', status);
+        formData.append('plantId', plantId);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
 }
 
 export default new PlantsService();

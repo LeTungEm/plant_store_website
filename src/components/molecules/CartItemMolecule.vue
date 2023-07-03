@@ -21,7 +21,12 @@
         {{ product.name }}
       </h5>
       <GrayTextAtom
+        v-if="productType == 'cay'"
         :text="`${product.toolName}&nbsp;/&nbsp;${product.size}&nbsp;/&nbsp;${product.color}`"
+      />
+      <GrayTextAtom
+        v-else
+        :text="`${product.size}&nbsp;/&nbsp;${product.color}`"
       />
       <div class="flex justify-between text-xs md:text-lg">
         <PriceTextAtom

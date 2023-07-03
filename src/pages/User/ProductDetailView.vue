@@ -12,13 +12,11 @@
       :product="product"
     />
   </PageTemplate>
-  <CropImageMolecule class="hidden" />
 </template>
 
 <script>
 import PlantsService from "@/service/PlantsService";
 import ProductDetailInfoOrganism from "@/components/organisms/ProductDetailInfoOrganism.vue";
-import CropImageMolecule from "@/components/molecules/CropImageMolecule.vue";
 import PageTemplate from "@/components/templates/PageTemplate.vue";
 import ToolsService from "@/service/ToolsService";
 import { scrollToTop } from "@/assets/js/quickFunction.js";
@@ -174,7 +172,6 @@ export default {
   },
   components: {
     ProductDetailInfoOrganism,
-    CropImageMolecule,
     PageTemplate,
   },
 };

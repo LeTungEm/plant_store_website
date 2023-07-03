@@ -1,12 +1,14 @@
 <template>
-  <div class="w-2/3 md:w-1/2">
-    <label class="block rounded-lg w-2/3 m-auto py-3 px-6 font-bold border border-green-700 text-green-700 text-center">
+  <div class="border p-5 border-yellow-500 rounded-md">
+    <label
+      class="border bg-white text-yellow-500 font-bold block rounded-md w-full hover:bg-yellow-500 hover:text-white py-1 lg:py-2 px-2 lg:px-4"
+    >
       Thay ảnh
       <input accept="image/*" hidden type="file" :onchange="changeFile" />
     </label>
-    <div class="h-56 lg:h-80 overflow-hidden my-5">
+    <div class="border h-56 lg:h-80 overflow-hidden my-5">
       <cropper
-        class="cropper w-full border"
+        class="cropper"
         :src="img"
         :stencil-size="{
           width: 120,
@@ -17,8 +19,26 @@
         ref="cropper"
       />
     </div>
-    <button class="mr-5 text-lg" @click="crop">Crop</button>
-    <button class="text-lg" @click="scale">Scale</button>
+    <div class="flex flex-wrap gap-5">
+      <button
+        class="md:text-lg border rounded-md border-yellow-500 bg-white hover:bg-yellow-500 hover:text-white py-1 px-3"
+        @click="crop"
+      >
+        Cắt ảnh
+      </button>
+      <button
+        class="md:text-lg border rounded-md border-yellow-500 bg-white hover:bg-yellow-500 hover:text-white py-1 px-3"
+        @click="zoomIn"
+      >
+        Phóng to
+      </button>
+      <button
+        class="md:text-lg border rounded-md border-yellow-500 bg-white hover:bg-yellow-500 hover:text-white py-1 px-3"
+        @click="zoomOut"
+      >
+        Thu nhỏ
+      </button>
+    </div>
   </div>
 </template>
 
@@ -42,9 +62,14 @@ export default {
       this.img = URL.createObjectURL(e.target.files[0]);
       console.log(e.target.files[0].name);
     },
-    scale() {
+    zoomOut() {
       if (this.img) {
         this.$refs.cropper.zoom(0.5);
+      }
+    },
+    zoomIn() {
+      if (this.img) {
+        this.$refs.cropper.zoom(1.5);
       }
     },
     crop() {

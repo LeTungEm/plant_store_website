@@ -119,7 +119,7 @@ export default {
     hiddenNavBar() {
       let result = true;
       let routerName = this.$route.name;
-      if (routerName == "login" || routerName == "checkout" || this.$route.matched.some(route => route.name == 'admin')) {
+      if (routerName == "login" || routerName == "checkout") {
         result = false;
       }
       return result;

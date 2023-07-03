@@ -11,6 +11,12 @@ class ToolsService {
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
+    getBriefInfo() {
+        let formData = new FormData();
+        formData.append('action', 'getBriefInfo');
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
     getDetail(toolSlug) {
         let formData = new FormData();
         formData.append('action', 'detail');
@@ -18,7 +24,7 @@ class ToolsService {
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
-    search(search){
+    search(search) {
         let formData = new FormData();
         formData.append('action', 'search');
         formData.append('search', search);

@@ -1,5 +1,8 @@
 <template>
-  <div v-if="getLength() > 0">
+  <div
+    v-bind:class="this.$route.params.productType == 'chau' ? 'hidden' : ''"
+    v-if="getLength() > 0"
+  >
     <DetailPropertyHeaderAtom :text="'Chậu:'" />
     <div class="flex flex-wrap gap-5">
       <DetailOptionButtonAtom
