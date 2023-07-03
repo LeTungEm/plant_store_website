@@ -10,11 +10,11 @@
         type="text"
         v-model="search"
         @click="changeStatus"
-        placeholder="Nhập tên chậu..."
+        placeholder="Nhập tên chậu cần tìm..."
       />
       <ul
         v-bind:class="status ? '' : 'hidden'"
-        class="absolute top-full right-0 left-0 overflow-y-auto max-h-[200px] bg-gray-100 rounded-b-md"
+        class="absolute top-full right-0 left-0 overflow-y-auto max-h-[200px] bg-gray-100 border-r-2 border-l-2 border-b-2 border-green-700 rounded-b-md"
       >
         <li
           class="flex items-center gap-5 py-1 px-3 hover:bg-gray-300"

@@ -2,7 +2,7 @@
   <div class="flex relative">
     <AdminNavBarOrganism class="min-w-[200px]" @closeNavBar="changeNavBarStatus" :status="navBarStatus" />
     <div class="w-full duration-300">
-      <div class="sticky top-0 z-20 mb-10 bg-green-700">
+      <div class="sticky top-0 z-20 mb-5 md:mb-10 bg-green-700">
         <font-awesome-icon
           :onclick="changeNavBarStatus"
           class="text-3xl text-white cursor-pointer py-2 px-5"
