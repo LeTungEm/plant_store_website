@@ -45,4 +45,11 @@ const getEmail = () => {
         return null;
     }
 }
-export { scrollToTop, encodeEmail, decodeEmail, getCurrentTime, getEmail }
+
+const normalizeString = (str) => {
+    return str
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+}
+export { scrollToTop, encodeEmail, decodeEmail, getCurrentTime, getEmail, normalizeString }

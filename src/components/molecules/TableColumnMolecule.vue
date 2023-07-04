@@ -12,41 +12,43 @@
 <script>
 export default {
   name: "TableColumnMolecule",
-  data(){
+  data() {
     return {
-        vnColumn: {
-            plant_id: 'Mã cây',
-            name: 'Tên',
-            slug: 'Đường dẫn',
-            description: 'Mô tả',
-            score: 'Đánh giá',
-            fun_fact: 'Đặc điểm nổi bật',
-            light: 'Ánh sáng',
-            pet_friendly: 'Thân thiện với động vật',
-            water: 'Lượng nước cho cây',
-            sad_plant_signs: 'Dấu hiệu cây không khỏe',
-            create_date: 'Ngày tạo',
-            update_date: 'Ngày sửa đổi',
-            image: 'Hình ảnh',
-            quantity: 'Số lượng',
-            status: 'Trạng thái',
-            supplier_name: 'Nhà cung cấp',
-            tool: 'Chậu đi kèm'
-        },
+      vnColumn: {
+        plant_id: "Mã cây",
+        name: "Tên",
+        slug: "Đường dẫn",
+        price: "Giá cơ bản",
+        description: "Mô tả",
+        score: "Đánh giá",
+        fun_fact: "Đặc điểm nổi bật",
+        light: "Ánh sáng",
+        pet_friendly: "Thân thiện với động vật",
+        water: "Lượng nước cho cây",
+        sad_plant_signs: "Dấu hiệu cây không khỏe",
+        create_date: "Ngày tạo",
+        update_date: "Ngày sửa đổi",
+        image: "Hình ảnh",
+        quantity: "Số lượng",
+        status: "Trạng thái",
+        supplier_name: "Nhà cung cấp",
+        tool: "Chậu đi kèm",
+        category_names: "Danh mục",
+      },
     };
   },
   props: {
     columns: Array,
   },
-  methods:{
-    transToVN(text){
-        let arrKey = Object.keys(this.vnColumn);
-        if(arrKey.includes(text.toLowerCase())){
-            return this.vnColumn[text];
-        }
-        return text;
-    }
-  }
+  methods: {
+    transToVN(text) {
+      let arrKey = Object.keys(this.vnColumn);
+      if (arrKey.includes(text.toLowerCase())) {
+        return this.vnColumn[text];
+      }
+      return text;
+    },
+  },
 };
 </script>
 

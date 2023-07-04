@@ -1,9 +1,9 @@
 <template>
   <div class="border p-5 border-yellow-500 rounded-md">
     <label
-      class="border bg-white text-yellow-500 font-bold block rounded-md w-full hover:bg-yellow-500 hover:text-white py-1 lg:py-2 px-2 lg:px-4"
+      class="border border-yellow-500 text-center bg-white text-yellow-500 font-bold block rounded-md w-full hover:bg-yellow-500 hover:text-white py-1 lg:py-2 px-2 lg:px-4"
     >
-      Thay ảnh
+      Chọn từ thiết bị
       <input accept="image/*" hidden type="file" :onchange="changeFile" />
     </label>
     <div class="border h-56 lg:h-80 overflow-hidden my-5">
@@ -38,6 +38,12 @@
       >
         Thu nhỏ
       </button>
+      <button
+        class="w-full font-bold md:text-lg border rounded-md bg-yellow-600 hover:bg-yellow-700 text-white py-1 px-3"
+        @click="saveImage"
+      >
+        Lưu ảnh
+      </button>
     </div>
   </div>
 </template>
@@ -45,7 +51,7 @@
 <script>
 import { Cropper } from "vue-advanced-cropper";
 import "vue-advanced-cropper/dist/style.css";
-import UploadFile from "@/service/UploadFile";
+// import UploadFile from "@/service/UploadFile";
 export default {
   name: "CropImageMolecule",
   components: {
@@ -55,12 +61,16 @@ export default {
     return {
       img: "",
       imageName: "",
+      blob: "",
     };
   },
+  emits: ["changeImage"],
   methods: {
     changeFile(e) {
-      this.img = URL.createObjectURL(e.target.files[0]);
-      console.log(e.target.files[0].name);
+      if (e.target.files.length > 0) {
+        this.img = URL.createObjectURL(e.target.files[0]);
+        this.imageName = e.target.files[0].name;
+      }
     },
     zoomOut() {
       if (this.img) {
@@ -76,9 +86,26 @@ export default {
       if (this.img) {
         const { canvas } = this.$refs.cropper.getResult();
         canvas.toBlob((blob) => {
-          UploadFile.uploadImage(blob, "cute.jpg");
+          // UploadFile.uploadImage(blob, "cute.jpg");
+          this.blob = blob;
+          // console.log(blob);
         }, "image/jpeg");
         this.img = canvas.toDataURL();
+      }
+    },
+    saveImage() {
+      if (this.blob == "") {
+        this.crop();
+      } else {
+        let objectImage = {
+          url: this.img,
+          blob: this.blob,
+          name: this.imageName,
+        };
+        this.$emit("changeImage", objectImage);
+        this.img = "";
+        this.imageName = "";
+        this.blob = "";
       }
     },
   },

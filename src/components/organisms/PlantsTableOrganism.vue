@@ -5,7 +5,7 @@
   >
     <table class="w-full text-sm text-left text-gray-600 dark:text-gray-400">
       <thead
-        class="sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+        class="sticky top-0 text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 shadow-lg"
       >
         <TableColumnMolecule :columns="Object.keys(plants[0])" />
       </thead>
@@ -13,7 +13,7 @@
         <tr
           v-for="(plant, index) in plants"
           :key="plant"
-          v-bind:class="plant.status?'':'opacity-40'"
+          v-bind:class="plant.status ? '' : 'opacity-40'"
           class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 xl:[&>*]:text-base"
         >
           <td
@@ -48,8 +48,15 @@
           <td
             class="min-w-[100px] px-6 py-4 text-right text-xl whitespace-nowrap"
           >
-            <font-awesome-icon @click="() => toFormEdit(plant.slug)" class="mr-5 cursor-pointer p-2 border rounded-md text-green-700 bg-white hover:text-white hover:bg-green-700 duration-300" :icon="['fas', 'pen-fancy']" />
-            <font-awesome-icon class="cursor-pointer p-2 border rounded-md text-green-700 bg-white hover:text-white hover:bg-green-700 duration-300" :icon="['fas', 'eraser']" />
+            <font-awesome-icon
+              @click="() => toFormEdit(plant.slug, index)"
+              class="mr-5 cursor-pointer p-2 border rounded-md text-green-700 bg-white hover:text-white hover:bg-green-700 duration-300"
+              :icon="['fas', 'pen-fancy']"
+            />
+            <font-awesome-icon
+              class="cursor-pointer p-2 border rounded-md text-green-700 bg-white hover:text-white hover:bg-green-700 duration-300"
+              :icon="['fas', 'eraser']"
+            />
           </td>
         </tr>
       </tbody>
@@ -61,6 +68,7 @@
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import TableColumnMolecule from "../molecules/TableColumnMolecule.vue";
 import PlantsService from "@/service/PlantsService";
+import { mapActions } from "vuex";
 
 export default {
   name: "PlantsTableOrganism",
@@ -73,8 +81,11 @@ export default {
   components: { FontAwesomeIcon, TableColumnMolecule },
   emits: ["changePlantStatus"],
   methods: {
-    toFormEdit(plantSlug){
+    ...mapActions(["setDetailData"]),
+    toFormEdit(plantSlug, index) {
       this.$router.push(`/quan-ly/quan-ly-cay/${plantSlug}`);
+      let plantData = this.plants[index];
+      this.setDetailData(plantData);
     },
     changePlantStatus(e) {
       let status = e.target.checked ? 1 : 0;
@@ -83,8 +94,8 @@ export default {
       PlantsService.setPlantStatus(status, plantId).then((res) => {
         if (res.data.message) {
           this.$emit("changePlantStatus", plantIndex, status);
-        }else{
-          alert('Có sự cố. Không thể sửa');
+        } else {
+          alert("Có sự cố. Không thể sửa");
         }
       });
     },

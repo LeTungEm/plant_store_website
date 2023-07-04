@@ -24,6 +24,13 @@ class PlantsService {
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
+    isSlugExist(plantSlug) {
+        let formData = new FormData();
+        formData.append('action', 'isSlugExist');
+        formData.append('plantSlug', plantSlug);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
     search(search) {
         let formData = new FormData();
         formData.append('action', 'search');

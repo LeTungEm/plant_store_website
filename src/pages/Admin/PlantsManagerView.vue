@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex justify-between text-2xl">
-      <div>Thêm mới</div>
+      <WhiteButtonAtom class="py-2 px-5 text-lg mb-1" :text="'Thêm mới'"/>
       <div>Sắp xếp</div>
     </div>
     <PlantsTableOrganism
@@ -14,9 +14,10 @@
 <script>
 import PlantsService from "@/service/PlantsService";
 import PlantsTableOrganism from "@/components/organisms/PlantsTableOrganism.vue";
+import WhiteButtonAtom from '@/components/atoms/button/WhiteButtonAtom.vue';
 
 export default {
-  components: { PlantsTableOrganism },
+  components: { PlantsTableOrganism, WhiteButtonAtom },
   name: "PlantsManagerView",
   data() {
     return {

@@ -23,7 +23,6 @@ export default {
   components: { NavBarOrganism, SubNavBarOrganism, AdminTemplete },
   methods: {
     isAdmin() {
-      console.log(this.$route);
       if (this.$route.matched.some((route) => route.name == "admin")) {
         return true;
       }
