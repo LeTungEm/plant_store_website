@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-y-scroll max-h-[85vh]">
+  <div class="overflow-y-auto max-h-[85vh]">
     <div class="flex justify-between mb-5">
       <h1 v-if="this.$route.params.slug == 0" class="text-2xl">Thêm cây</h1>
       <h1 v-else class="text-2xl">Cập nhật cây</h1>
@@ -232,7 +232,11 @@ export default {
       notificationMessage: "",
       notificationStatus: false,
       cropImageStatus: false,
-      objectImage: {},
+      objectImage: {
+        url: '',
+        blob: '',
+        name: ''
+      },
       suppliers: [],
       categories: [],
       pickedCategories: [],
@@ -262,7 +266,7 @@ export default {
     GreenButtonAtom,
     NotificationAtom,
   },
-  emits: ["toNextForm"],
+  emits: ["toNextForm", "insertData"],
   methods: {
     showNotification(message) {
       this.notificationMessage = message;
@@ -270,7 +274,14 @@ export default {
     },
     async toNextForm() {
       if (await this.validateForm()) {
-        this.$emit("toNextForm", this.objectImage, this.pickedCategories, this.pickedPlanters, this.plant);
+        this.$emit("toNextForm");
+        this.$emit(
+          "insertData",
+          this.objectImage,
+          this.pickedCategories,
+          this.pickedPlanters,
+          this.plant
+        );
       }
     },
     async validateForm() {
