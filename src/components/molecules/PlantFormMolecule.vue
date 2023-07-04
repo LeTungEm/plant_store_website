@@ -242,13 +242,14 @@ export default {
       pickedCategories: [],
       pickedPlanters: [],
       plant: {
+        plant_id: "",
         name: "",
         slug: "",
         tool: "",
         price: 0,
         quantity: 0,
         status: 1,
-        image: "",
+        image: "default",
         description: "",
         fun_fact: "",
         light: "",
@@ -360,6 +361,7 @@ export default {
       }
     },
     setData(detailData) {
+      this.plant.plant_id = detailData.plant_id;
       this.plant.name = detailData.name;
       this.plant.slug = detailData.slug;
       this.plant.tool = detailData.tool ? detailData.tool : "";

@@ -86,9 +86,8 @@ export default {
       if (this.img) {
         const { canvas } = this.$refs.cropper.getResult();
         canvas.toBlob((blob) => {
-          // UploadFile.uploadImage(blob, "cute.jpg");
+          // UploadFile.uploadImage([blob], ["cute.jpg"]);
           this.blob = blob;
-          // console.log(blob);
         }, "image/jpeg");
         this.img = canvas.toDataURL();
       }

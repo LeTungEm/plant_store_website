@@ -57,45 +57,53 @@ export default {
   methods: {
     ...mapActions(["setUserLoginStatus"]),
     createOrder() {
-      this.changeLoadingStatus(true);
-      OrderService.createOrder(
-        0,
-        this.order.name,
-        this.order.phone,
-        this.order.address,
-        0,
-        "",
-        "",
-        "",
-        this.order.account_id,
-        1,
-        this.order.shippingProviderId,
-        this.order.paymentMethodId,
-        this.orderTotal
-      )
-        .then((res) => {
-          if (res.data.message) {
-            this.createOrderDetail(res.data.orderId);
-            console.log("orderId", res.data.orderId);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          this.success++;
-        })
-        .finally(() => {
-          this.success++;
-          console.log("createOrder");
-        });
-      console.log("this.order", this.order);
-      console.log("this.orderTotal", this.orderTotal);
-      console.log("this.orderDetails", this.orderDetails);
+      if (this.orderDetails.length > 0) {
+        this.changeLoadingStatus(true);
+        OrderService.createOrder(
+          0,
+          this.order.name,
+          this.order.phone,
+          this.order.address,
+          0,
+          "",
+          "",
+          "",
+          this.order.account_id,
+          1,
+          this.order.shippingProviderId,
+          this.order.paymentMethodId,
+          this.orderTotal
+        )
+          .then((res) => {
+            if (res.data.message) {
+              this.createOrderDetail(res.data.orderId);
+              console.log("orderId", res.data.orderId);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            this.success++;
+          })
+          .finally(() => {
+            this.success++;
+            console.log("createOrder");
+          });
+        console.log("this.order", this.order);
+        console.log("this.orderTotal", this.orderTotal);
+        console.log("this.orderDetails", this.orderDetails);
+      }else{
+        alert('gio hang rong');
+      }
     },
     createOrderDetail(orderId) {
       console.log("start createOrderDetail");
       OrderDetailService.createOrderDetail(orderId, this.orderDetails)
         .then((res) => {
           console.log(res.data);
+          if (res.data.message) {
+            localStorage.removeItem("CTUR");
+            this.$router.push("/");
+          }
         })
         .finally(() => {
           this.success++;

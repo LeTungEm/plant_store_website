@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex justify-between text-2xl">
-      <WhiteButtonAtom class="py-2 px-5 text-lg mb-1" :text="'Thêm mới'"/>
+      <WhiteButtonAtom @click="toCreatePlantForm" class="py-2 px-5 text-lg mb-1" :text="'Thêm mới'"/>
       <div>Sắp xếp</div>
     </div>
     <PlantsTableOrganism
@@ -33,6 +33,9 @@ export default {
         this.plants = res.data;
       });
     },
+    toCreatePlantForm(){
+      this.$router.push('/quan-ly/quan-ly-cay/0')
+    }
   },
   created() {
     this.getAllPlants();

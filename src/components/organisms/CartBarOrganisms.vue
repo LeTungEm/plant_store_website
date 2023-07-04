@@ -59,8 +59,12 @@ export default {
   },
   methods: {
     checkout() {
-      this.$router.push("/giao-hang");
-      this.closeCartBar();
+      if(this.totalQuantity > 0){
+        this.$router.push("/giao-hang");
+        this.closeCartBar();
+      }else{
+        alert('gio rong');
+      }
     },
     closeCartBar() {
       this.$emit("closeCartBar");

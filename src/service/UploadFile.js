@@ -5,10 +5,14 @@ const PRODUCT_API_URL =
 
 class UploadFileService {
 
-  uploadImage(file, fileName) {
+  uploadImage(files = [], fileNames = []) {
     let formData = new FormData();
-    formData.append("file", file);
-    formData.append("name", fileName);
+    files.forEach(file => {
+      formData.append("files[]", file);
+    })
+    fileNames.forEach(fileName => {
+      formData.append("names[]", fileName);
+    })
     return axios.post(`${PRODUCT_API_URL}`,
       formData,
       {

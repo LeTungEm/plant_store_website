@@ -24,6 +24,13 @@ class PlantsService {
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
+    getVariantsById(plantId) {
+        let formData = new FormData();
+        formData.append('action', 'getVariantsById');
+        formData.append('plantId', plantId);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
     isSlugExist(plantSlug) {
         let formData = new FormData();
         formData.append('action', 'isSlugExist');

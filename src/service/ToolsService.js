@@ -16,9 +16,9 @@ class ToolsService {
         formData.append('action', 'getBriefInfo');
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
-    getByArrId(arrId) {
+    getVariantsByIds(arrId) {
         let formData = new FormData();
-        formData.append('action', 'getByIds');
+        formData.append('action', 'getVariantsByIds');
         formData.append('arrId', JSON.stringify(arrId));
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
