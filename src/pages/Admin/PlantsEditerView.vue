@@ -10,6 +10,8 @@
       :status="isFinalForm"
       :plant="plant"
       @backToPreviousForm="changeForm"
+      @savePlant="savePlant"
+      @getVariantData="getVariantData"
       v-bind:class="isFinalForm ? '' : 'hidden'"
     />
   </div>
@@ -32,11 +34,16 @@ export default {
   },
   components: { PlantFormMolecule, PlantSetFormMolecule },
   methods: {
+    savePlant(){
+      // 
+    },
+    getVariantData(){
+      
+    },
     changeForm() {
       this.isFinalForm = !this.isFinalForm;
     },
     insertData(objectImage, pickedCategories, pickedPlanters, plant) {
-      // console.log(objectImage, pickedCategories, pickedPlanters, plant);
       this.objectImage = objectImage;
       this.pickedCategories = pickedCategories;
       this.pickedPlanters = pickedPlanters;

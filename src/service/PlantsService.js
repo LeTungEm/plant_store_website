@@ -23,6 +23,13 @@ class PlantsService {
         formData.append('plantSlug', plantSlug);
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
+    
+    getBySlug(plantSlug) {
+        let formData = new FormData();
+        formData.append('action', 'getBySlug');
+        formData.append('plantSlug', plantSlug);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
 
     getVariantsById(plantId) {
         let formData = new FormData();

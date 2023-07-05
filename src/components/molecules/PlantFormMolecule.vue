@@ -233,9 +233,9 @@ export default {
       notificationStatus: false,
       cropImageStatus: false,
       objectImage: {
-        url: '',
-        blob: '',
-        name: ''
+        url: "",
+        blob: "",
+        name: "",
       },
       suppliers: [],
       categories: [],
@@ -353,11 +353,21 @@ export default {
     getData() {
       let slug = this.$route.params.slug;
       if (slug != 0) {
-        let detailData = this.getDetailData();
-        if (detailData) {
-          console.log(detailData);
-          this.setData(detailData);
-        }
+        PlantsService.getBySlug(slug)
+          .then((res) => {
+            if (res.data.message) {
+              this.setData(res.data.data);
+            }
+          })
+          .finally(() => {
+            this.getAllSupplier();
+            this.getAllCategories();
+          });
+        // let detailData = this.getDetailData();
+        // if (detailData) {
+        //   console.log(detailData);
+        //   this.setData(detailData);
+        // }
       }
     },
     setData(detailData) {
@@ -412,8 +422,6 @@ export default {
   },
   created() {
     this.getData();
-    this.getAllSupplier();
-    this.getAllCategories();
   },
 };
 </script>
