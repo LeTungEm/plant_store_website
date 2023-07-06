@@ -86,6 +86,7 @@ import DropTextMolecule from "../molecules/DropTextMolecule.vue";
 import QuantityBarMolecule from "../molecules/QuantityBarMolecule.vue";
 import PlanterSelectionOrganism from "./PlanterSelectionOrganism.vue";
 import { decodeEmail, encodeEmail } from "@/assets/js/quickFunction";
+import { MAXIMUM_QUANTITY_OF_EACH_PRODUCT_IN_CART } from "@/assets/js/config";
 
 export default {
   name: "ProductDetailInfoOrganism",
@@ -258,7 +259,7 @@ export default {
     isMaxQuantityOfProduct(currentQuantity, additionQuantity, maximumQuantity) {
       let result = false;
       let sum = currentQuantity + additionQuantity;
-      if (sum > maximumQuantity) {
+      if (sum > maximumQuantity || sum > MAXIMUM_QUANTITY_OF_EACH_PRODUCT_IN_CART) {
         result = true;
       }
       return result;

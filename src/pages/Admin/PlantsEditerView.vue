@@ -70,6 +70,9 @@ export default {
       } else {
         // update
         console.log("update cay");
+        // updatecay
+        // updateCategoriesPlant
+        // them bien the moi
         console.log(this.pickedCategories);
       }
     },

@@ -1,8 +1,4 @@
 const Buffer = require('buffer').Buffer;
-// const setDefaultImage = (img) => {
-//     let defaultImg = require('../image/default.jpg');
-//     img.target.src = defaultImg;
-// }
 const scrollToTop = () => {
     window.scrollTo({
         top: 0,

@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { MAXIMUM_QUANTITY_OF_EACH_PRODUCT_IN_CART } from "@/assets/js/config";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 export default {
@@ -42,7 +43,7 @@ export default {
   },
   methods: {
     increate() {
-      if (this.quantity < this.maximun) {
+      if (this.quantity < this.maximun && this.quantity < MAXIMUM_QUANTITY_OF_EACH_PRODUCT_IN_CART) {
         this.quantity++;
       }
     },
