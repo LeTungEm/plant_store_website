@@ -96,10 +96,11 @@ export default {
       if (this.blob == "") {
         this.crop();
       } else {
+        let name = Math.floor(Math.random() * (100000000 - 1000000 + 1)) + 1000000;
         let objectImage = {
           url: this.img,
           blob: this.blob,
-          name: this.imageName,
+          name: name + this.imageName.replace(/ /g, ""),
         };
         this.$emit("changeImage", objectImage);
         this.img = "";

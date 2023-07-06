@@ -27,7 +27,7 @@
             <div v-else-if="key == 'image'">
               <img
                 class="w-20 rounded-lg bg-black"
-                :src="`https://tenebrific-crust.000webhostapp.com/api/Controllers/GetFileController.php?imgURL=${plant.image}`"
+                :src="`http://localhost/LeTungEm/plant_store_api__php/api/Controllers/GetFileController.php?imgURL=${plant.image}`"
                 :alt="plant.name"
               />
             </div>

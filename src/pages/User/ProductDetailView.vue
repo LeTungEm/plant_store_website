@@ -3,7 +3,7 @@
     <div class="flex-1 xl:sticky top-24 h-[80vh] mb-5 xl:mb-0">
       <img
         class="object-cover h-full max-h-full mx-auto rounded-sm"
-        :src="`https://tenebrific-crust.000webhostapp.com/api/Controllers/GetFileController.php?imgURL=${product.image[currentIndex]}`"
+        :src="`http://localhost/LeTungEm/plant_store_api__php/api/Controllers/GetFileController.php?imgURL=${product.image[currentIndex]}`"
         :alt="product.name"
       />
     </div>

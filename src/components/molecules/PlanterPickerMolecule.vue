@@ -34,7 +34,7 @@
         >
           <img
             class="rounded-sm max-w-[30px]"
-            :src="`https://tenebrific-crust.000webhostapp.com/api/Controllers/GetFileController.php?imgURL=${tool.image}`"
+            :src="`http://localhost/LeTungEm/plant_store_api__php/api/Controllers/GetFileController.php?imgURL=${tool.image}`"
             alt=""
           />{{ tool.name }}
         </li>

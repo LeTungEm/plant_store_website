@@ -15,6 +15,7 @@
       >
         <PlantVariantMolecule
           @openCropImage="openCropImage"
+          @changeSalePrice="changeSalePriceOfNewVariant"
           v-for="(toolVariant, index) in toolVariants"
           :key="toolVariant"
           :index="index"
@@ -29,8 +30,9 @@
       <div
         class="relative flex flex-col gap-5 rounded-sm overflow-x-auto w-full"
       >
-        <PlantVariantMolecule
+        <OldPlantVariantMolecule
           @openCropImage="openCropImageForOldVariant"
+          @changeSalePrice="changeSalePriceOfOldVariant"
           v-for="(toolVariant, index) in oldVariants"
           :key="toolVariant"
           :index="index"
@@ -62,6 +64,7 @@
 </template>
 
 <script>
+import OldPlantVariantMolecule from "./OldPlantVariantMolecule.vue";
 import ToolsService from "@/service/ToolsService";
 import GreenButtonAtom from "../atoms/button/GreenButtonAtom.vue";
 import CropImageMolecule from "./CropImageMolecule.vue";
@@ -75,9 +78,9 @@ export default {
       toolVariants: [],
       oldVariants: [],
       arrayImage: [],
-      currentChangeImageIndex: "",
+      currentChangeImageIndex: null,
       oldVariantsArrayImage: [],
-      currentChangeOldImageIndex: "",
+      currentChangeOldImageIndex: null,
       cropImageStatus: false,
       plantSetIdsRemoved: [],
     };
@@ -98,19 +101,37 @@ export default {
     GreenButtonAtom,
     CropImageMolecule,
     PlantVariantMolecule,
+    OldPlantVariantMolecule,
   },
-  emits: ["backToPreviousForm", "savePlant", "getVariantData"],
+  emits: ["backToPreviousForm", "savePlant"],
   methods: {
-    savePlant(){
-      this.$emit('savePlant');
-      this.$emit('getVariantData', this.toolVariants, this.arrayImage);
+    changeSalePriceOfNewVariant(isSale, salePrice, index) {
+      this.toolVariants[index].is_sale = isSale;
+      this.toolVariants[index].sale_price = salePrice;
+    },
+    changeSalePriceOfOldVariant(isSale, salePrice, index) {
+      this.oldVariants[index].is_sale = isSale;
+      this.oldVariants[index].sale_price = salePrice;
+    },
+    savePlant() {
+      this.$emit(
+        "savePlant",
+        JSON.stringify(this.toolVariants),
+        this.arrayImage
+      );
     },
     changeImage(objectImage) {
       if (this.currentChangeImageIndex != null) {
         this.arrayImage[this.currentChangeImageIndex] = objectImage;
+        this.toolVariants[this.currentChangeImageIndex].image =
+          "plants/" + objectImage.name;
+        this.arrayImage[this.currentChangeImageIndex].name =
+          "plants/" + objectImage.name;
       } else {
         this.oldVariantsArrayImage[this.currentChangeOldImageIndex] =
           objectImage;
+        this.oldVariants[this.currentChangeOldImageIndex].image =
+          objectImage.name;
       }
       this.currentChangeImageIndex = null;
       this.currentChangeOldImageIndex = null;
@@ -132,7 +153,7 @@ export default {
     },
     getPlanters() {
       ToolsService.getVariantsByIds(this.planterIds).then((res) => {
-        console.log(res.data);
+        console.log(res.data, "planter");
         this.toolVariants = res.data;
         this.getOldVariants();
       });
@@ -165,7 +186,11 @@ export default {
     },
     distinctArr() {
       let arr = [];
-      arr = this.toolVariants.filter((tool) => this.isNotOld(tool));
+      this.toolVariants.forEach((tool) => {
+        if (this.isNotOld(tool)) {
+          arr.push(tool);
+        }
+      });
       this.toolVariants = arr;
       this.arrayImage = this.createArrImage(arr.length);
     },

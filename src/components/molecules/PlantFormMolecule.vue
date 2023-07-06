@@ -87,7 +87,7 @@
           </select>
         </div>
         <div class="mb-5">
-          <label class="text-gray-500" for="supplier">Nhà cung cấp</label>
+          <label class="text-gray-500" for="supplier">Nhà cung cấp*</label>
           <select
             id="supplier"
             v-model="plant.supplier_id"
@@ -119,7 +119,7 @@
           <img
             class="border max-w-[200px] mt-5 m-auto"
             v-else-if="plant.image"
-            :src="`https://tenebrific-crust.000webhostapp.com/api/Controllers/GetFileController.php?imgURL=${plant.image}`"
+            :src="`http://localhost/LeTungEm/plant_store_api__php/api/Controllers/GetFileController.php?imgURL=${plant.image}`"
             :alt="plant.name"
           />
           <div
@@ -215,7 +215,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import CropImageMolecule from "./CropImageMolecule.vue";
 import PlanterPickerMolecule from "./PlanterPickerMolecule.vue";
 import SuppliersService from "@/service/SuppliersService";
@@ -249,7 +248,7 @@ export default {
         price: 0,
         quantity: 0,
         status: 1,
-        image: "default",
+        image: "default.jpg",
         description: "",
         fun_fact: "",
         light: "",
@@ -314,7 +313,8 @@ export default {
         plant.slug &&
         plant.price >= 0 &&
         plant.quantity >= 0 &&
-        this.pickedPlanters.length > 0
+        this.pickedPlanters.length > 0 &&
+        plant.supplier_id
       ) {
         return true;
       }
@@ -346,10 +346,12 @@ export default {
     },
     changeImage(objectImage) {
       this.objectImage = objectImage;
-      this.plant.image = objectImage.name;
+      if (this.plant.image == "default.jpg") {
+        this.plant.image = "plants/" + objectImage.name;
+        this.objectImage.name = this.plant.image;
+      } else this.objectImage.name = this.plant.image;
       this.changeCropImageStatus();
     },
-    ...mapGetters(["getDetailData"]),
     getData() {
       let slug = this.$route.params.slug;
       if (slug != 0) {
@@ -363,11 +365,9 @@ export default {
             this.getAllSupplier();
             this.getAllCategories();
           });
-        // let detailData = this.getDetailData();
-        // if (detailData) {
-        //   console.log(detailData);
-        //   this.setData(detailData);
-        // }
+      } else {
+        this.getAllSupplier();
+        this.getAllCategories();
       }
     },
     setData(detailData) {
@@ -399,9 +399,12 @@ export default {
     getSupplierId(suppliers) {
       let id;
       if (suppliers.length > 0) id = suppliers[0].supplier_id;
-      suppliers.forEach((supplier) => {
-        if (supplier.name == this.plant.supplier_id) id = supplier.supplier_id;
-      });
+      if (this.$route.params.slug != 0) {
+        suppliers.forEach((supplier) => {
+          if (supplier.name == this.plant.supplier_id)
+            id = supplier.supplier_id;
+        });
+      }
       this.plant.supplier_id = id;
     },
     getAllCategories() {

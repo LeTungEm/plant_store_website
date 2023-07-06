@@ -2,7 +2,7 @@
   <div @click="toShop" class="w-full h-full">
     <img
       class="border rounded-sm object-center object-cover bg-white w-full duration-300 hover:shadow-lg hover:p-1"
-      :src="`https://tenebrific-crust.000webhostapp.com/api/Controllers/GetFileController.php?imgURL=${colectionItem.image}`"
+      :src="`http://localhost/LeTungEm/plant_store_api__php/api/Controllers/GetFileController.php?imgURL=${colectionItem.image}`"
       :alt="colectionItem.alt"
     />
     <h5 class="block text-sm md:text-2xl">{{ colectionItem.name }}</h5>
