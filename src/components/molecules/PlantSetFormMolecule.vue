@@ -108,6 +108,7 @@ export default {
     changeSalePriceOfNewVariant(isSale, salePrice, index) {
       this.toolVariants[index].is_sale = isSale;
       this.toolVariants[index].sale_price = salePrice;
+      console.log(this.toolVariants[index], 'doi gia sale');
     },
     changeSalePriceOfOldVariant(isSale, salePrice, index) {
       this.oldVariants[index].is_sale = isSale;

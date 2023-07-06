@@ -60,6 +60,13 @@ class PlantsService {
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
+    deletePlant(plantId) {
+        let formData = new FormData();
+        formData.append('action', 'deletePlant');
+        formData.append('plantId', plantId);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
     insertPlant(name, slug, price, description, score, fun_fact, status, image, light, pet_friendly, water, sad_plant_signs, supplier_id, quantity) {
         let formData = new FormData();
         formData.append('action', 'insertPlant');

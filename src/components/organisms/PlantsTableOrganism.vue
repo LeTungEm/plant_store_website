@@ -54,6 +54,7 @@
               :icon="['fas', 'pen-fancy']"
             />
             <font-awesome-icon
+              @click="() => deleteProduct(index)"
               class="cursor-pointer p-2 border rounded-md text-green-700 bg-white hover:text-white hover:bg-green-700 duration-300"
               :icon="['fas', 'eraser']"
             />
@@ -61,6 +62,11 @@
         </tr>
       </tbody>
     </table>
+    <OptionNotificationAtom
+      @pickOption="isDelete"
+      :status="optionNotifiStatus"
+      :text="optionNotifiMessage"
+    />
   </div>
 </template>
 
@@ -69,23 +75,66 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import TableColumnMolecule from "../molecules/TableColumnMolecule.vue";
 import PlantsService from "@/service/PlantsService";
 import { mapActions } from "vuex";
+import OptionNotificationAtom from "../atoms/OptionNotificationAtom.vue";
+import PlantSetService from "@/service/PlantSetService";
+import PlantsCategoriesService from "@/service/PlantsCategoriesService";
 
 export default {
   name: "PlantsTableOrganism",
   data() {
-    return {};
+    return {
+      optionNotifiMessage: "",
+      optionNotifiStatus: false,
+      deleteIndex: '',
+    };
   },
   props: {
     plants: Array,
   },
-  components: { FontAwesomeIcon, TableColumnMolecule },
-  emits: ["changePlantStatus"],
+  components: { FontAwesomeIcon, TableColumnMolecule, OptionNotificationAtom },
+  emits: ["changePlantStatus", "deleteProduct"],
   methods: {
+    deleteProduct(index) {
+      this.changeOptionNotificationStatus("Bạn có muốn xóa " + this.plants[index].name);
+      this.deleteIndex = index;
+    },
+    async isDelete(result) {
+      this.changeOptionNotificationStatus();
+      if (result) {
+        await this.deletePlantCategories(this.plants[this.deleteIndex].plant_id);
+        await this.deletePlantSet(this.plants[this.deleteIndex].plant_id);
+        await this.deletePlant(this.plants[this.deleteIndex].plant_id);
+        this.$emit("deleteProduct", this.deleteIndex);
+      }else{
+        console.log('khong xoa');
+      }
+    },
+    async deletePlant(plantId) {
+      await PlantsService.deletePlant(plantId).then((res) => {
+        console.log(res.data);
+      });
+    },
+    async deletePlantSet(plantId) {
+      await PlantSetService.deletePlantSetByPlantId(plantId).then((res) => {
+        console.log(res.data);
+      });
+    },
+    async deletePlantCategories(plantId) {
+      await PlantsCategoriesService.deletePlantCategoriesByPlantId(
+        plantId
+      ).then((res) => {
+        console.log(res.data);
+      });
+    },
     ...mapActions(["setDetailData"]),
     toFormEdit(plantSlug, index) {
       this.$router.push(`/quan-ly/quan-ly-cay/${plantSlug}`);
       let plantData = this.plants[index];
       this.setDetailData(plantData);
+    },
+    changeOptionNotificationStatus(message) {
+      this.optionNotifiMessage = message;
+      this.optionNotifiStatus = !this.optionNotifiStatus;
     },
     changePlantStatus(e) {
       let status = e.target.checked ? 1 : 0;

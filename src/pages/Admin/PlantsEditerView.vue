@@ -18,6 +18,7 @@
       :status="notificationStatus"
       :text="notificationMessage"
     />
+    <LoadingAtom :status="loadingStatus" />
   </div>
 </template>
 
@@ -28,6 +29,8 @@ import PlantSetFormMolecule from "@/components/molecules/PlantSetFormMolecule.vu
 import PlantsService from "@/service/PlantsService";
 import PlantSetService from "@/service/PlantSetService";
 import UploadFile from "@/service/UploadFile";
+import PlantsCategoriesService from "@/service/PlantsCategoriesService";
+import LoadingAtom from "@/components/atoms/LoadingAtom.vue";
 
 export default {
   name: "PlantsEditerView",
@@ -35,6 +38,7 @@ export default {
     return {
       notificationMessage: "",
       notificationStatus: false,
+      loadingStatus: false,
       isFinalForm: false,
       pickedPlanters: [],
       objectImage: {},
@@ -44,9 +48,14 @@ export default {
       arrayImage: [],
     };
   },
-  components: { PlantFormMolecule, PlantSetFormMolecule, NotificationAtom },
+  components: {
+    PlantFormMolecule,
+    PlantSetFormMolecule,
+    NotificationAtom,
+    LoadingAtom,
+  },
   methods: {
-    savePlant(toolVariants, arrayImage) {
+    async savePlant(toolVariants, arrayImage) {
       let slug = this.$route.params.slug;
       let arrTool = JSON.parse(toolVariants);
       this.toolVariants = arrTool;
@@ -54,12 +63,15 @@ export default {
       this.uploadPlantImage();
       if (slug == 0) {
         console.log("them cay");
-        this.insertPlant();
+        let insertResult = await this.insertPlant();
+        if (insertResult) {
+          this.$router.push("/quan-ly/quan-ly-cay");
+        }
+      } else {
+        // update
+        console.log("update cay");
+        console.log(this.pickedCategories);
       }
-      // this.insertPlantSet(2);
-      //
-      // console.log(this.toolVariants, "toolVariants");
-      this.$router.push("/quan-ly/quan-ly-cay");
     },
     uploadPlantImage() {
       console.log("=====upload image");
@@ -75,8 +87,6 @@ export default {
           }
         }
       });
-      console.log("blob", arrBlob);
-      console.log("name", arrName);
 
       if (arrBlob.length > 0) {
         UploadFile.uploadImage(arrBlob, arrName).then((res) => {
@@ -89,25 +99,11 @@ export default {
     updatePlant() {
       //
     },
-    insertPlant() {
+    async insertPlant() {
       console.log("bat dau them");
-      console.log("plant_object", [
-        this.plant.name,
-        this.plant.slug,
-        this.plant.price,
-        this.plant.description,
-        5,
-        this.plant.fun_fact,
-        this.plant.status,
-        this.plant.image,
-        this.plant.light,
-        this.plant.pet_friendly,
-        this.plant.water,
-        this.plant.sad_plant_signs,
-        this.plant.supplier_id,
-        this.plant.quantity,
-      ]);
-      PlantsService.insertPlant(
+      let result = false;
+      this.loadingStatus = true;
+      let resultMessage = await PlantsService.insertPlant(
         this.plant.name,
         this.plant.slug,
         this.plant.price,
@@ -122,23 +118,33 @@ export default {
         this.plant.sad_plant_signs,
         this.plant.supplier_id,
         this.plant.quantity
-      ).then((res) => {
-        if (res.data.message) {
-          let plantId = res.data.plant_id;
-          this.insertPlantSet(plantId, this.plant.price);
-        }
-      });
+      );
+
+      if (resultMessage.data.message) {
+        let plantId = resultMessage.data.plant_id;
+        await this.insertPlantSet(plantId, this.plant.price);
+        await this.insertCategories(plantId, this.pickedCategories);
+        this.loadingStatus = false;
+        result = true;
+      } else {
+        this.loadingStatus = false;
+      }
+      return result;
     },
-    insertPlantSet(plantId, plantPrice) {
-      console.log(plantId, "plantId");
-      console.log(this.toolVariants, "toolVariants");
-      PlantSetService.insertPlantSet(
+
+    async insertPlantSet(plantId, plantPrice) {
+      await PlantSetService.insertPlantSet(
         plantId,
         plantPrice,
         this.toolVariants
-      ).then((res) => {
-        console.log(res.data);
-      });
+      );
+    },
+
+    async insertCategories(plantId, listCategories) {
+      await PlantsCategoriesService.insertPlantCategories(
+        plantId,
+        listCategories
+      );
     },
 
     changeForm() {

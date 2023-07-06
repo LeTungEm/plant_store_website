@@ -14,6 +14,13 @@ class PlantSetService {
         formData.append('listTool', listJson);
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
+
+    deletePlantSetByPlantId(plantId) {
+        let formData = new FormData();
+        formData.append('action', 'deletePlantSetByPlantId');
+        formData.append('plantId', plantId);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
 }
 
 export default new PlantSetService();

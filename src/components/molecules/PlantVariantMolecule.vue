@@ -50,8 +50,7 @@
           <label class="cursor-pointer"
             >Giảm giá<br />
             <input
-              value="1"
-              v-model="isSale"
+              @change="changeSaleStatus"
               type="checkbox"
               class="m-auto w-full"
             />
@@ -105,6 +104,14 @@ export default {
         this.index
       );
     },
+    isSale: function () {
+      this.$emit(
+        "changeSalePrice",
+        this.isSale ? 1 : 0,
+        this.salePrice,
+        this.index
+      );
+    },
   },
   props: {
     toolVariant: Object,
@@ -119,6 +126,14 @@ export default {
   },
   emits: ["openCropImage", "changeSalePrice"],
   methods: {
+    changeSaleStatus(e){
+      let checked = e.target.checked;
+      this.isSale = checked;
+      if(checked == false){
+        this.salePrice = '';
+      }
+      console.log('isSale', this.isSale);
+    },
     openCropImage(index) {
       this.$emit("openCropImage", index);
     },
