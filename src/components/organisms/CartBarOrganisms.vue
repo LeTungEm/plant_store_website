@@ -4,7 +4,11 @@
       <h1 class="sticky top-0 bg-white text-xl font-bold py-5 xl:text-3xl z-10">
         Giỏ hàng&nbsp;({{ totalQuantity }})
       </h1>
-      <font-awesome-icon class="text-xl xl:text-3xl hover:text-green-700 cursor-pointer" :onclick="closeCartBar" :icon="['fas', 'xmark']" />
+      <font-awesome-icon
+        class="text-xl xl:text-3xl hover:text-green-700 cursor-pointer"
+        :onclick="closeCartBar"
+        :icon="['fas', 'xmark']"
+      />
     </div>
     <div class="grid grid-cols-1 gap-5">
       <CartItemMolecule
@@ -37,6 +41,7 @@ import GreenButtonAtom from "../atoms/button/GreenButtonAtom.vue";
 import CartItemMolecule from "../molecules/CartItemMolecule.vue";
 import RightSidebarMolecule from "../molecules/RightSidebarMolecule.vue";
 import { decodeEmail, encodeEmail } from "@/assets/js/quickFunction";
+import PlantSetService from "@/service/PlantSetService";
 export default {
   name: "CartBarOrganisms",
   data() {
@@ -58,16 +63,72 @@ export default {
     ...mapGetters(["getCartChangeNumber"]),
   },
   methods: {
-    checkout() {
-      if(this.totalQuantity > 0){
+    async checkout() {
+      if (this.totalQuantity > 0) {
+        await this.checkProductQuantityIsAvailable();
         this.$router.push("/giao-hang");
         this.closeCartBar();
-      }else{
-        alert('gio rong');
+      } else {
+        alert("gio rong");
       }
     },
     closeCartBar() {
       this.$emit("closeCartBar");
+    },
+
+    async checkProductQuantityIsAvailable() {
+      let cartJson = localStorage.getItem("CTUR");
+      let list = [];
+      if (cartJson != null) {
+        let jsonDecode = decodeEmail(cartJson);
+        list = JSON.parse(jsonDecode);
+        let plantSetIdArr = this.getListPlantSetId(list);
+        await PlantSetService.getAvailableQuantity(plantSetIdArr).then(
+          (res) => {
+            console.log("available_quantity", res.data);
+            let newListProduct = this.setQuantityToAvailable(res.data, list);
+            this.writeToLocalStorage(newListProduct);
+          }
+        );
+      }
+    },
+
+    setQuantityToAvailable(listAvailable, listProduct) {
+      let newListProduct = [];
+      listAvailable.forEach((availableItem) => {
+        let resultProduct = this.getAvailableProduct(
+          availableItem,
+          listProduct
+        );
+        if (resultProduct != null) {
+          newListProduct.push(resultProduct);
+        }
+      });
+      return newListProduct;
+    },
+
+    getAvailableProduct(availableItem, listProduct) {
+      let result = null;
+      listProduct.forEach((product) => {
+        if (product.plantSetId == availableItem.plant_set_id) {
+          result = product;
+          if (availableItem.available_quantity < 1) {
+            result = null;
+          } else if (result.quantity > availableItem.available_quantity) {
+            result.quantity = availableItem.available_quantity;
+            result.maximumQuantity = availableItem.available_quantity;
+          }
+        }
+      });
+      return result;
+    },
+
+    getListPlantSetId(list) {
+      let plantSetIdArr = [];
+      list.forEach((plantSet) => {
+        plantSetIdArr.push(plantSet.plantSetId);
+      });
+      return plantSetIdArr;
     },
 
     writeToLocalStorage(list) {
@@ -113,7 +174,12 @@ export default {
       this.setTotalQuantity();
     },
   },
-  components: { RightSidebarMolecule, CartItemMolecule, GreenButtonAtom, FontAwesomeIcon },
+  components: {
+    RightSidebarMolecule,
+    CartItemMolecule,
+    GreenButtonAtom,
+    FontAwesomeIcon,
+  },
   created() {
     this.getAllProduct();
   },

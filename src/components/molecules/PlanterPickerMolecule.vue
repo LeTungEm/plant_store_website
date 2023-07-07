@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div v-if="tools.length > 0">
     <div class="relative z-[2]">
-      <label class="text-gray-500" for="planterPicker"
+      <label class="text-gray-500 w-full z-[1]" for="planterPicker"
         >Chọn chậu đính kèm&nbsp;({{ pickedId.length }})*</label
       >
       <input

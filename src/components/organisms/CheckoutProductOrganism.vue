@@ -60,6 +60,7 @@ export default {
   components: { CartItemMolecule, CouponFieldMolecule, PriceTextAtom },
   methods: {
     createOrderDetail() {
+      // xet truong hop
       this.$emit("createOrderDetail", this.list, this.total);
     },
     getTotal() {

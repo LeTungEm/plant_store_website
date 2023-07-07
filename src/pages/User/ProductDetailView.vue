@@ -101,6 +101,8 @@ export default {
               this.product.toolSizeId.push(plantSet.tool_size_id);
               this.product.size.push(plantSet.size);
             });
+          } else {
+            this.$router.push("/cua-hang/cay");
           }
         });
       } else {

@@ -13,33 +13,33 @@
         :icon="['fas', 'xmark']"
       />
     </div>
-    <li :onclick="closeMenu" class="py-1 ml-5 border-b xl:border-0">
+    <li :onclick="closeMenu" class="py-1 ml-5 border-b xl:border-0 group">
       <router-link class="block" to="/">
-        <font-awesome-icon class="inline-block" :icon="['fas', 'house']" />
+        <font-awesome-icon class="group-hover:animate-bounce duration-1000" :icon="['fas', 'house']" />
         &nbsp;Trang chủ
       </router-link>
     </li>
-    <li :onclick="closeMenu" class="py-1 ml-5 border-b xl:border-0">
+    <li :onclick="closeMenu" class="py-1 ml-5 border-b xl:border-0 group">
       <router-link class="block" to="/cua-hang/cay">
-        <font-awesome-icon :icon="['fas', 'seedling']" />
+        <font-awesome-icon class="group-hover:animate-bounce duration-1000" :icon="['fas', 'seedling']" />
         &nbsp;Cây
       </router-link>
     </li>
-    <li :onclick="closeMenu" class="py-1 ml-5 border-b xl:border-0">
+    <li :onclick="closeMenu" class="py-1 ml-5 border-b xl:border-0 group">
       <router-link class="block" to="/cua-hang/chau">
-        <font-awesome-icon :icon="['fas', 'bucket']" />
+        <font-awesome-icon class="group-hover:animate-bounce duration-1000" :icon="['fas', 'bucket']" />
         &nbsp;Chậu
       </router-link>
     </li>
-    <li :onclick="closeMenu" class="py-1 ml-5 border-b xl:border-0">
+    <li :onclick="closeMenu" class="py-1 ml-5 border-b xl:border-0 group">
       <router-link class="block" to="/gioi-thieu">
-        <font-awesome-icon :icon="['fas', 'newspaper']" />
+        <font-awesome-icon class="group-hover:animate-bounce duration-1000" :icon="['fas', 'newspaper']" />
         &nbsp;Giới thiệu
       </router-link>
     </li>
-    <li :onclick="closeMenu" class="py-1 ml-5 border-b xl:border-0">
+    <li :onclick="closeMenu" class="py-1 ml-5 border-b xl:border-0 group">
       <router-link class="block" to="/dich-vu">
-        <font-awesome-icon :icon="['fas', 'compass-drafting']" />
+        <font-awesome-icon class="group-hover:animate-bounce duration-1000" :icon="['fas', 'compass-drafting']" />
         &nbsp;Dịch vụ
       </router-link>
     </li>

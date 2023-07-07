@@ -21,6 +21,30 @@ class PlantSetService {
         formData.append('plantId', plantId);
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
+
+    setStatusByPlantId(status, plantId) {
+        let formData = new FormData();
+        formData.append('action', 'setStatusByPlantId');
+        formData.append('status', status);
+        formData.append('plantId', plantId);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
+    getAvailableQuantity(listPlantSetId) {
+        let formData = new FormData();
+        let jsonArr = JSON.stringify(listPlantSetId);
+        formData.append('action', 'getAvailableQuantity');
+        formData.append('listPlantSetId', jsonArr);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
+    decreateQuantityWhenBuyPlant(plantSetId, quantity) {
+        let formData = new FormData();
+        formData.append('action', 'decreateQuantityWhenBuyPlant');
+        formData.append('plantSetId', plantSetId);
+        formData.append('quantity', quantity);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
 }
 
 export default new PlantSetService();

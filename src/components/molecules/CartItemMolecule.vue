@@ -2,7 +2,7 @@
   <div class="flex gap-5 w-full">
     <div class="relative flex-[3] lg:flex-[2]">
       <img
-        class="border rounded-sm object-center object-cover bg-white duration-300 hover:shadow-lg hover:p-1"
+        class="border rounded-sm object-center object-cover w-full bg-white duration-300 hover:shadow-lg hover:p-1"
         :src="`http://localhost/LeTungEm/plant_store_api__php/api/Controllers/GetFileController.php?imgURL=${product.image}`"
         :alt="product.name"
       />

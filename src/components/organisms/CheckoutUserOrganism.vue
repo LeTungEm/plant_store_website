@@ -110,6 +110,7 @@ export default {
       this.user.address = this.address;
       this.user.paymentMethodId = this.paymentMethodId;
       this.user.shippingProviderId = this.shippingProviderId;
+      // kiem tra o day
       this.$emit("createOrder", this.user);
     },
     openFormAddress() {

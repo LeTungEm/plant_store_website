@@ -20,6 +20,7 @@ import LogoAtom from "@/components/atoms/LogoAtom.vue";
 import LoadingAtom from "@/components/atoms/LoadingAtom.vue";
 import OrderService from "@/service/OrderService";
 import OrderDetailService from "@/service/OrderDetailService";
+import PlantSetService from "@/service/PlantSetService";
 export default {
   components: {
     CheckoutUserOrganism,
@@ -91,8 +92,8 @@ export default {
         console.log("this.order", this.order);
         console.log("this.orderTotal", this.orderTotal);
         console.log("this.orderDetails", this.orderDetails);
-      }else{
-        alert('gio hang rong');
+      } else {
+        alert("gio hang rong");
       }
     },
     createOrderDetail(orderId) {
@@ -122,6 +123,10 @@ export default {
     changeLoadingStatus(status) {
       this.loadingStatus = status;
     },
+  },
+  async created() {
+    let a = await PlantSetService.decreateQuantityWhenBuyPlant(2, 2);
+    console.log(a);
   },
 };
 </script>

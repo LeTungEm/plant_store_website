@@ -147,6 +147,11 @@ export default {
           alert("Có sự cố. Không thể sửa");
         }
       });
+      PlantSetService.setStatusByPlantId(status, plantId).then(res => {
+        if(res.data.message == false){
+          alert("Có sự cố. Không thể sửa các biến thể");
+        }
+      })
     },
   },
 };
