@@ -49,7 +49,7 @@
             class="min-w-[100px] px-6 py-4 text-right text-xl whitespace-nowrap"
           >
             <font-awesome-icon
-              @click="() => toFormEdit(plant.slug, index)"
+              @click="() => toFormEdit(plant.slug)"
               class="mr-5 cursor-pointer p-2 border rounded-md text-green-700 bg-white hover:text-white hover:bg-green-700 duration-300"
               :icon="['fas', 'pen-fancy']"
             />
@@ -74,7 +74,6 @@
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import TableColumnMolecule from "../molecules/TableColumnMolecule.vue";
 import PlantsService from "@/service/PlantsService";
-import { mapActions } from "vuex";
 import OptionNotificationAtom from "../atoms/OptionNotificationAtom.vue";
 import PlantSetService from "@/service/PlantSetService";
 import PlantsCategoriesService from "@/service/PlantsCategoriesService";
@@ -85,7 +84,7 @@ export default {
     return {
       optionNotifiMessage: "",
       optionNotifiStatus: false,
-      deleteIndex: '',
+      deleteIndex: "",
     };
   },
   props: {
@@ -95,18 +94,22 @@ export default {
   emits: ["changePlantStatus", "deleteProduct"],
   methods: {
     deleteProduct(index) {
-      this.changeOptionNotificationStatus("Bạn có muốn xóa " + this.plants[index].name);
+      this.changeOptionNotificationStatus(
+        "Bạn có muốn xóa " + this.plants[index].name
+      );
       this.deleteIndex = index;
     },
     async isDelete(result) {
       this.changeOptionNotificationStatus();
       if (result) {
-        await this.deletePlantCategories(this.plants[this.deleteIndex].plant_id);
+        await this.deletePlantCategories(
+          this.plants[this.deleteIndex].plant_id
+        );
         await this.deletePlantSet(this.plants[this.deleteIndex].plant_id);
         await this.deletePlant(this.plants[this.deleteIndex].plant_id);
         this.$emit("deleteProduct", this.deleteIndex);
-      }else{
-        console.log('khong xoa');
+      } else {
+        console.log("khong xoa");
       }
     },
     async deletePlant(plantId) {
@@ -126,11 +129,8 @@ export default {
         console.log(res.data);
       });
     },
-    ...mapActions(["setDetailData"]),
-    toFormEdit(plantSlug, index) {
+    toFormEdit(plantSlug) {
       this.$router.push(`/quan-ly/quan-ly-cay/${plantSlug}`);
-      let plantData = this.plants[index];
-      this.setDetailData(plantData);
     },
     changeOptionNotificationStatus(message) {
       this.optionNotifiMessage = message;
@@ -147,11 +147,11 @@ export default {
           alert("Có sự cố. Không thể sửa");
         }
       });
-      PlantSetService.setStatusByPlantId(status, plantId).then(res => {
-        if(res.data.message == false){
+      PlantSetService.setStatusByPlantId(status, plantId).then((res) => {
+        if (res.data.message == false) {
           alert("Có sự cố. Không thể sửa các biến thể");
         }
-      })
+      });
     },
   },
 };

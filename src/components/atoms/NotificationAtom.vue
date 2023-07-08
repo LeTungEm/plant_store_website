@@ -39,7 +39,7 @@ export default {
       this.seltStatus = true;
       setTimeout(function () {
         self.seltStatus = false;
-      }, 3000);
+      }, 2500);
     },
   },
 };

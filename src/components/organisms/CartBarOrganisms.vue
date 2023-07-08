@@ -36,7 +36,7 @@
 
 <script>
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import GreenButtonAtom from "../atoms/button/GreenButtonAtom.vue";
 import CartItemMolecule from "../molecules/CartItemMolecule.vue";
 import RightSidebarMolecule from "../molecules/RightSidebarMolecule.vue";
@@ -63,13 +63,14 @@ export default {
     ...mapGetters(["getCartChangeNumber"]),
   },
   methods: {
+    ...mapActions(["showNotification"]),
     async checkout() {
       if (this.totalQuantity > 0) {
         await this.checkProductQuantityIsAvailable();
         this.$router.push("/giao-hang");
         this.closeCartBar();
       } else {
-        alert("gio rong");
+        this.showNotification(["Giỏ hàng rỗng", false]);
       }
     },
     closeCartBar() {
@@ -88,6 +89,10 @@ export default {
             console.log("available_quantity", res.data);
             let newListProduct = this.setQuantityToAvailable(res.data, list);
             this.writeToLocalStorage(newListProduct);
+            let newTotalQuantity = this.getTotalQuantity(newListProduct);
+            if (this.totalQuantity != newTotalQuantity) {
+              // thong bao thay doi gio hang
+            }
           }
         );
       }

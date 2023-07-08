@@ -5,7 +5,7 @@
   >
     <div class="w-full md:w-2/3 xl:w-1/2 bg-white rounded-sm">
       <div
-        class="text-base bg-gray-100 underline px-7 py-2 rounded-t-md border-b-2 font-bold"
+        class="text-lg bg-gray-100 underline px-7 py-2 rounded-t-md border-b-2 font-bold"
       >
         Thông báo
       </div>

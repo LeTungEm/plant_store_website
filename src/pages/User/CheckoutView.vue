@@ -92,9 +92,7 @@ export default {
         console.log("this.order", this.order);
         console.log("this.orderTotal", this.orderTotal);
         console.log("this.orderDetails", this.orderDetails);
-      } else {
-        alert("gio hang rong");
-      }
+      } 
     },
     createOrderDetail(orderId) {
       console.log("start createOrderDetail");

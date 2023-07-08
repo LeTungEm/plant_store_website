@@ -7,7 +7,9 @@ const store = createStore({
             cartChangeNumber: 0,
             listSearch: [],
             loginStatus: true,
-            detailData: '',
+            notificationMessage: "",
+            notificationStatus: false,
+            isNotificationWarning: false,
         };
     },
     getters: {
@@ -23,8 +25,14 @@ const store = createStore({
         getUserLoginStatus(state) {
             return state.loginStatus;
         },
-        getDetailData(state) {
-            return state.detailData;
+        getNotificationStatus(state) {
+            return state.notificationStatus;
+        },
+        getNotificationMessage(state) {
+            return state.notificationMessage;
+        },
+        getIsNotificationWarning(state) {
+            return state.isNotificationWarning;
         },
 
     },
@@ -41,8 +49,10 @@ const store = createStore({
         setUserLoginStatus(state, loginStatus) {
             state.loginStatus = loginStatus;
         },
-        setDetailData(state, detailData) {
-            state.detailData = detailData;
+        showNotification(state, notificationMessage) {
+            state.notificationMessage = notificationMessage[0];
+            state.isNotificationWarning = notificationMessage[1];
+            state.notificationStatus = !state.notificationStatus;
         },
     },
     actions: {
@@ -58,8 +68,8 @@ const store = createStore({
         setUserLoginStatus({ commit }, loginStatus) {
             commit('setUserLoginStatus', loginStatus);
         },
-        setDetailData({ commit }, detailData) {
-            commit('setDetailData', detailData);
+        showNotification({ commit }, notificationMessage = []) {
+            commit('showNotification', notificationMessage);
         },
     }
 })

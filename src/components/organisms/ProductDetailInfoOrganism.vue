@@ -131,6 +131,8 @@ export default {
   },
   methods: {
     ...mapActions(["changeCartChangeNumber"]),
+    ...mapActions(["showNotification"]),
+
 
     changePlanter(planterId) {
       this.currentToolId = planterId;
@@ -248,7 +250,7 @@ export default {
         newList[productPosition].maximumQuantity
       );
       if (maximumStatus) {
-        alert("Tối đa rồi!!!");
+        this.showNotification(['Đã đạt giá trị tối đa', false]);
       } else {
         newList[productPosition].quantity += productItem.quantity;
         this.changeCartChangeNumber(1);
