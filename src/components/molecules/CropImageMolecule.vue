@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import { normalizeString } from "@/assets/js/quickFunction";
 import { Cropper } from "vue-advanced-cropper";
 import "vue-advanced-cropper/dist/style.css";
 // import UploadFile from "@/service/UploadFile";
@@ -100,8 +101,9 @@ export default {
         let objectImage = {
           url: this.img,
           blob: this.blob,
-          name: name + this.imageName.replace(/ /g, ""),
+          name: name + normalizeString(this.imageName),
         };
+        
         this.$emit("changeImage", objectImage);
         this.img = "";
         this.imageName = "";

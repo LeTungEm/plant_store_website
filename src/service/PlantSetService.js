@@ -22,6 +22,22 @@ class PlantSetService {
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
+    deletePlantSetByPlantSetId(listPlantSetRemoveId) {
+        let formData = new FormData();
+        let jsonArrId = JSON.stringify(listPlantSetRemoveId);
+        formData.append('action', 'deletePlantSetByPlantSetId');
+        formData.append('listPlantSetRemoveId', jsonArrId);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
+    updatePlantSet(listVariant) {
+        let formData = new FormData();
+        let jsonArr = JSON.stringify(listVariant);
+        formData.append('action', 'updatePlantSet');
+        formData.append('listVariant', jsonArr);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
     setStatusByPlantId(status, plantId) {
         let formData = new FormData();
         formData.append('action', 'setStatusByPlantId');

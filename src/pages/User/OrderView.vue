@@ -1,10 +1,10 @@
 <template>
-  <h1>Dich Vu</h1>
+  <div>order</div>
 </template>
 
 <script>
 export default {
-  name: "ServiceView",
+  name: "OrderView",
 };
 </script>
 

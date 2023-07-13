@@ -13,7 +13,7 @@
         <router-link to="/nguoi-dung/thong-tin">Thông tin</router-link>
       </li>
       <li @click="closeAccountUserBar">
-        <router-link to="/">Đơn hàng</router-link>
+        <router-link to="/don-hang">Đơn hàng</router-link>
       </li>
       <li @click="logout">Đăng xuất</li>
     </ul>

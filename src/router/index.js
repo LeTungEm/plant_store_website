@@ -52,14 +52,20 @@ const routes = [
     component: () => import('../pages/User/AboutView.vue')
   },
   {
-    name: 'service',
-    path: '/dich-vu',
-    component: () => import('../pages/User/ServiceView.vue')
+    name: 'news',
+    path: '/tin-tuc',
+    component: () => import('../pages/User/NewsView.vue')
   },
   {
     name: 'checkout',
     path: '/giao-hang',
     component: () => import('../pages/User/CheckoutView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    name: 'order',
+    path: '/don-hang',
+    component: () => import('../pages/User/OrderView.vue'),
     meta: { requiresAuth: true }
   },
   {

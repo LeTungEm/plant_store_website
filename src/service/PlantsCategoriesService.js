@@ -21,6 +21,15 @@ class PlantsCategoriesService {
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
+    updatePlantCategoriesByPlantId(plantId, listCategory = []) {
+        let jsonArr = JSON.stringify(listCategory);
+        let formData = new FormData();
+        formData.append('action', 'updatePlantCategoriesByPlantId');
+        formData.append('plantId', plantId);
+        formData.append('listCategory', jsonArr);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
     deletePlantCategoriesByPlantId(plantId) {
         let formData = new FormData();
         formData.append('action', 'deletePlantCategoriesByPlantId');

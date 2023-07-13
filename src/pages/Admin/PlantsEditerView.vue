@@ -60,8 +60,10 @@ export default {
       let arrTool = JSON.parse(toolVariants);
       this.toolVariants = arrTool;
       this.arrayImage = arrayImage;
-      this.uploadPlantImage();
+      this.loadingStatus = true;
+      await this.uploadPlantImage();
       if (slug == 0) {
+        // insert
         console.log("them cay");
         let insertResult = await this.insertPlant();
         if (insertResult) {
@@ -69,14 +71,14 @@ export default {
         }
       } else {
         // update
-        console.log("update cay");
-        // updatecay
-        // updateCategoriesPlant
-        // them bien the moi
-        console.log(this.pickedCategories);
+        await this.updatePlant();
+        await this.updatePlantCategoriesByPlantId();
+        await this.insertPlantSet(this.plant.plant_id, this.plant.price);
+        this.loadingStatus = false;
+        this.$router.push("/quan-ly/quan-ly-cay");
       }
     },
-    uploadPlantImage() {
+    async uploadPlantImage() {
       console.log("=====upload image");
       let arrImage = [...this.arrayImage, this.objectImage];
       let arrBlob = [];
@@ -92,20 +94,33 @@ export default {
       });
 
       if (arrBlob.length > 0) {
-        UploadFile.uploadImage(arrBlob, arrName).then((res) => {
-          if (res.data.message == false) {
-            this.showNotification("Tải ảnh thất bại !!!");
-          }
-        });
+        let result = await UploadFile.uploadImage(arrBlob, arrName);
+        if(result.data.message == false){
+          this.showNotification("Tải ảnh thất bại !!!");
+        }
       }
     },
-    updatePlant() {
-      //
+    async updatePlant() {
+      await PlantsService.updatePlant(
+        this.plant.name,
+        this.plant.slug,
+        this.plant.price,
+        this.plant.description,
+        this.plant.fun_fact,
+        this.plant.status,
+        this.plant.image,
+        this.plant.light,
+        this.plant.pet_friendly,
+        this.plant.water,
+        this.plant.sad_plant_signs,
+        this.plant.supplier_id,
+        this.plant.quantity,
+        this.plant.plant_id
+      );
     },
     async insertPlant() {
       console.log("bat dau them");
       let result = false;
-      this.loadingStatus = true;
       let resultMessage = await PlantsService.insertPlant(
         this.plant.name,
         this.plant.slug,
@@ -136,17 +151,26 @@ export default {
     },
 
     async insertPlantSet(plantId, plantPrice) {
-      await PlantSetService.insertPlantSet(
-        plantId,
-        plantPrice,
-        this.toolVariants
-      );
+      if (this.toolVariants.length > 0) {
+        await PlantSetService.insertPlantSet(
+          plantId,
+          plantPrice,
+          this.toolVariants
+        );
+      }
     },
 
     async insertCategories(plantId, listCategories) {
       await PlantsCategoriesService.insertPlantCategories(
         plantId,
         listCategories
+      );
+    },
+
+    async updatePlantCategoriesByPlantId() {
+      await PlantsCategoriesService.updatePlantCategoriesByPlantId(
+        this.plant.plant_id,
+        this.pickedCategories
       );
     },
 

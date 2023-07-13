@@ -87,6 +87,27 @@ class PlantsService {
 
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
+
+    updatePlant(name, slug, price, description, fun_fact, status, image, light, pet_friendly, water, sad_plant_signs, supplier_id, quantity, plant_id) {
+        let formData = new FormData();
+        formData.append('action', 'updatePlant');
+        formData.append('name', name);
+        formData.append('slug', slug);
+        formData.append('price', price);
+        formData.append('description', description);
+        formData.append('fun_fact', fun_fact);
+        formData.append('status', status);
+        formData.append('image', image);
+        formData.append('light', light);
+        formData.append('pet_friendly', pet_friendly);
+        formData.append('water', water);
+        formData.append('sad_plant_signs', sad_plant_signs);
+        formData.append('supplier_id', supplier_id);
+        formData.append('quantity', quantity);
+        formData.append('plant_id', plant_id);
+
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
 }
 
 export default new PlantsService();

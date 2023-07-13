@@ -38,9 +38,9 @@
       </router-link>
     </li>
     <li :onclick="closeMenu" class="py-1 ml-5 border-b xl:border-0 group">
-      <router-link class="block" to="/dich-vu">
+      <router-link class="block" to="/tin-tuc">
         <font-awesome-icon class="group-hover:animate-bounce duration-1000" :icon="['fas', 'compass-drafting']" />
-        &nbsp;Dịch vụ
+        &nbsp;Tin tức
       </router-link>
     </li>
   </ul>

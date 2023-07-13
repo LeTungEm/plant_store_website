@@ -350,6 +350,7 @@ export default {
         this.plant.image = "plants/" + objectImage.name;
         this.objectImage.name = this.plant.image;
       } else this.objectImage.name = this.plant.image;
+      console.log('plant image', this.objectImage);
       this.changeCropImageStatus();
     },
     getData() {

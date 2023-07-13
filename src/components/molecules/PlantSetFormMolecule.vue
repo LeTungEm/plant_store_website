@@ -43,8 +43,6 @@
         />
       </div>
     </div>
-    {{ arrayImage }}
-    {{ oldVariantsArrayImage }}
     <div
       v-bind:class="cropImageStatus ? 'flex' : 'hidden'"
       class="fixed inset-0 bg-black bg-opacity-80 z-[25] justify-center items-center p-5"
@@ -60,6 +58,7 @@
         <CropImageMolecule @changeImage="changeImage" class="bg-black" />
       </div>
     </div>
+    {{ oldVariantsArrayImage }}
   </div>
 </template>
 
@@ -70,6 +69,7 @@ import GreenButtonAtom from "../atoms/button/GreenButtonAtom.vue";
 import CropImageMolecule from "./CropImageMolecule.vue";
 import PlantsService from "@/service/PlantsService";
 import PlantVariantMolecule from "./PlantVariantMolecule.vue";
+import PlantSetService from "@/service/PlantSetService";
 
 export default {
   name: "PlantSetFormMolecule",
@@ -108,19 +108,38 @@ export default {
     changeSalePriceOfNewVariant(isSale, salePrice, index) {
       this.toolVariants[index].is_sale = isSale;
       this.toolVariants[index].sale_price = salePrice;
-      console.log(this.toolVariants[index], 'doi gia sale');
+      console.log(this.toolVariants[index], "doi gia sale");
     },
     changeSalePriceOfOldVariant(isSale, salePrice, index) {
       this.oldVariants[index].is_sale = isSale;
       this.oldVariants[index].sale_price = salePrice;
     },
     savePlant() {
-      this.$emit(
-        "savePlant",
-        JSON.stringify(this.toolVariants),
-        this.arrayImage
-      );
+      this.$emit("savePlant", JSON.stringify(this.toolVariants), [
+        ...this.arrayImage,
+        ...this.oldVariantsArrayImage,
+      ]);
+      this.changeOldVariant();
     },
+    async changeOldVariant() {
+      if (this.$route.params.slug != 0) {
+        console.log(this.oldVariants);
+        await this.updateVariant();
+        await this.deleteVariant();
+      }
+    },
+    async deleteVariant() {
+      if (this.plantSetIdsRemoved.length > 0)
+        await PlantSetService.deletePlantSetByPlantSetId(
+          this.plantSetIdsRemoved
+        );
+    },
+
+    async updateVariant() {
+      if (this.oldVariants.length > 0)
+        await PlantSetService.updatePlantSet(this.oldVariants);
+    },
+
     changeImage(objectImage) {
       if (this.currentChangeImageIndex != null) {
         this.arrayImage[this.currentChangeImageIndex] = objectImage;
@@ -132,7 +151,9 @@ export default {
         this.oldVariantsArrayImage[this.currentChangeOldImageIndex] =
           objectImage;
         this.oldVariants[this.currentChangeOldImageIndex].image =
-          objectImage.name;
+          "plants/" + objectImage.name;
+        this.oldVariantsArrayImage[this.currentChangeOldImageIndex].name =
+          "plants/" + objectImage.name;
       }
       this.currentChangeImageIndex = null;
       this.currentChangeOldImageIndex = null;
