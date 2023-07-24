@@ -46,7 +46,7 @@ export default {
       this.seltStatus = true;
       this.timeOutId = setTimeout(function () {
         self.seltStatus = false;
-      }, 3000);
+      }, 2500);
     },
   },
 };

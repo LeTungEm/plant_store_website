@@ -4,17 +4,23 @@
       Tạo đơn hàng
     </h1>
     <h1 v-else class="text-2xl">Cập nhật đơn hàng</h1>
-    <AdmFormInsertOrderOrganism v-if="this.$route.params.orderId == 0"/>
+    <AdmFormInsertOrderOrganism />
   </div>
 </template>
 
 <script>
-import AdmFormInsertOrderOrganism from '@/components/organisms/AdmFormInsertOrderOrganism.vue';
+import AdmFormInsertOrderOrganism from "@/components/organisms/AdmFormInsertOrderOrganism.vue";
 
 export default {
-  components: { AdmFormInsertOrderOrganism },
   name: "OrdersEditerView",
-  
+  data() {
+    return {
+    };
+  },
+  components: { AdmFormInsertOrderOrganism },
+  methods: {
+    
+  },
 };
 </script>
 

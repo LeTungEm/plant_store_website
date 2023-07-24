@@ -75,7 +75,7 @@
       </div>
     </div>
     <hr class="my-5" />
-    <h1 class="text-lg mb-5">Sản phẩm đã chọn</h1>
+    <h1 class="text-lg font-bold mb-5">Sản phẩm đã chọn</h1>
     <div class="flex flex-wrap gap-5">
       <div
         class="border rounded-md p-2"
@@ -83,7 +83,10 @@
         :key="product.name"
       >
         <div>
-          {{ product.name }}
+          {{
+            product.name +
+            (product.variant_name ? " / " + product.variant_name : "")
+          }}
         </div>
         <div class="flex flex-wrap justify-between items-center">
           <PriceTextAtom :minPrice="product.price" :maxPrice="product.price" />
@@ -101,7 +104,12 @@
         />
       </div>
     </div>
+    <div class="text-2xl text-green-700 mt-5">
+      Tổng cộng:
+      <PriceTextAtom class="inline-block" :minPrice="total" :maxPrice="total" />
+    </div>
     <hr class="my-5" />
+    <h1 class="text-lg font-bold mb-5">Kết quả tìm kiếm</h1>
     <div
       v-if="products.length > 0"
       class="grid grid-cols-1 xl:grid-cols-2 gap-10"
@@ -147,6 +155,7 @@ import QuantityBarMolecule from "./QuantityBarMolecule.vue";
 import ColorsService from "@/service/ColorsService";
 import PriceTextAtom from "../atoms/text/PriceTextAtom.vue";
 import PlantSetService from "@/service/PlantSetService";
+import OrderDetailService from "@/service/OrderDetailService";
 
 export default {
   name: "PlantSetPickerMolecule",
@@ -160,6 +169,7 @@ export default {
       productType: 0,
       selectedList: [],
       selectedPlantSetId: [],
+      total: 0,
     };
   },
   watch: {
@@ -176,13 +186,25 @@ export default {
       this.getAllProduct();
     },
   },
+  emits: ["changeTotal", "changeListProduct"],
   methods: {
+    getTotal() {
+      let total = 0;
+      this.selectedList.forEach((product) => {
+        total += product.quantity * product.price;
+      });
+      this.total = total;
+      this.$emit("changeTotal", total);
+      this.$emit("changeListProduct", this.selectedList);
+    },
     removeProduct(index) {
       this.selectedList.splice(index, 1);
       this.selectedPlantSetId.splice(index, 1);
+      this.getTotal();
     },
     changeProductQuantity(event, index) {
       this.selectedList[index].quantity = event;
+      this.getTotal();
     },
     selectProduct(product) {
       if (this.isProductInList(product.plant_set_id) == false) {
@@ -190,6 +212,7 @@ export default {
         product.plantSetId = product.plant_set_id;
         this.selectedList.push(product);
         this.selectedPlantSetId.push(product.plant_set_id);
+        this.getTotal();
       }
     },
     isProductInList(plantSetId) {
@@ -210,14 +233,28 @@ export default {
     getAllColors() {
       ColorsService.getAll().then((res) => {
         this.colors = res.data;
-        if (res.data.length > 0) {
-          this.colorPickedId = res.data[0].color_id;
-        }
       });
+    },
+    async getAllByOrderId() {
+      let orderId = this.$route.params.orderId;
+      if (orderId != 0) {
+        await OrderDetailService.getByOrderId(orderId).then(async (res) => {
+          this.selectedList = res.data;
+          await this.updateSelectedPlantSetId(res.data);
+        });
+      }
+    },
+    async updateSelectedPlantSetId(ListPlantSet) {
+      let arrId = [];
+      await ListPlantSet.forEach((product) => {
+        arrId.push(product.plantSetId);
+      });
+      this.selectedPlantSetId = arrId;
     },
   },
   components: { PriceTextAtom, QuantityBarMolecule },
-  created() {
+  async created() {
+    await this.getAllByOrderId();
     this.getAllProduct();
     this.getAllColors();
   },
