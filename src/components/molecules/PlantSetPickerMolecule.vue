@@ -22,6 +22,7 @@
             v-model="colorPickedId"
             class="border rounded-md w-full outline-0 focus:outline-2 focus:outline-green-700 py-1 lg:py-2 px-2 lg:px-4"
           >
+          <option value="0">Tất cả</option>
             <option
               v-for="color in colors"
               :key="color"
