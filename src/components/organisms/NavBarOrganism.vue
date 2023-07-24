@@ -54,7 +54,6 @@
     >
       &nbsp;
     </div>
-    <NotificationAtom :isWarning="getIsNotificationWarning" :status="getNotificationStatus" :text="getNotificationMessage"/>
   </div>
 </template>
 
@@ -66,7 +65,6 @@ import LogoAtom from "../atoms/LogoAtom.vue";
 import AccountUserBarOrganism from "./AccountUserBarOrganism.vue";
 import SearchBarOrganisms from "./SearchBarOrganisms.vue";
 import CartBarOrganisms from "./CartBarOrganisms.vue";
-import NotificationAtom from '../atoms/NotificationAtom.vue';
 
 export default {
   name: "NavBarOrganism",
@@ -91,14 +89,10 @@ export default {
     SearchBarOrganisms,
     CartBarOrganisms,
     AccountUserBarOrganism,
-    NotificationAtom,
   },
   computed: {
     ...mapGetters(["getCartChangeNumber"]),
     ...mapGetters(["getUserLoginStatus"]),
-    ...mapGetters(["getNotificationStatus"]),
-    ...mapGetters(["getNotificationMessage"]),
-    ...mapGetters(["getIsNotificationWarning"]),
   },
   methods: {
     changeMainMenuStatus() {

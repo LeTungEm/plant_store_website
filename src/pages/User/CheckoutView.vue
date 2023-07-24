@@ -20,7 +20,6 @@ import LogoAtom from "@/components/atoms/LogoAtom.vue";
 import LoadingAtom from "@/components/atoms/LoadingAtom.vue";
 import OrderService from "@/service/OrderService";
 import OrderDetailService from "@/service/OrderDetailService";
-import PlantSetService from "@/service/PlantSetService";
 export default {
   components: {
     CheckoutUserOrganism,
@@ -78,7 +77,6 @@ export default {
           .then((res) => {
             if (res.data.message) {
               this.createOrderDetail(res.data.orderId);
-              console.log("orderId", res.data.orderId);
             }
           })
           .catch((err) => {
@@ -87,18 +85,12 @@ export default {
           })
           .finally(() => {
             this.success++;
-            console.log("createOrder");
           });
-        console.log("this.order", this.order);
-        console.log("this.orderTotal", this.orderTotal);
-        console.log("this.orderDetails", this.orderDetails);
       } 
     },
     createOrderDetail(orderId) {
-      console.log("start createOrderDetail");
       OrderDetailService.createOrderDetail(orderId, this.orderDetails)
         .then((res) => {
-          console.log(res.data);
           if (res.data.message) {
             localStorage.removeItem("CTUR");
             this.$router.push("/");
@@ -106,7 +98,6 @@ export default {
         })
         .finally(() => {
           this.success++;
-          console.log("createOrderDetail");
         });
     },
     getOrderInfo(orderInfo) {
@@ -121,10 +112,6 @@ export default {
     changeLoadingStatus(status) {
       this.loadingStatus = status;
     },
-  },
-  async created() {
-    let a = await PlantSetService.decreateQuantityWhenBuyPlant(2, 2);
-    console.log(a);
   },
 };
 </script>

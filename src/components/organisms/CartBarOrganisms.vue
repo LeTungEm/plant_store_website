@@ -24,6 +24,20 @@
         :productType="product.type"
       />
     </div>
+    <div
+      class="w-full h-1/3 flex justify-center items-center"
+      v-if="list.length < 1"
+    >
+      <div class="p-5">
+        <h1 class="text-3xl text-center">Bạn hiện chưa có đơn hàng nào.</h1>
+        <h2
+          @click="toShop"
+          class="text-xl text-green-700 text-center cursor-pointer"
+        >
+          Mua hàng ngay
+        </h2>
+      </div>
+    </div>
     <div class="sticky bottom-0 w-full bg-white pb-5 mt-10 z-10">
       <GreenButtonAtom
         @click="checkout"
@@ -63,6 +77,10 @@ export default {
     ...mapGetters(["getCartChangeNumber"]),
   },
   methods: {
+    toShop(){
+      this.$router.push('/cua-hang/cay');
+      this.closeCartBar();
+    },
     ...mapActions(["showNotification"]),
     async checkout() {
       if (this.totalQuantity > 0) {
@@ -86,7 +104,6 @@ export default {
         let plantSetIdArr = this.getListPlantSetId(list);
         await PlantSetService.getAvailableQuantity(plantSetIdArr).then(
           (res) => {
-            console.log("available_quantity", res.data);
             let newListProduct = this.setQuantityToAvailable(res.data, list);
             this.writeToLocalStorage(newListProduct);
             let newTotalQuantity = this.getTotalQuantity(newListProduct);

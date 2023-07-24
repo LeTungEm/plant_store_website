@@ -63,10 +63,16 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    name: 'orderDetail',
+    path: '/don-hang/chi-tiet/:orderId',
+    component: () => import('../pages/User/OrderDetailView.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
     name: 'order',
     path: '/don-hang',
     component: () => import('../pages/User/OrderView.vue'),
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
   {
     name: 'admin',
@@ -87,6 +93,21 @@ const routes = [
         name: 'plantManager',
         path: 'quan-ly-cay',
         component: () => import('../pages/Admin/PlantsManagerView.vue'),
+      },
+      {
+        name: 'toolsManager',
+        path: 'quan-ly-chau',
+        component: () => import('../pages/Admin/ToolsManagerView.vue'),
+      },
+      {
+        name: 'OrderForm',
+        path: 'quan-ly-don-hang/:orderId',
+        component: () => import('../pages/Admin/OrdersEditerView.vue'),
+      },
+      {
+        name: 'ordersManager',
+        path: 'quan-ly-don-hang',
+        component: () => import('../pages/Admin/OrderManagerView.vue'),
       },
     ],
   },

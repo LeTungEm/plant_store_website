@@ -133,7 +133,6 @@ export default {
           }
         });
       }
-      // console.log(this.product);
     },
 
     changeCurrentIndex(currentIndex) {

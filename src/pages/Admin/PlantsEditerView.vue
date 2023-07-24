@@ -13,31 +13,25 @@
       @savePlant="savePlant"
       v-bind:class="isFinalForm ? '' : 'hidden'"
     />
-    <NotificationAtom
-      isWarning
-      :status="notificationStatus"
-      :text="notificationMessage"
-    />
+
     <LoadingAtom :status="loadingStatus" />
   </div>
 </template>
 
 <script>
 import PlantFormMolecule from "@/components/molecules/PlantFormMolecule.vue";
-import NotificationAtom from "@/components/atoms/NotificationAtom.vue";
 import PlantSetFormMolecule from "@/components/molecules/PlantSetFormMolecule.vue";
 import PlantsService from "@/service/PlantsService";
 import PlantSetService from "@/service/PlantSetService";
 import UploadFile from "@/service/UploadFile";
 import PlantsCategoriesService from "@/service/PlantsCategoriesService";
 import LoadingAtom from "@/components/atoms/LoadingAtom.vue";
+import { mapActions } from "vuex";
 
 export default {
   name: "PlantsEditerView",
   data() {
     return {
-      notificationMessage: "",
-      notificationStatus: false,
       loadingStatus: false,
       isFinalForm: false,
       pickedPlanters: [],
@@ -51,10 +45,11 @@ export default {
   components: {
     PlantFormMolecule,
     PlantSetFormMolecule,
-    NotificationAtom,
     LoadingAtom,
   },
   methods: {
+    ...mapActions(["showNotification"]),
+
     async savePlant(toolVariants, arrayImage) {
       let slug = this.$route.params.slug;
       let arrTool = JSON.parse(toolVariants);
@@ -64,7 +59,6 @@ export default {
       await this.uploadPlantImage();
       if (slug == 0) {
         // insert
-        console.log("them cay");
         let insertResult = await this.insertPlant();
         if (insertResult) {
           this.$router.push("/quan-ly/quan-ly-cay");
@@ -79,7 +73,6 @@ export default {
       }
     },
     async uploadPlantImage() {
-      console.log("=====upload image");
       let arrImage = [...this.arrayImage, this.objectImage];
       let arrBlob = [];
       let arrName = [];
@@ -96,7 +89,8 @@ export default {
       if (arrBlob.length > 0) {
         let result = await UploadFile.uploadImage(arrBlob, arrName);
         if(result.data.message == false){
-          this.showNotification("Tải ảnh thất bại !!!");
+          this.showNotification(['Tải ảnh thất bại !!!', true]);
+
         }
       }
     },
@@ -119,7 +113,6 @@ export default {
       );
     },
     async insertPlant() {
-      console.log("bat dau them");
       let result = false;
       let resultMessage = await PlantsService.insertPlant(
         this.plant.name,
@@ -182,14 +175,6 @@ export default {
       this.pickedCategories = pickedCategories;
       this.pickedPlanters = pickedPlanters;
       this.plant = plant;
-      console.log("objectImage", objectImage);
-      console.log("pickedCategories", pickedCategories);
-      console.log("pickedPlanters", pickedPlanters);
-      console.log("plant", plant);
-    },
-    showNotification(message) {
-      this.notificationMessage = message;
-      this.notificationStatus = !this.notificationStatus;
     },
   },
 };

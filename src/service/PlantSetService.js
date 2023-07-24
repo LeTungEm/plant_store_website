@@ -5,6 +5,18 @@ const PRODUCT_API_URL =
 
 class PlantSetService {
 
+    getAll(price, colorId, productType, name, selectedId) {
+        let selectedIdJson = JSON.stringify(selectedId);
+        let formData = new FormData();
+        formData.append('action', 'getAll');
+        formData.append('price', price);
+        formData.append('colorId', colorId);
+        formData.append('productType', productType);
+        formData.append('name', name);
+        formData.append('selectedId', selectedIdJson);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
     insertPlantSet(plantId, plantPrice, listTool) {
         let formData = new FormData();
         let listJson = JSON.stringify(listTool);
@@ -30,11 +42,12 @@ class PlantSetService {
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
-    updatePlantSet(listVariant) {
+    updatePlantSet(listVariant, plantPrice) {
         let formData = new FormData();
         let jsonArr = JSON.stringify(listVariant);
         formData.append('action', 'updatePlantSet');
         formData.append('listVariant', jsonArr);
+        formData.append('plantPrice', plantPrice);
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
@@ -43,6 +56,14 @@ class PlantSetService {
         formData.append('action', 'setStatusByPlantId');
         formData.append('status', status);
         formData.append('plantId', plantId);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
+    setStatusByToolId(status, toolId) {
+        let formData = new FormData();
+        formData.append('action', 'setStatusByToolId');
+        formData.append('status', status);
+        formData.append('toolId', toolId);
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 

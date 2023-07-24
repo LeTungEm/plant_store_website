@@ -58,7 +58,6 @@
         <CropImageMolecule @changeImage="changeImage" class="bg-black" />
       </div>
     </div>
-    {{ oldVariantsArrayImage }}
   </div>
 </template>
 
@@ -108,7 +107,6 @@ export default {
     changeSalePriceOfNewVariant(isSale, salePrice, index) {
       this.toolVariants[index].is_sale = isSale;
       this.toolVariants[index].sale_price = salePrice;
-      console.log(this.toolVariants[index], "doi gia sale");
     },
     changeSalePriceOfOldVariant(isSale, salePrice, index) {
       this.oldVariants[index].is_sale = isSale;
@@ -123,7 +121,6 @@ export default {
     },
     async changeOldVariant() {
       if (this.$route.params.slug != 0) {
-        console.log(this.oldVariants);
         await this.updateVariant();
         await this.deleteVariant();
       }
@@ -137,7 +134,7 @@ export default {
 
     async updateVariant() {
       if (this.oldVariants.length > 0)
-        await PlantSetService.updatePlantSet(this.oldVariants);
+        await PlantSetService.updatePlantSet(this.oldVariants, this.plant.price);
     },
 
     changeImage(objectImage) {
@@ -175,7 +172,6 @@ export default {
     },
     getPlanters() {
       ToolsService.getVariantsByIds(this.planterIds).then((res) => {
-        console.log(res.data, "planter");
         this.toolVariants = res.data;
         this.getOldVariants();
       });

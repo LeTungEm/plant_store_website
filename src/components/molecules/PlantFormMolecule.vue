@@ -206,11 +206,6 @@
         </div>
       </div>
     </div>
-    <NotificationAtom
-      isWarning
-      :status="notificationStatus"
-      :text="notificationMessage"
-    />
   </div>
 </template>
 
@@ -220,16 +215,14 @@ import PlanterPickerMolecule from "./PlanterPickerMolecule.vue";
 import SuppliersService from "@/service/SuppliersService";
 import CategoriesService from "@/service/CategoriesService";
 import GreenButtonAtom from "../atoms/button/GreenButtonAtom.vue";
-import NotificationAtom from "../atoms/NotificationAtom.vue";
 import { normalizeString } from "@/assets/js/quickFunction";
 import PlantsService from "@/service/PlantsService";
+import { mapActions } from "vuex";
 
 export default {
   name: "PlantFormMolecule",
   data() {
     return {
-      notificationMessage: "",
-      notificationStatus: false,
       cropImageStatus: false,
       objectImage: {
         url: "",
@@ -264,14 +257,11 @@ export default {
     PlanterPickerMolecule,
     CropImageMolecule,
     GreenButtonAtom,
-    NotificationAtom,
   },
   emits: ["toNextForm", "insertData"],
   methods: {
-    showNotification(message) {
-      this.notificationMessage = message;
-      this.notificationStatus = !this.notificationStatus;
-    },
+    ...mapActions(["showNotification"]),
+
     async toNextForm() {
       if (await this.validateForm()) {
         this.$emit("toNextForm");
@@ -287,20 +277,21 @@ export default {
     async validateForm() {
       let slug = this.$route.params.slug;
       if (this.isFullRequirementsField() == false) {
-        this.showNotification("Hãy điền các trường bắt buộc !!!");
+        this.showNotification(["Hãy điền các trường bắt buộc !!!", true]);
         return false;
       } else if (this.isPriceCorrect() == false) {
-        this.showNotification("Giá phải lớn hơn 0 !!!");
+        this.showNotification(["Giá phải lớn hơn 0 !!!", true]);
+
         return false;
       } else if (this.isQuantityCorrect() == false) {
-        this.showNotification("Số lượng phải lớn hơn 0 !!!");
+        this.showNotification(["Số lượng phải lớn hơn 0 !!!", true]);
         return false;
       } else if ((await this.isSlugExist()) == true) {
         if (slug == 0) {
-          this.showNotification("Đường dẫn đã tồn tại !!!");
+          this.showNotification(["Đường dẫn đã tồn tại !!!", true]);
           return false;
         } else if (slug != 0 && slug != this.plant.slug) {
-          this.showNotification("Đường dẫn đã tồn tại !!!");
+          this.showNotification(["Đường dẫn đã tồn tại !!!", true]);
           return false;
         }
       }
@@ -311,8 +302,8 @@ export default {
       if (
         plant.name &&
         plant.slug &&
-        plant.price >= 0 &&
-        plant.quantity >= 0 &&
+        plant.price &&
+        plant.quantity &&
         this.pickedPlanters.length > 0 &&
         plant.supplier_id
       ) {
@@ -338,7 +329,6 @@ export default {
       this.plant.slug = nomalString.replace(/ /g, "-");
     },
     changePickedPlanter(planterIds) {
-      console.log(planterIds);
       this.pickedPlanters = planterIds;
     },
     changeCropImageStatus() {
@@ -350,7 +340,6 @@ export default {
         this.plant.image = "plants/" + objectImage.name;
         this.objectImage.name = this.plant.image;
       } else this.objectImage.name = this.plant.image;
-      console.log('plant image', this.objectImage);
       this.changeCropImageStatus();
     },
     getData() {

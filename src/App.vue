@@ -10,17 +10,34 @@
     <NavBarOrganism />
     <router-view />
   </div>
+  <NotificationAtom
+    :isWarning="getIsNotificationWarning"
+    :status="getNotificationStatus"
+    :text="getNotificationMessage"
+  />
 </template>
 
 <script>
 import SubNavBarOrganism from "./components/organisms/SubNavBarOrganism.vue";
 import NavBarOrganism from "./components/organisms/NavBarOrganism.vue";
 import AdminTemplete from "./components/templates/AdminTemplete.vue";
+import NotificationAtom from "./components/atoms/NotificationAtom.vue";
+import { mapGetters } from "vuex";
 // import { getEmail } from "./assets/js/quickFunction";
 // import AccountsService from "./service/AccountsService";
 export default {
   name: "App",
-  components: { NavBarOrganism, SubNavBarOrganism, AdminTemplete },
+  components: {
+    NavBarOrganism,
+    SubNavBarOrganism,
+    AdminTemplete,
+    NotificationAtom,
+  },
+  computed: {
+    ...mapGetters(["getNotificationStatus"]),
+    ...mapGetters(["getNotificationMessage"]),
+    ...mapGetters(["getIsNotificationWarning"]),
+  },
   methods: {
     isAdmin() {
       if (this.$route.matched.some((route) => route.name == "admin")) {
@@ -28,6 +45,7 @@ export default {
       }
       return false;
     },
+
     // checkLogin() {
     //   let email = getEmail();
     //   if (email != null) {

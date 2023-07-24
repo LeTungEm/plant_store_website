@@ -1,7 +1,7 @@
 <template>
   <div>
     <hr />
-    <DetailPropertyHeaderAtom :onclick="changeStatus" :text="title" />
+    <DetailPropertyHeaderAtom class="cursor-pointer" :onclick="changeStatus" :text="title" />
     <div class="md:text-xl" v-bind:class="status ? '' : 'hidden'">
       <slot></slot>
     </div>

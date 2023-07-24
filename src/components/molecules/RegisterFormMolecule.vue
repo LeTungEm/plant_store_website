@@ -85,27 +85,20 @@
       </span>
     </div>
     <GreenButtonAtom class="w-full py-3" :text="'Đăng ký'" />
-    <NotificationAtom
-      isWarning
-      :status="notificationStatus"
-      :text="notificationMessage"
-    />
   </form>
 </template>
 
 <script>
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import GreenButtonAtom from "../atoms/button/GreenButtonAtom.vue";
-import NotificationAtom from "../atoms/NotificationAtom.vue";
 import AccountsService from "@/service/AccountsService";
 import { getCurrentTime } from "@/assets/js/quickFunction";
+import { mapActions } from "vuex";
 
 export default {
   name: "RegisterFormMolecule",
   data() {
     return {
-      notificationMessage: "",
-      notificationStatus: false,
       hiddenPassW: true,
       name: "",
       nameErr: false,
@@ -124,52 +117,29 @@ export default {
   props: {
     isLogin: Boolean,
   },
-  watch: {
-    date: function () {
-      // this.formatDate();
-    },
-  },
   methods: {
-    formatDate() {
-      let dateLength = this.date.length;
-      if (
-        dateLength == 2 &&
-        this.date[0] != "-" &&
-        this.date[1] != "-" &&
-        this.date[2] != "-"
-      ) {
-        this.date += "-";
-      }
-      if (dateLength == 3) {
-        this.$refs.date.setSelectionRange(this.date.length, this.date.length);
-      }
-      console.log(this.date.length);
-    },
-    showNotification(message) {
-      this.notificationMessage = message;
-      this.notificationStatus = !this.notificationStatus;
-    },
+    ...mapActions(["showNotification"]),
     changePassWStatus() {
       this.hiddenPassW = !this.hiddenPassW;
     },
     isFullData() {
       let result = false;
       if (
-        this.name &&
+        this.name.trim() &&
         this.gender &&
-        this.email &&
+        this.email.trim() &&
         this.date &&
-        this.passW &&
-        this.rePassW
+        this.passW.trim() &&
+        this.rePassW.trim()
       ) {
         result = true;
       }
-      if (this.name == "") this.nameErr = true;
+      if (this.name.trim() == "") this.nameErr = true;
       if (this.gender == "") this.genderErr = true;
-      if (this.email == "") this.emailErr = true;
+      if (this.email.trim() == "") this.emailErr = true;
       if (this.date == "") this.dateErr = true;
-      if (this.passW == "") this.passWErr = true;
-      if (this.rePassW == "") this.rePassWErr = true;
+      if (this.passW.trim() == "") this.passWErr = true;
+      if (this.rePassW.trim() == "") this.rePassWErr = true;
       return result;
     },
     isPassWCorrect() {
@@ -177,10 +147,13 @@ export default {
       let passWLength = this.passW.length;
       let rePassLength = this.rePassW.length;
       if (passWLength < 8 && rePassLength < 8) {
-        this.showNotification("Mật khẩu phải lớn hơn hoặc bằng 8 ký tự !!!");
+        this.showNotification([
+          "Mật khẩu phải lớn hơn hoặc bằng 8 ký tự !!!",
+          true,
+        ]);
         return false;
       } else if (this.passW !== this.rePassW) {
-        this.showNotification("Mật khẩu hiện không giống nhau !!!");
+        this.showNotification(["Mật khẩu hiện không giống nhau !!!", true]);
         return false;
       } else if (
         this.passW.match(/[a-zA-Z]/) == null ||
@@ -188,7 +161,7 @@ export default {
         this.passW.match(/\d/) == null ||
         this.rePassW.match(/\d/) == null
       ) {
-        this.showNotification("Mật khẩu nên chứa cả chữ và số !!!");
+        this.showNotification(["Mật khẩu nên chứa cả chữ và số !!!", true]);
         return false;
       }
       return result;
@@ -200,7 +173,7 @@ export default {
           return false;
         }
       } else {
-        this.showNotification("Vui lòng điền đủ thông tin.");
+        this.showNotification(["Vui lòng điền đủ thông tin !!!", true]);
         return false;
       }
       return result;
@@ -225,7 +198,7 @@ export default {
           if (res.data.message == true) {
             this.$emit("isRegisterd", this.email);
           } else {
-            this.showNotification("Đăng ký không thành công !!!");
+            this.showNotification(["Đăng ký không thành công !!!", true]);
           }
         }
       });
@@ -235,7 +208,7 @@ export default {
         let isExist = this.isEmailExists(this.email);
         isExist.then((res) => {
           if (res) {
-            this.showNotification("Email đã tồn tại !!!");
+            this.showNotification(["Email đã tồn tại !!!", true]);
           } else {
             this.insertAccount();
           }
@@ -243,7 +216,7 @@ export default {
       }
     },
   },
-  components: { FontAwesomeIcon, GreenButtonAtom, NotificationAtom },
+  components: { FontAwesomeIcon, GreenButtonAtom },
   created() {
     this.date = getCurrentTime();
   },

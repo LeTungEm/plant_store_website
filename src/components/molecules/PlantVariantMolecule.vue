@@ -100,15 +100,7 @@ export default {
       this.$emit(
         "changeSalePrice",
         this.isSale ? 1 : 0,
-        this.salePrice,
-        this.index
-      );
-    },
-    isSale: function () {
-      this.$emit(
-        "changeSalePrice",
-        this.isSale ? 1 : 0,
-        this.salePrice,
+        this.salePrice == "" ? 0 : this.salePrice,
         this.index
       );
     },
@@ -126,13 +118,18 @@ export default {
   },
   emits: ["openCropImage", "changeSalePrice"],
   methods: {
-    changeSaleStatus(e){
+    changeSaleStatus(e) {
       let checked = e.target.checked;
       this.isSale = checked;
-      if(checked == false){
-        this.salePrice = '';
+      if (checked == false) {
+        this.salePrice = "";
       }
-      console.log('isSale', this.isSale);
+      this.$emit(
+        "changeSalePrice",
+        this.isSale ? 1 : 0,
+        this.salePrice == "" ? 0 : this.salePrice,
+        this.index
+      );
     },
     openCropImage(index) {
       this.$emit("openCropImage", index);

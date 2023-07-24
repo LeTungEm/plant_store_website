@@ -9,7 +9,10 @@
     >
       Thông báo
     </div>
-    <div v-bind:class="isWarning ? 'bg-white' : 'bg-white'" class="text-lg px-7 py-3  rounded-b-md ">
+    <div
+      v-bind:class="isWarning ? 'bg-white' : 'bg-white'"
+      class="text-lg px-7 py-3 rounded-b-md"
+    >
       {{ text }}
     </div>
   </div>
@@ -21,6 +24,7 @@ export default {
   data() {
     return {
       seltStatus: false,
+      timeOutId: null,
     };
   },
   props: {
@@ -35,11 +39,14 @@ export default {
   },
   methods: {
     onpenInTime() {
+      if (this.timeOutId) {
+        clearTimeout(this.timeoutId);
+      }
       let self = this;
       this.seltStatus = true;
-      setTimeout(function () {
+      this.timeOutId = setTimeout(function () {
         self.seltStatus = false;
-      }, 2500);
+      }, 3000);
     },
   },
 };

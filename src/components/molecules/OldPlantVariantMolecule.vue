@@ -53,6 +53,7 @@
               @change="changeSaleStatus"
               type="checkbox"
               class="m-auto w-full"
+              v-model="isSale"
             />
           </label>
         </div>
@@ -100,15 +101,7 @@ export default {
       this.$emit(
         "changeSalePrice",
         this.isSale ? 1 : 0,
-        this.salePrice,
-        this.index
-      );
-    },
-    isSale: function () {
-      this.$emit(
-        "changeSalePrice",
-        this.isSale ? 1 : 0,
-        this.salePrice,
+        this.salePrice == "" ? 0 : this.salePrice,
         this.index
       );
     },
@@ -132,7 +125,12 @@ export default {
       if (checked == false) {
         this.salePrice = "";
       }
-      console.log("isSale", this.isSale);
+      this.$emit(
+        "changeSalePrice",
+        this.isSale ? 1 : 0,
+        this.salePrice == "" ? 0 : this.salePrice,
+        this.index
+      );
     },
     openCropImage(index) {
       this.$emit("openCropImage", index);
@@ -146,7 +144,7 @@ export default {
       return false;
     },
   },
-  mounted() {
+  created() {
     this.isSale = this.toolVariant.is_sale == 1 ? true : false;
     this.salePrice = this.toolVariant.sale_price;
   },

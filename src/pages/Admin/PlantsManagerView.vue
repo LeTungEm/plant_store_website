@@ -20,6 +20,7 @@
 import PlantsService from "@/service/PlantsService";
 import PlantsTableOrganism from "@/components/organisms/PlantsTableOrganism.vue";
 import WhiteButtonAtom from "@/components/atoms/button/WhiteButtonAtom.vue";
+import { mapActions } from "vuex";
 
 export default {
   components: { PlantsTableOrganism, WhiteButtonAtom },
@@ -30,11 +31,17 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["showNotification"]),
+
     deleteProduct(index) {
       this.plants.splice(index, 1);
     },
     changePlantStatus(plantIndex, status) {
       this.plants[plantIndex].status = status;
+      this.showNotification([
+        this.plants[plantIndex].name + " đã được " + (status == 1 ? "hiển thị." : "ẩn đi."),
+        false,
+      ]);
     },
     getAllPlants() {
       PlantsService.getAll().then((res) => {

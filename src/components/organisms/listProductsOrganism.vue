@@ -2,10 +2,10 @@
   <div>
     <div class="flex justify-between items-center my-2 md:my-5">
       <HeaderAtom :text="header" />
-      <AmberHeaderAtom
+      <!-- <AmberHeaderAtom
         class="text-base cursor-pointer pr-1 md:text-2xl xl:text-[2vw] hover:translate-x-1 duration-300"
         :text="'Xem tất cả ->'"
-      />
+      /> -->
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-5 lg:gap-10">
       <ProductCardMolecule
@@ -20,7 +20,7 @@
 
 <script>
 import PlantsCategoriesService from "@/service/PlantsCategoriesService";
-import AmberHeaderAtom from "../atoms/header/AmberHeaderAtom.vue";
+// import AmberHeaderAtom from "../atoms/header/AmberHeaderAtom.vue";
 import HeaderAtom from "../atoms/header/HeaderAtom.vue";
 import ProductCardMolecule from "../molecules/ProductCardMolecule.vue";
 import { PRODUCT_DISPLAY_NUMBER } from '@/assets/js/config';
@@ -36,7 +36,7 @@ export default {
     productType: String,
     header: String,
   },
-  components: { ProductCardMolecule, HeaderAtom, AmberHeaderAtom },
+  components: { ProductCardMolecule, HeaderAtom },
   methods: {
     getPlants() {
       PlantsCategoriesService.getByCategoriesSlug(this.categorySlug)

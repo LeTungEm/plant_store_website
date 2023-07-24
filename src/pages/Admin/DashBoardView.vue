@@ -32,11 +32,11 @@ export default {
   data() {
     return {
       chartData: {
-        labels: ["Doanh thu từ cây", "Doanh thu từ chậu", "Doanh thu từ dịch vụ"],
+        labels: ["Doanh thu từ cây", "Doanh thu từ chậu"],
         datasets: [
           {
-            backgroundColor: ["red", "green", "orange"],
-            data: [30, 40, 10],
+            backgroundColor: ["red", "green"],
+            data: [30, 40],
           },
         ],
       },

@@ -1,5 +1,5 @@
 <template>
-  <tr class="[&>*]:whitespace-nowrap xl:[&>*]:text-base">
+  <tr class="[&>*]:whitespace-nowrap xl:[&>*]:text-base bg-white">
     <th v-for="column in columns" :key="column" scope="col" class="px-6 py-3">
       {{ transToVN(column) }}
     </th>
@@ -34,6 +34,23 @@ export default {
         supplier_name: "Nhà cung cấp",
         tool: "Chậu đi kèm",
         category_names: "Danh mục",
+        tool_id: "Mã chậu",
+        tool_prices: "Các mức giá",
+        order_id: "Mã đơn hàng",
+        name_receiver: "Tên người nhận",
+        phone_receiver: "Số điện thoại người nhận",
+        address_receiver: "Địa chỉ người nhận",
+        is_pay: "Trạng Thái thanh toán",
+        transport_fee: "Phí vận chuyển",
+        note: "Ghi chú",
+        payment_method: "Phương thức thanh toán",
+        shipping: "Vận chuyển",
+        total: "Tổng cộng",
+        buy_date: "Ngày mua",
+        receiver_info: "Thông tin người nhận",
+        product_name: "Tên sản phẩm",
+        user_name: "Tên tài khoản",
+        confirm_date: "Ngày xác nhận đơn",
       },
     };
   },
@@ -44,7 +61,7 @@ export default {
     transToVN(text) {
       let arrKey = Object.keys(this.vnColumn);
       if (arrKey.includes(text.toLowerCase())) {
-        return this.vnColumn[text];
+        return this.vnColumn[text.toLowerCase()];
       }
       return text;
     },

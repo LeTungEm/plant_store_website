@@ -1,6 +1,6 @@
 <template>
   <div class="flex relative">
-    <AdminNavBarOrganism class="min-w-[200px]" @closeNavBar="changeNavBarStatus" :status="navBarStatus" />
+    <AdminNavBarOrganism class="min-w-[250px]" @closeNavBar="changeNavBarStatus" :status="navBarStatus" />
     <div class="w-full duration-300">
       <div class="sticky top-0 z-20 mb-5 md:mb-10 bg-green-700">
         <font-awesome-icon

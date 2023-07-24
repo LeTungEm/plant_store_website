@@ -71,11 +71,6 @@
       class="py-2 px-5 w-full md:w-1/2 mx-auto md:col-span-2"
       :text="'Sửa thông tin'"
     />
-    <NotificationAtom
-      :isWarning="isWarning"
-      :status="notificationStatus"
-      :text="notificationMessage"
-    />
   </form>
 </template>
 
@@ -84,7 +79,7 @@ import { decodeEmail } from "@/assets/js/quickFunction";
 import GreenButtonAtom from "@/components/atoms/button/GreenButtonAtom.vue";
 import SiteFormMolecule from "@/components/molecules/SiteFormMolecule.vue";
 import AccountsService from "@/service/AccountsService";
-import NotificationAtom from "../atoms/NotificationAtom.vue";
+import { mapActions } from "vuex";
 // import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 export default {
@@ -92,20 +87,17 @@ export default {
   data() {
     return {
       isWarning: false,
-      notificationMessage: "",
-      notificationStatus: false,
       hiddenPassW: true,
       formAddresStatus: false,
       address: "",
       userInfo: {},
     };
   },
-  components: { GreenButtonAtom, SiteFormMolecule, NotificationAtom },
+  components: { GreenButtonAtom, SiteFormMolecule },
   methods: {
-    showNotification(message) {
-      this.notificationMessage = message;
-      this.notificationStatus = !this.notificationStatus;
-    },
+
+    ...mapActions(["showNotification"]),
+
     changeAddress(address) {
       this.address = address;
     },
@@ -141,16 +133,16 @@ export default {
         .then((res) => {
           if (res.data.message) {
             this.isWarning = false;
-            this.showNotification("Sửa thông tin thành công.");
+            this.showNotification(['Sửa thông tin thành công !!!', false]);
           } else {
             this.isWarning = true;
-            this.showNotification("Sửa thông tin không thành công !!!");
+            this.showNotification(['Sửa thông tin không thành công !!!', true]);
           }
         })
         .catch((err) => {
           console.log(err);
           this.isWarning = true;
-          this.showNotification("Sửa thông tin không thành công !!!");
+          this.showNotification(['Sửa thông tin không thành công !!!', true]);
         });
     },
   },

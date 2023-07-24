@@ -5,6 +5,12 @@ const PRODUCT_API_URL =
 
 class ColorsService {
 
+    getAll() {
+        let formData = new FormData();
+        formData.append('action', 'getAll');
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
     getUsedByPlants() {
         let formData = new FormData();
         formData.append('action', 'getUsedByPlants');

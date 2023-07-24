@@ -5,9 +5,32 @@ const PRODUCT_API_URL =
 
 class OrderService {
 
-    // getAll() {
-    //     return axios.get(`${PRODUCT_API_URL}`);
-    // }
+    getAllByAccountId(accountId) {
+        let formData = new FormData();
+        formData.append('action', 'getAllByAccountId');
+        formData.append('accountId', accountId);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
+    getAll() {
+        let formData = new FormData();
+        formData.append('action', 'getAll');
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
+    getByOrderId(orderId) {
+        let formData = new FormData();
+        formData.append('action', 'getByOrderId');
+        formData.append('orderId', orderId);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
+    cancelOrder(orderId) {
+        let formData = new FormData();
+        formData.append('action', 'cancelOrder');
+        formData.append('orderId', orderId);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
 
     createOrder(transportFee, nameReceiver, phoneReceiver, addressReceiver, isPay, note, deleteReason, payDate, accountId, couponId, shippingProviderId, paymentMethodId, total) {
         let formData = new FormData();

@@ -10,10 +10,10 @@
     </div>
     <ul class="[&>*]:cursor-pointer [&>*]:text-lg [&>*]:py-1 [&>*]:border-b hover:[&>*]:text-green-700">
       <li @click="closeAccountUserBar">
-        <router-link to="/nguoi-dung/thong-tin">Thông tin</router-link>
+        <router-link class="w-full block" to="/nguoi-dung/thong-tin">Thông tin</router-link>
       </li>
       <li @click="closeAccountUserBar">
-        <router-link to="/don-hang">Đơn hàng</router-link>
+        <router-link class="w-full block" to="/don-hang">Đơn hàng</router-link>
       </li>
       <li @click="logout">Đăng xuất</li>
     </ul>

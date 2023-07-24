@@ -110,6 +110,9 @@ export default {
     currentPlanterId: function () {
       this.getIndex();
     },
+    currentToolId: function () {
+      this.getIndex();
+    },
     currentSizeId: function () {
       this.getIndex();
     },

@@ -1,8 +1,16 @@
 <template>
-  <div class="px-5 xl:px-10 mt-5">
+  <div>
+    <div class="flex justify-between text-2xl">
+      <WhiteButtonAtom
+        @click="toCreateOrderForm"
+        class="py-2 px-5 text-lg mb-1"
+        :text="'Thêm mới'"
+      />
+      <div>Sắp xếp</div>
+    </div>
     <div
       v-if="orders.length > 0"
-      class="relative overflow-x-auto overflow-y-auto h-[80vh] shadow-md sm:rounded-lg"
+      class="relative overflow-x-auto overflow-y-scroll h-[80vh] shadow-md sm:rounded-lg"
     >
       <table class="w-full text-sm text-left text-gray-600 dark:text-gray-400">
         <thead
@@ -26,49 +34,44 @@
               :key="key"
               class="min-w-[200px] px-6 py-4 font-medium dark:text-white"
             >
-              <div>
-                <div
-                  class="text-black font-normal"
-                  v-if="key == 'name_receiver'"
+              <div class="text-black font-normal" v-if="key == 'name_receiver'">
+                {{ order.name_receiver }}
+              </div>
+              <div v-else-if="key == 'total'">
+                <PriceTextAtom
+                  style="
+                    color: rgb(75 85 99 / var(--tw-text-opacity)) !important;
+                  "
+                  :maxPrice="order.total"
+                  :minPrice="order.total"
+                />
+              </div>
+              <div v-else-if="key == 'is_pay'">
+                <span class="text-amber-700">{{
+                  order.is_pay == 1 ? "Đã thanh toán" : "Chưa thanh toán"
+                }}</span>
+              </div>
+              <div v-else-if="key == 'status'">
+                <span
+                  v-bind:class="
+                    order.status == 4 || order.status == 5 ? 'font-bold' : ''
+                  "
+                  class="text-amber-700"
+                  >{{
+                    order.status == 1
+                      ? "Đang chờ xử lý"
+                      : order.status == 2
+                      ? "Đã xác nhận"
+                      : order.status == 3
+                      ? "Đang giao"
+                      : order.status == 4
+                      ? "Giao thành công"
+                      : "Đã hủy"
+                  }}</span
                 >
-                  {{ order.name_receiver }}
-                </div>
-                <div v-else-if="key == 'total'">
-                  <PriceTextAtom
-                    style="
-                      color: rgb(75 85 99 / var(--tw-text-opacity)) !important;
-                    "
-                    :maxPrice="order.total"
-                    :minPrice="order.total"
-                  />
-                </div>
-                <div v-else-if="key == 'is_pay'">
-                  <span class="text-amber-700">{{
-                    order.is_pay == 1 ? "Đã thanh toán" : "Chưa thanh toán"
-                  }}</span>
-                </div>
-                <div v-else-if="key == 'status'">
-                  <span
-                    v-bind:class="
-                      order.status == 4 || order.status == 5 ? 'font-bold' : ''
-                    "
-                    class="text-amber-700"
-                    >{{
-                      order.status == 1
-                        ? "Đang chờ xử lý"
-                        : order.status == 2
-                        ? "Đã xác nhận"
-                        : order.status == 3
-                        ? "Đang giao"
-                        : order.status == 4
-                        ? "Giao thành công"
-                        : "Đã hủy"
-                    }}</span
-                  >
-                </div>
-                <div v-else>
-                  {{ order[key] }}
-                </div>
+              </div>
+              <div v-else>
+                {{ order[key] }}
               </div>
             </td>
             <td
@@ -77,10 +80,10 @@
               <font-awesome-icon
                 @click="() => toOrderDetail(order.order_id)"
                 class="mr-5 cursor-pointer p-2 border rounded-md text-green-700 bg-white hover:text-white hover:bg-green-700 duration-300"
-                :icon="['fas', 'eye']"
+                :icon="['fas', 'pen-fancy']"
               />
               <font-awesome-icon
-                v-if="order.status == 1"
+                v-if="order.status != 4 && order.status != 5"
                 @click="() => requireCancelOrder(index)"
                 class="cursor-pointer p-2 border rounded-md text-green-700 bg-white hover:text-white hover:bg-green-700 duration-300"
                 :icon="['fas', 'eraser']"
@@ -95,17 +98,6 @@
         :text="optionNotifiMessage"
       />
     </div>
-    <div class="w-full h-[75vh] flex justify-center items-center" v-else>
-      <div class="p-5">
-        <h1 class="text-4xl text-center">Bạn hiện chưa có đơn hàng nào.</h1>
-        <h2
-          @click="toShop"
-          class="text-2xl text-green-700 text-center cursor-pointer"
-        >
-          Mua hàng ngay
-        </h2>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -114,18 +106,13 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import PriceTextAtom from "@/components/atoms/text/PriceTextAtom.vue";
 import TableColumnMolecule from "@/components/molecules/TableColumnMolecule.vue";
 import OptionNotificationAtom from "@/components/atoms/OptionNotificationAtom.vue";
+import WhiteButtonAtom from "@/components/atoms/button/WhiteButtonAtom.vue";
 import OrderService from "@/service/OrderService";
-import AccountsService from "@/service/AccountsService";
-import { getEmail } from "@/assets/js/quickFunction";
+import { mapActions } from "vuex";
+// import WhiteButtonAtom from "@/components/atoms/button/WhiteButtonAtom.vue";
 
 export default {
-  components: {
-    PriceTextAtom,
-    TableColumnMolecule,
-    FontAwesomeIcon,
-    OptionNotificationAtom,
-  },
-  name: "OrderView",
+  name: "OrderManagerView",
   data() {
     return {
       orders: [],
@@ -135,8 +122,19 @@ export default {
     };
   },
   methods: {
-    toShop() {
-      this.$router.push("/cua-hang/cay");
+    ...mapActions(["showNotification"]),
+
+    toCreateOrderForm() {
+      this.$router.push("/quan-ly/quan-ly-don-hang/0");
+    },
+
+    toOrderDetail(orderId) {
+      this.$router.push(`/quan-ly/quan-ly-don-hang/${orderId}`);
+    },
+    getAllOrder() {
+      OrderService.getAll().then((res) => {
+        this.orders = res.data;
+      });
     },
     requireCancelOrder(index) {
       let order = this.orders[index];
@@ -156,39 +154,37 @@ export default {
       this.optionNotifiMessage = message;
       this.optionNotifiStatus = true;
     },
-    toOrderDetail(orderId) {
-      this.$router.push(`/don-hang/chi-tiet/${orderId}`);
-    },
     cancelOrder(index) {
       let orderStatus = this.orders[index].status;
-      if (orderStatus == 1) {
+      if (orderStatus != 4 && orderStatus != 5) {
         let orderId = this.orders[index].order_id;
         OrderService.cancelOrder(orderId).then((res) => {
           if (res.data.message) {
             this.orders[index].status = 5;
-            console.log("true");
+            this.showNotification([
+              `Đã hủy thành công đơn hàng mã ${this.orders[index].order_id}`,
+              false,
+            ]);
           } else {
-            console.log("fail");
+            this.showNotification([
+              `Hủy không thành công đơn hàng mã ${this.orders[index].order_id}`,
+              true,
+            ]);
           }
         });
       }
     },
-    getAllByAccountId() {
-      let email = getEmail();
-      AccountsService.detailUser(email).then((res) => {
-        if (res.data.message) {
-          OrderService.getAllByAccountId(res.data.data.account_id).then(
-            (res) => {
-              this.orders = res.data;
-            }
-          );
-        }
-      });
-    },
   },
   created() {
-    this.getAllByAccountId();
+    this.getAllOrder();
   },
+  components: {
+    OptionNotificationAtom,
+    FontAwesomeIcon,
+    PriceTextAtom,
+    TableColumnMolecule,
+    WhiteButtonAtom
+},
 };
 </script>
 

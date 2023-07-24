@@ -55,7 +55,6 @@ export default {
     },
     // logoutAccount() {
     //   googleLogout();
-    //   console.log("out");
     // },
   },
 };

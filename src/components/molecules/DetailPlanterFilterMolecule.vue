@@ -47,7 +47,7 @@ export default {
 
     changePlanter(planterId) {
       this.currentId = planterId;
-      this.$emit("changePlanter", this.currentId);
+      this.$emit("changePlanter", planterId);
     },
 
     getUniqueArray() {

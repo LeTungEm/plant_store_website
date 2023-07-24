@@ -45,18 +45,12 @@
       />
     </div>
     <GreenButtonAtom class="w-full py-3" :text="'Đăng nhập'" />
-    <NotificationAtom
-      isWarning
-      :status="notificationStatus"
-      :text="notificationMessage"
-    />
   </form>
 </template>
 
 <script>
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import GreenButtonAtom from "../atoms/button/GreenButtonAtom.vue";
-import NotificationAtom from "../atoms/NotificationAtom.vue";
 import AccountsService from "@/service/AccountsService";
 import { mapActions } from "vuex";
 import { encodeEmail } from "@/assets/js/quickFunction";
@@ -65,8 +59,6 @@ export default {
   name: "LoginFormMolecule",
   data() {
     return {
-      notificationMessage: "",
-      notificationStatus: false,
       hiddenPassW: true,
       email: "",
       emailErr: false,
@@ -82,7 +74,6 @@ export default {
   components: {
     FontAwesomeIcon,
     GreenButtonAtom,
-    NotificationAtom,
   },
   watch: {
     registeredEmail: function () {
@@ -90,21 +81,19 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["showNotification"]),
     ...mapActions(["setUserLoginStatus"]),
-    showNotification(message) {
-      this.notificationMessage = message;
-      this.notificationStatus = !this.notificationStatus;
-    },
+
     changePassWStatus() {
       this.hiddenPassW = !this.hiddenPassW;
     },
     isFullData() {
       let result = false;
-      if (this.email && this.passW) {
+      if (this.email.trim() && this.passW.trim()) {
         result = true;
       }
-      if (this.email == "") this.emailErr = true;
-      if (this.passW == "") this.passWErr = true;
+      if (this.email.trim() == "") this.emailErr = true;
+      if (this.passW.trim() == "") this.passWErr = true;
       return result;
     },
     authenticate() {
@@ -124,7 +113,7 @@ export default {
         } else {
           this.emailErr = true;
           this.passWErr = true;
-          this.showNotification("Thông tin đăng nhập sai !!!");
+          this.showNotification(['Thông tin đăng nhập sai !!!', true]);
         }
       });
     },
@@ -132,7 +121,7 @@ export default {
       if (this.isFullData()) {
         this.authenticate();
       } else {
-        this.showNotification("Vui lòng điền đủ thông tin.");
+        this.showNotification(['Vui lòng điền đủ thông tin !!!', true]);
       }
     },
   },
