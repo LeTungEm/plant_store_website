@@ -75,6 +75,7 @@
       </div>
     </div>
     <hr class="my-5" />
+    <h1 class="text-lg mb-5">Sản phẩm đã chọn</h1>
     <div class="flex flex-wrap gap-5">
       <div
         class="border rounded-md p-2"
@@ -93,7 +94,7 @@
           >
         </div>
         <QuantityBarMolecule
-          class="mt-2 w-2/3 xl:w-1/2 [&>*]:text-sm md:[&>*]:text-lg [&>*]:w-5 [&>*]:h-5 md:[&>*]:w-7 md:[&>*]:h-7"
+          class="mt-2 w-10/12 [&>*]:text-sm md:[&>*]:text-lg [&>*]:w-5 [&>*]:h-5 md:[&>*]:w-6 md:[&>*]:h-6"
           @changeProductQuantity="changeProductQuantity($event, index)"
           :defaultQuantity="product.quantity"
           :maximun="product.max_quantity"
@@ -186,6 +187,7 @@ export default {
     selectProduct(product) {
       if (this.isProductInList(product.plant_set_id) == false) {
         product.quantity = 1;
+        product.plantSetId = product.plant_set_id;
         this.selectedList.push(product);
         this.selectedPlantSetId.push(product.plant_set_id);
       }
