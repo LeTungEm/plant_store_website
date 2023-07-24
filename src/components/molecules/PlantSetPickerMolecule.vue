@@ -22,7 +22,7 @@
             v-model="colorPickedId"
             class="border rounded-md w-full outline-0 focus:outline-2 focus:outline-green-700 py-1 lg:py-2 px-2 lg:px-4"
           >
-          <option value="0">Tất cả</option>
+            <option value="0">Tất cả</option>
             <option
               v-for="color in colors"
               :key="color"
@@ -78,7 +78,7 @@
     <div class="flex flex-wrap gap-5">
       <div
         class="border rounded-md p-2"
-        v-for="product in selectedList"
+        v-for="(product, index) in selectedList"
         :key="product.name"
       >
         <div>
@@ -86,11 +86,15 @@
         </div>
         <div class="flex flex-wrap justify-between items-center">
           <PriceTextAtom :minPrice="product.price" :maxPrice="product.price" />
-          <span class="underline italic cursor-pointer">Xóa</span>
+          <span
+            @click="() => removeProduct(index)"
+            class="underline italic cursor-pointer"
+            >Xóa</span
+          >
         </div>
         <QuantityBarMolecule
           class="mt-2 w-2/3 xl:w-1/2 [&>*]:text-sm md:[&>*]:text-lg [&>*]:w-5 [&>*]:h-5 md:[&>*]:w-7 md:[&>*]:h-7"
-          @changeProductQuantity="changeProductQuantity($event, product)"
+          @changeProductQuantity="changeProductQuantity($event, index)"
           :defaultQuantity="product.quantity"
           :maximun="product.max_quantity"
         />
@@ -153,7 +157,7 @@ export default {
       colorPickedId: 0,
       searchName: "",
       productType: 0,
-      selectedList: new Set(),
+      selectedList: [],
       selectedPlantSetId: [],
     };
   },
@@ -172,15 +176,23 @@ export default {
     },
   },
   methods: {
-    changeProductQuantity(event, product) {
-      this.selectedList.delete(product);
-      product.quantity = event;
-      this.selectedList.add(product);
+    removeProduct(index) {
+      this.selectedList.splice(index, 1);
+      this.selectedPlantSetId.splice(index, 1);
+    },
+    changeProductQuantity(event, index) {
+      this.selectedList[index].quantity = event;
     },
     selectProduct(product) {
-      product.quantity = 1;
-      this.selectedList.add(product);
-      this.selectedPlantSetId.push(product.plant_set_id);
+      if (this.isProductInList(product.plant_set_id) == false) {
+        product.quantity = 1;
+        this.selectedList.push(product);
+        this.selectedPlantSetId.push(product.plant_set_id);
+      }
+    },
+    isProductInList(plantSetId) {
+      if (this.selectedPlantSetId.includes(plantSetId)) return true;
+      return false;
     },
     getAllProduct() {
       PlantSetService.getAll(
