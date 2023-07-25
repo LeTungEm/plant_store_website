@@ -253,7 +253,7 @@ export default {
         newList[productPosition].maximumQuantity
       );
       if (maximumStatus) {
-        this.showNotification(['Đã đạt giá trị tối đa', false]);
+        this.showNotification(['Đã đạt số lượng tối đa của sản phẩm.', false]);
       } else {
         newList[productPosition].quantity += productItem.quantity;
         this.changeCartChangeNumber(1);

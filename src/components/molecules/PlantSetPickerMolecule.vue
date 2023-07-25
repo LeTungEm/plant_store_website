@@ -1,5 +1,39 @@
 <template>
   <div>
+    <h1 class="text-lg font-bold mb-5">Sản phẩm đã chọn</h1>
+    <div class="flex flex-wrap gap-5">
+      <div
+        class="border rounded-md p-2"
+        v-for="(product, index) in selectedList"
+        :key="product.name"
+      >
+        <div>
+          {{
+            product.name +
+            (product.variant_name ? " / " + product.variant_name : "")
+          }}
+        </div>
+        <div class="flex flex-wrap justify-between items-center">
+          <PriceTextAtom :minPrice="product.price" :maxPrice="product.price" />
+          <span
+            @click="() => removeProduct(index)"
+            class="underline italic cursor-pointer"
+            >Xóa</span
+          >
+        </div>
+        <QuantityBarMolecule
+          class="mt-2 w-10/12 [&>*]:text-sm md:[&>*]:text-lg [&>*]:w-5 [&>*]:h-5 md:[&>*]:w-6 md:[&>*]:h-6"
+          @changeProductQuantity="changeProductQuantity($event, index)"
+          :defaultQuantity="product.quantity"
+          :maximun="product.max_quantity"
+        />
+      </div>
+    </div>
+    <div class="text-2xl text-green-700 mt-5">
+      Tổng cộng:
+      <PriceTextAtom class="inline-block" :minPrice="total" :maxPrice="total" />
+    </div>
+    <hr class="my-5" />
     <div>
       <div class="mb-5 w-full">
         <label class="text-gray-500" for="searchPlanSet"
@@ -75,40 +109,6 @@
       </div>
     </div>
     <hr class="my-5" />
-    <h1 class="text-lg font-bold mb-5">Sản phẩm đã chọn</h1>
-    <div class="flex flex-wrap gap-5">
-      <div
-        class="border rounded-md p-2"
-        v-for="(product, index) in selectedList"
-        :key="product.name"
-      >
-        <div>
-          {{
-            product.name +
-            (product.variant_name ? " / " + product.variant_name : "")
-          }}
-        </div>
-        <div class="flex flex-wrap justify-between items-center">
-          <PriceTextAtom :minPrice="product.price" :maxPrice="product.price" />
-          <span
-            @click="() => removeProduct(index)"
-            class="underline italic cursor-pointer"
-            >Xóa</span
-          >
-        </div>
-        <QuantityBarMolecule
-          class="mt-2 w-10/12 [&>*]:text-sm md:[&>*]:text-lg [&>*]:w-5 [&>*]:h-5 md:[&>*]:w-6 md:[&>*]:h-6"
-          @changeProductQuantity="changeProductQuantity($event, index)"
-          :defaultQuantity="product.quantity"
-          :maximun="product.max_quantity"
-        />
-      </div>
-    </div>
-    <div class="text-2xl text-green-700 mt-5">
-      Tổng cộng:
-      <PriceTextAtom class="inline-block" :minPrice="total" :maxPrice="total" />
-    </div>
-    <hr class="my-5" />
     <h1 class="text-lg font-bold mb-5">Kết quả tìm kiếm</h1>
     <div
       v-if="products.length > 0"
@@ -116,7 +116,7 @@
     >
       <div
         class="flex items-center gap-5"
-        v-for="product in products"
+        v-for="(product, index) in products"
         :key="product"
       >
         <div class="w-[100px] min-w-[100px] max-w-[100px]">
@@ -137,7 +137,7 @@
             />
             <button
               v-if="product.max_quantity > 0"
-              @click="() => selectProduct(product)"
+              @click="() => selectProduct(product, index)"
               class="px-4 py-1 rounded-sm text-white bg-green-700 hover:bg-green-800 active:bg-green-900"
             >
               Chọn
@@ -206,13 +206,14 @@ export default {
       this.selectedList[index].quantity = event;
       this.getTotal();
     },
-    selectProduct(product) {
+    selectProduct(product, index) {
       if (this.isProductInList(product.plant_set_id) == false) {
         product.quantity = 1;
         product.plantSetId = product.plant_set_id;
         this.selectedList.push(product);
         this.selectedPlantSetId.push(product.plant_set_id);
         this.getTotal();
+        this.products.splice(index, 1);
       }
     },
     isProductInList(plantSetId) {
