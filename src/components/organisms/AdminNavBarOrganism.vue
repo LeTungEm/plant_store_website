@@ -1,7 +1,9 @@
 <template>
   <LeftSideBarMolecule :status="status">
     <h1 class="text-xl font-bold xl:text-3xl mb-5 xl:mb-10">TM_Plants</h1>
-    <ul class="[&>*]:cursor-pointer [&>*]:text-lg xl:[&>*]:text-xl [&>*]:py-1 [&>*]:whitespace-nowrap">
+    <ul
+      class="[&>*]:cursor-pointer [&>*]:text-lg xl:[&>*]:text-xl [&>*]:py-1 [&>*]:whitespace-nowrap"
+    >
       <li>
         <router-link @click="closeNavBar" to="/quan-ly/trang-chu">
           <font-awesome-icon class="inline-block" :icon="['fas', 'house']" />
@@ -16,13 +18,20 @@
       </li>
       <li>
         <router-link @click="closeNavBar" to="/quan-ly/quan-ly-chau"
-          ><font-awesome-icon class="group-hover:animate-bounce duration-1000" :icon="['fas', 'bucket']" />
+          ><font-awesome-icon
+            class="group-hover:animate-bounce duration-1000"
+            :icon="['fas', 'bucket']"
+          />
           &nbsp; Quản lý chậu
         </router-link>
       </li>
       <li>
-        <router-link @click="closeNavBar" to="/quan-ly/quan-ly-don-hang"
-          ><font-awesome-icon class="group-hover:animate-bounce duration-1000" :icon="['fas', 'bucket']" />
+        <router-link @click="closeNavBar" to="/quan-ly/quan-ly-don-hang">
+          <font-awesome-icon
+            class="group-hover:animate-bounce duration-1000"
+            :icon="['fas', 'wallet']"
+          />
+
           &nbsp; Quản lý đơn hàng
         </router-link>
       </li>
