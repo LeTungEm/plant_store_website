@@ -183,8 +183,8 @@ export default {
     FontAwesomeIcon,
     PriceTextAtom,
     TableColumnMolecule,
-    WhiteButtonAtom
-},
+    WhiteButtonAtom,
+  },
 };
 </script>
 

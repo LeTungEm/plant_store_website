@@ -96,7 +96,13 @@
             v-model="shippingProvider"
             class="border rounded-md w-full outline-0 focus:outline-2 focus:outline-green-700 py-1 lg:py-2 px-2 lg:px-4"
           >
-            <option v-for="shippingProvider in ShippingProviders" :key="shippingProvider" :value="shippingProvider.shipping_provider_id">{{ shippingProvider.name }}</option>
+            <option
+              v-for="shippingProvider in ShippingProviders"
+              :key="shippingProvider"
+              :value="shippingProvider.shipping_provider_id"
+            >
+              {{ shippingProvider.name }}
+            </option>
           </select>
         </div>
         <div class="mb-5">
@@ -134,7 +140,7 @@
           <GreenButtonAtom
             @click="createOrder"
             class="py-2 px-5 text-lg mb-1 float-right"
-            :text="this.$route.params.orderId == 0?'Tạo đơn':'Cập nhật'"
+            :text="this.$route.params.orderId == 0 ? 'Tạo đơn' : 'Cập nhật'"
           />
         </div>
       </div>
@@ -198,15 +204,25 @@ export default {
     },
 
     isFullField() {
+      console.log(
+        this.nameReceiver.trim(),
+        this.phoneReceiver.toString().trim(),
+        this.addressReceiver.trim(),
+        this.transportFee,
+        this.isPay,
+        this.paymentMethod,
+        this.shippingProvider,
+        this.status
+      );
       if (
         this.nameReceiver.trim() &&
-        this.phoneReceiver.trim() &&
+        this.phoneReceiver.toString().trim() &&
         this.addressReceiver.trim() &&
-        this.transportFee &&
-        this.isPay &&
-        this.paymentMethod &&
-        this.shippingProvider &&
-        this.status
+        this.transportFee.toString() != "" &&
+        this.isPay.toString() != "" &&
+        this.paymentMethod.toString() != "" &&
+        this.shippingProvider.toString() != "" &&
+        this.status.toString() != ""
       ) {
         return true;
       }
@@ -222,8 +238,8 @@ export default {
 
     isPhoneNumerNotCorrect() {
       if (
-        this.phoneReceiver.match(/[a-zA-Z]/) == null &&
-        this.phoneReceiver.length == 10
+        this.phoneReceiver.toString().match(/[a-zA-Z]/) == null &&
+        this.phoneReceiver.length >= 9
       )
         return false;
       return true;
@@ -238,11 +254,15 @@ export default {
         this.showNotification(["Số điện thoại chưa đúng !!!", true]);
       } else {
         if (this.$route.params.orderId == 0) this.insertOrder();
-        // else
+        else {
+          alert("cap nhat");
+          this.updateOrder();
+        }
       }
     },
     insertOrder() {
       OrderService.createOrder(
+        this.status,
         this.transportFee,
         this.nameReceiver,
         this.phoneReceiver,
@@ -255,7 +275,7 @@ export default {
         1,
         this.shippingProvider,
         this.paymentMethod,
-        this.total + this.transportFee
+        this.total
       )
         .then((res) => {
           if (res.data.message) {
@@ -268,13 +288,41 @@ export default {
           this.showNotification(["Tạo đơn hàng thất bại !!!", true]);
         });
     },
+    updateOrder() {
+      OrderService.updateOrder(
+        this.transportFee,
+        this.nameReceiver,
+        this.phoneReceiver,
+        this.addressReceiver,
+        this.isPay,
+        this.status,
+        this.note,
+        this.shippingProvider,
+        this.paymentMethod,
+        this.total,
+        this.$route.params.orderId
+      ).then(res => {
+        if(res.data.message){
+          this.updateOrderDetail(this.$route.params.orderId);
+        }
+      })
+    },
     createOrderDetail(orderId) {
-      console.log(this.listProduct);
       OrderDetailService.createOrderDetail(orderId, this.listProduct).then(
         (res) => {
           if (res.data.message) {
             this.showNotification(["Tạo đơn hàng thành công !!!", false]);
             this.$router.push("/quan-ly/quan-ly-don-hang");
+          }
+        }
+      );
+    },
+
+    updateOrderDetail(orderId) {
+      OrderDetailService.updateOrderDetail(orderId, this.listProduct).then(
+        (res) => {
+          if (res.data.message) {
+            this.showNotification(["Sửa thành công !!!", false]);
           }
         }
       );
@@ -293,7 +341,6 @@ export default {
           this.note = orderInfo.note;
           this.paymentMethod = orderInfo.payment_method_id;
           this.shippingProvider = orderInfo.shipping_provider_id;
-          this.status = orderInfo.status;
           this.status = orderInfo.status;
           this.total = orderInfo.total;
         });

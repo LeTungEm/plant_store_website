@@ -32,9 +32,10 @@ class OrderService {
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
-    createOrder(transportFee, nameReceiver, phoneReceiver, addressReceiver, isPay, note, deleteReason, payDate, accountId, couponId, shippingProviderId, paymentMethodId, total) {
+    createOrder(status, transportFee, nameReceiver, phoneReceiver, addressReceiver, isPay, note, deleteReason, payDate, accountId, couponId, shippingProviderId, paymentMethodId, total) {
         let formData = new FormData();
         formData.append('action', 'insertOrder');
+        formData.append('status', status);
         formData.append('transportFee', transportFee);
         formData.append('nameReceiver', nameReceiver);
         formData.append('phoneReceiver', phoneReceiver);
@@ -48,6 +49,24 @@ class OrderService {
         formData.append('shippingProviderId', shippingProviderId);
         formData.append('paymentMethodId', paymentMethodId);
         formData.append('total', total);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
+    updateOrder(transportFee, nameReceiver, phoneReceiver, addressReceiver, isPay, status, note, shippingProviderId, paymentMethodId, total, orderId) {
+        let formData = new FormData();
+        formData.append('action', 'updateOrder');
+        formData.append('transportFee', transportFee);
+        formData.append('nameReceiver', nameReceiver);
+        formData.append('phoneReceiver', phoneReceiver);
+        formData.append('addressReceiver', addressReceiver);
+        formData.append('isPay', isPay);
+        formData.append('status', status);
+        formData.append('note', note);
+        formData.append('shippingProviderId', shippingProviderId);
+        formData.append('paymentMethodId', paymentMethodId);
+        formData.append('total', total);
+        formData.append('orderId', orderId);
+       
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 }

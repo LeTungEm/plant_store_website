@@ -95,6 +95,11 @@ const routes = [
         component: () => import('../pages/Admin/PlantsManagerView.vue'),
       },
       {
+        name: 'toolForm',
+        path: 'quan-ly-chau/:slug',
+        component: () => import('../pages/Admin/ToolsEditerView.vue'),
+      },
+      {
         name: 'toolsManager',
         path: 'quan-ly-chau',
         component: () => import('../pages/Admin/ToolsManagerView.vue'),

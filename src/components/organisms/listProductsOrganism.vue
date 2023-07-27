@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="plants.length > 0">
     <div class="flex justify-between items-center my-2 md:my-5">
       <HeaderAtom :text="header" />
       <!-- <AmberHeaderAtom

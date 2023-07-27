@@ -47,7 +47,7 @@ export default {
       });
     },
     toCreatePlantForm() {
-      // this.$router.push("/quan-ly/quan-ly-cay/0");
+      this.$router.push("/quan-ly/quan-ly-chau/0");
     },
   },
   created() {

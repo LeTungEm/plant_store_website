@@ -8,12 +8,21 @@
         :icon="['fas', 'xmark']"
       />
     </div>
-    <ul class="[&>*]:cursor-pointer [&>*]:text-lg [&>*]:py-1 [&>*]:border-b hover:[&>*]:text-green-700">
-      <li @click="closeAccountUserBar">
-        <router-link class="w-full block" to="/nguoi-dung/thong-tin">Thông tin</router-link>
+    <ul
+      class="[&>*]:cursor-pointer [&>*]:text-lg [&>*]:py-1 [&>*]:border-b hover:[&>*]:text-green-700"
+    >
+      <li class="group" @click="closeAccountUserBar">
+        <router-link class="w-full block" to="/nguoi-dung/thong-tin">
+          <font-awesome-icon class="group-hover:animate-bounce duration-1000" :icon="'circle-info'" />&nbsp;
+          Thông tin
+        </router-link
+        >
       </li>
-      <li @click="closeAccountUserBar">
-        <router-link class="w-full block" to="/don-hang">Đơn hàng</router-link>
+      <li class="group" @click="closeAccountUserBar">
+        <router-link class="w-full block" to="/don-hang">
+          <font-awesome-icon class="group-hover:animate-bounce duration-1000" :icon="['fas', 'wallet']" />&nbsp;
+          Đơn hàng
+        </router-link>
       </li>
       <li @click="logout">Đăng xuất</li>
     </ul>

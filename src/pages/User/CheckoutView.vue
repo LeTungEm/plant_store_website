@@ -60,6 +60,7 @@ export default {
       if (this.orderDetails.length > 0) {
         this.changeLoadingStatus(true);
         OrderService.createOrder(
+          1,
           0,
           this.order.name,
           this.order.phone,

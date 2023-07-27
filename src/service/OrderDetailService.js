@@ -13,6 +13,14 @@ class OrderDetailService {
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
+    updateOrderDetail(orderId, orderDetail) {
+        let formData = new FormData();
+        formData.append('action', 'updateOrderDetail');
+        formData.append('orderId', orderId);
+        formData.append('orderDetail', JSON.stringify(orderDetail));
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
     getByOrderId(orderId) {
         let formData = new FormData();
         formData.append('action', 'getByOrderId');
