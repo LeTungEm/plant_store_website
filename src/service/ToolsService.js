@@ -51,6 +51,25 @@ class ToolsService {
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
+    isSlugExist(toolSlug) {
+        let formData = new FormData();
+        formData.append('action', 'isSlugExist');
+        formData.append('toolSlug', toolSlug);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
+    insertTool(name, slug, description, status, image, supplier_id) {
+        let formData = new FormData();
+        formData.append('action', 'insertTool');
+        formData.append('name', name);
+        formData.append('slug', slug);
+        formData.append('description', description);
+        formData.append('status', status);
+        formData.append('image', image);
+        formData.append('supplier_id', supplier_id);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
 
     // getNewPlants() {
     //     return axios.get(`${PRODUCT_API_URL}/new`);

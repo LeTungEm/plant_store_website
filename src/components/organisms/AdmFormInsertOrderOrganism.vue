@@ -204,16 +204,6 @@ export default {
     },
 
     isFullField() {
-      console.log(
-        this.nameReceiver.trim(),
-        this.phoneReceiver.toString().trim(),
-        this.addressReceiver.trim(),
-        this.transportFee,
-        this.isPay,
-        this.paymentMethod,
-        this.shippingProvider,
-        this.status
-      );
       if (
         this.nameReceiver.trim() &&
         this.phoneReceiver.toString().trim() &&
@@ -255,7 +245,6 @@ export default {
       } else {
         if (this.$route.params.orderId == 0) this.insertOrder();
         else {
-          alert("cap nhat");
           this.updateOrder();
         }
       }

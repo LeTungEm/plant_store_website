@@ -29,7 +29,7 @@
             >
               <div class="justify-center items-center inline-flex flex-col">
                 <h1 class="text-lg">Màu: {{ color.name }}</h1>
-                <div class="flex gap-5">
+                <div class="flex-col gap-5">
                   <label class="text-gray-500">Giá:</label>
                   <input
                     :name="
@@ -39,8 +39,22 @@
                       })
                     "
                     @change="changePrice"
-                    class="w-full py-[2px] px-2 border"
+                    class="w-full block py-[2px] px-2 border"
                     :value="color.toolPrice ? color.toolPrice : toolPrice"
+                  />
+                </div>
+                <div class="mt-2 gap-5">
+                  <label class="text-gray-500">Số lượng:</label>
+                  <input
+                    :name="
+                      JSON.stringify({
+                        sizeIndex: sizeIndex,
+                        colorIndex: colorIndex,
+                      })
+                    "
+                    @change="changeQuantity"
+                    class="w-full block py-[2px] px-2 border"
+                    :value="color.toolQuantity ? color.toolQuantity : toolQuantity"
                   />
                 </div>
                 <img
@@ -103,9 +117,10 @@ export default {
   props: {
     toolVariants: Array,
     toolPrice: Number,
+    toolQuantity: Number,
   },
   components: { GreenButtonAtom, CropImageMolecule },
-  emits: ["toPreviousForm", "changeImage", "changePrice", "createTool"],
+  emits: ["toPreviousForm", "changeImage", "changePrice", "createTool", "changeQuantity"],
   methods: {
     createTool() {
       this.$emit("createTool");
@@ -116,6 +131,12 @@ export default {
       let colorIndex = objectIndex.colorIndex;
       this.$emit("changePrice", sizeIndex, colorIndex, e.target.value);
     },
+    changeQuantity(e) {
+      let objectIndex = JSON.parse(e.target.name);
+      let sizeIndex = objectIndex.sizeIndex;
+      let colorIndex = objectIndex.colorIndex;
+      this.$emit("changeQuantity", sizeIndex, colorIndex, e.target.value);
+    },
     changeVariantImage(sizeIndex, colorIndex) {
       this.objectIndex = { sizeIndex: sizeIndex, colorIndex: colorIndex };
       console.log(this.objectIndex);
@@ -124,21 +145,19 @@ export default {
     changeImage(objectImage) {
       let colorIndex = this.objectIndex.colorIndex;
       let sizeIndex = this.objectIndex.sizeIndex;
-      if (this.toolVariants[sizeIndex].selfColors[colorIndex].image) {
-        if (
-          this.toolVariants[sizeIndex].selfColors[colorIndex].image ==
-          "default.jpg"
-        ) {
-          objectImage.name = "tools/" + objectImage.name;
-        } else
-          objectImage.name =
-            this.toolVariants[sizeIndex].selfColors[colorIndex].image;
-        if (objectImage.name == "") {
-          objectImage.name = "default.jpg";
-        }
-      } else {
-        objectImage.name = "default.jpg";
+      let name = "tools/" + objectImage.name;
+      if (
+        this.toolVariants[sizeIndex].selfColors[colorIndex].image ==
+        "default.jpg"
+      ) {
+        objectImage.name = name;
+      } else
+        objectImage.name =
+          this.toolVariants[sizeIndex].selfColors[colorIndex].image;
+      if (!objectImage.name) {
+        objectImage.name = name;
       }
+
       this.$emit("changeImage", this.objectIndex, objectImage);
       this.changeCropImageStatus();
     },

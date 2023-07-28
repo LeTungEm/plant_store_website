@@ -35,6 +35,24 @@
           &nbsp; Quản lý đơn hàng
         </router-link>
       </li>
+      <li>
+        <router-link @click="closeNavBar" to="/quan-ly/quan-ly-mau">
+          <font-awesome-icon
+            class="group-hover:animate-bounce duration-1000"
+            :icon="['fas', 'palette']"
+          />
+          &nbsp; Quản lý màu sắc
+        </router-link>
+      </li>
+      <li>
+        <router-link @click="closeNavBar" to="/quan-ly/quan-ly-kich-co">
+          <font-awesome-icon
+            class="group-hover:animate-bounce duration-1000"
+            :icon="['fas', 'ruler']"
+          />
+          &nbsp; Quản lý kích cỡ
+        </router-link>
+      </li>
     </ul>
   </LeftSideBarMolecule>
 </template>

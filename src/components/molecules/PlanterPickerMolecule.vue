@@ -99,9 +99,10 @@ export default {
       });
     },
     setDefault(tools) {
+      let arrName = this.defaultPickedName.split(',');
       if (this.defaultPickedName) {
         tools.forEach((tool) => {
-          if (this.defaultPickedName.includes(tool.name)) {
+          if (arrName.some(name => name.trim() == tool.name.trim())) {
             this.pickedId.push(tool.tool_id);
             this.names.push(tool.name);
           }

@@ -38,6 +38,15 @@
           />
         </div>
         <div class="mb-5">
+          <label class="text-gray-500" for="toolQuantity">Số lượng*</label>
+          <input
+            id="toolQuantity"
+            v-model="toolQuantity"
+            class="border rounded-md w-full outline-0 focus:outline-2 focus:outline-green-700 py-1 lg:py-2 px-2 lg:px-4"
+            type="number"
+          />
+        </div>
+        <div class="mb-5">
           <label class="text-gray-500" for="description">Mô tả</label>
           <textarea
             rows="3"
@@ -64,6 +73,27 @@
                 class="peer-checked:text-green-700 peer-checked:font-bold hover:bg-gray-100 py-2 px-5 border rounded-md cursor-pointer"
               >
                 {{ size.name }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="mb-5">
+          <label class="text-gray-500">Danh mục</label>
+          <div class="flex flex-wrap gap-5 mt-1">
+            <div v-for="category in categories" :key="category.category_id">
+              <input
+                hidden
+                v-model="pickedCategories"
+                :value="category.category_id"
+                :id="category.category_id"
+                class="peer border rounded-md outline-0 focus:outline-2 focus:outline-green-700 mr-1"
+                type="checkbox"
+              />
+              <label
+                :for="category.category_id"
+                class="peer-checked:text-green-700 peer-checked:font-bold hover:bg-gray-100 py-2 px-5 border rounded-md cursor-pointer"
+              >
+                {{ category.name }}
               </label>
             </div>
           </div>
@@ -185,6 +215,9 @@ import SuppliersService from "@/service/SuppliersService";
 import SizesService from "@/service/SizesService";
 import ColorsService from "@/service/ColorsService";
 import GreenButtonAtom from "../atoms/button/GreenButtonAtom.vue";
+import CategoriesService from "@/service/CategoriesService";
+import { mapActions } from "vuex";
+import ToolsService from "@/service/ToolsService";
 
 export default {
   name: "ToolsFormMolecule",
@@ -193,32 +226,104 @@ export default {
       cropImageStatus: false,
       objectImage: {},
       suppliers: [],
+      categories: [],
+      pickedCategories: [],
       sizes: [],
       colors: [],
       pickedSizes: [],
       toolName: "",
       toolSlug: "",
       toolPrice: 0,
+      toolQuantity: 0,
       description: "",
       status: 1,
       supplier: "",
-      image: "",
+      image: "default.jpg",
     };
   },
   emits: ["toNextForm"],
   methods: {
-    toNextForm() {
-      this.$emit("toNextForm", {
-        toolName: this.toolName,
-        toolSlug: this.toolSlug,
-        toolPrice: this.toolPrice,
-        description: this.description,
-        status: this.status,
-        supplier: this.supplier,
-        image: this.image,
-        objectImage: this.objectImage,
-        pickedSizes: this.pickedSizes,
+    ...mapActions(["showNotification"]),
+
+    async toNextForm() {
+      if (this.isFullData() == false) {
+        this.showNotification(["Hãy điền đủ thông tin !!!", true]);
+      } else if (this.isPriceCorrect() == false) {
+        this.showNotification(["Giá phải lớn hơn 0 !!!", true]);
+      } else if (this.isQuantityCorrect() == false) {
+        this.showNotification(["Số lượng phải lớn hơn 0 !!!", true]);
+      } else if (this.isPickedSize() == false) {
+        this.showNotification(["Hãy chọn kích cỡ chậu !!!", true]);
+      } else if (this.isSizeHaveColor() == false) {
+        this.showNotification(["Hãy thêm màu cho các kích cỡ !!!", true]);
+      } else if (await this.isSlugExist())
+        this.showNotification(["Đường dẫn đã tồn tại !!!", true]);
+      else {
+        this.$emit("toNextForm", {
+          toolName: this.toolName,
+          toolSlug: this.toolSlug,
+          toolPrice: this.toolPrice,
+          toolQuantity: this.toolQuantity,
+          description: this.description,
+          status: this.status,
+          supplier: this.supplier,
+          image: this.image,
+          objectImage: this.objectImage,
+          pickedSizes: this.pickedSizes,
+          pickedCategories: this.pickedCategories,
+        });
+      }
+    },
+    isFullData() {
+      if (
+        this.toolName.trim() &&
+        this.toolSlug.trim() &&
+        this.toolPrice.toString().trim() != "" &&
+        this.toolQuantity.toString().trim() != "" &&
+        this.supplier.toString() != ""
+      ) {
+        return true;
+      }
+      return false;
+    },
+    isPriceCorrect() {
+      if (this.toolPrice > 0) {
+        return true;
+      }
+      return false;
+    },
+    isQuantityCorrect() {
+      if (this.toolQuantity > 0) {
+        return true;
+      }
+      return false;
+    },
+    isPickedSize() {
+      if (this.pickedSizes.length > 0) {
+        return true;
+      }
+      return false;
+    },
+    isSizeHaveColor() {
+      let slug = true;
+      this.pickedSizes.forEach((size) => {
+        if (size.selfColors) {
+          if (size.selfColors.length < 1) {
+            slug = false;
+          }
+        } else {
+          slug = false;
+        }
       });
+      return slug;
+    },
+    async isSlugExist() {
+      let result = await ToolsService.isSlugExist(this.toolSlug.trim());
+      console.log(result);
+      if (result.data.message && this.$route.params.slug == 0) {
+        return true;
+      }
+      return false;
     },
     moveColor(colorIndex, sizeIndex) {
       this.pickedSizes[sizeIndex].selfColors.splice(colorIndex, 1);
@@ -247,6 +352,11 @@ export default {
       }
       return colors;
     },
+    getAllCategories() {
+      CategoriesService.getByParentSlug("chau").then((res) => {
+        this.categories = res.data;
+      });
+    },
     getAllSize() {
       SizesService.getAll().then((res) => {
         this.sizes = res.data;
@@ -270,14 +380,15 @@ export default {
       this.cropImageStatus = !this.cropImageStatus;
     },
     changeImage(objectImage) {
+      let name = "tools/" + objectImage.name;
       this.objectImage = objectImage;
       if (this.image == "default.jpg") {
-        this.image = "tools/" + objectImage.name;
-        this.objectImage.name = this.image;
+        this.image = name;
+        this.objectImage.name = name;
       } else this.objectImage.name = this.image;
-      if (this.objectImage.name == "") {
-        this.objectImage.name = "default.jpg";
-        this.image == "default.jpg";
+      if (!this.objectImage.name) {
+        this.objectImage.name = name;
+        this.image = name;
       }
       this.changeCropImageStatus();
     },
@@ -285,6 +396,7 @@ export default {
   components: { CropImageMolecule, GreenButtonAtom },
   created() {
     this.getAllSize();
+    this.getAllCategories();
     this.getAllColor();
     this.getAllSupplier();
   },

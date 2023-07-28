@@ -94,7 +94,7 @@ export default {
   methods: {
     deleteProduct(index) {
       this.changeOptionNotificationStatus(
-        "Bạn có muốn xóa " + this.tools[index].name
+        "Bạn có muốn ẩn " + this.tools[index].name
       );
       this.deleteIndex = index;
     },
@@ -107,19 +107,19 @@ export default {
           if (res.data.message) {
             this.$emit("changeToolsStatus", toolIndex, 0);
           } else {
-            alert("Có sự cố. Không thể sửa");
+            // alert("Có sự cố. Không thể sửa");
           }
         });
         PlantSetService.setStatusByToolId(0, toolId).then((res) => {
           if (res.data.message == false) {
-            alert("Có sự cố. Không thể sửa các biến thể");
+            // alert("Có sự cố. Không thể sửa các biến thể");
           }
         });
       }
     },
-    //   toFormEdit(plantSlug) {
-    //     // this.$router.push(`/quan-ly/quan-ly-cay/${plantSlug}`);
-    //   },
+      toFormEdit(plantSlug) {
+        this.$router.push(`/quan-ly/quan-ly-chau/${plantSlug}`);
+      },
     changeOptionNotificationStatus(message) {
       this.optionNotifiMessage = message;
       this.optionNotifiStatus = !this.optionNotifiStatus;
@@ -132,12 +132,12 @@ export default {
         if (res.data.message) {
           this.$emit("changeToolsStatus", toolIndex, status);
         } else {
-          alert("Có sự cố. Không thể sửa");
+          // alert("Có sự cố. Không thể sửa");
         }
       });
       PlantSetService.setStatusByToolId(status, toolId).then((res) => {
         if (res.data.message == false) {
-          alert("Có sự cố. Không thể sửa các biến thể");
+          // alert("Có sự cố. Không thể sửa các biến thể");
         }
       });
     },

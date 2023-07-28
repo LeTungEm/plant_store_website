@@ -114,6 +114,16 @@ const routes = [
         path: 'quan-ly-don-hang',
         component: () => import('../pages/Admin/OrderManagerView.vue'),
       },
+      {
+        name: 'colorsManager',
+        path: 'quan-ly-mau',
+        component: () => import('../pages/Admin/ColorsManagerView.vue'),
+      },
+      {
+        name: 'SizesManager',
+        path: 'quan-ly-kich-co',
+        component: () => import('../pages/Admin/SizesManagerView.vue'),
+      },
     ],
   },
 ]

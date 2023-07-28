@@ -56,6 +56,17 @@
             />
           </label>
         </div>
+        <div class="w-full whitespace-nowrap">
+          <label class="cursor-pointer"
+            >Hiển thị<br />
+            <input
+              :checked="toolVariant.status"
+              @change="changeStatus"
+              type="checkbox"
+              class="m-auto w-full"
+            />
+          </label>
+        </div>
       </div>
       <div class="flex gap-5 items-center">
         <WhiteButtonAtom
@@ -80,6 +91,7 @@
         </div>
       </div>
     </div>
+    {{ toolVariant }}
   </div>
 </template>
 
@@ -116,7 +128,7 @@ export default {
     PriceTextAtom,
     WhiteButtonAtom,
   },
-  emits: ["openCropImage", "changeSalePrice"],
+  emits: ["openCropImage", "changeSalePrice", "changeStatus"],
   methods: {
     changeSaleStatus(e) {
       let checked = e.target.checked;
@@ -130,6 +142,10 @@ export default {
         this.salePrice == "" ? 0 : this.salePrice,
         this.index
       );
+    },
+    changeStatus(e) {
+      let checked = e.target.checked;
+      this.$emit("changeStatus", checked ? 1 : 0, this.index);
     },
     openCropImage(index) {
       this.$emit("openCropImage", index);

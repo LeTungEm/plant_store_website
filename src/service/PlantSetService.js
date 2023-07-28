@@ -27,6 +27,14 @@ class PlantSetService {
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
+    insertToolVariant(listVariant) {
+        let formData = new FormData();
+        let listJson = JSON.stringify(listVariant);
+        formData.append('action', 'insertToolVariant');
+        formData.append('listVariant', listJson);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
     deletePlantSetByPlantId(plantId) {
         let formData = new FormData();
         formData.append('action', 'deletePlantSetByPlantId');

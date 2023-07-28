@@ -16,6 +16,7 @@
         <PlantVariantMolecule
           @openCropImage="openCropImage"
           @changeSalePrice="changeSalePriceOfNewVariant"
+          @changeStatus="changeNewVariantStatus"
           v-for="(toolVariant, index) in toolVariants"
           :key="toolVariant"
           :index="index"
@@ -33,6 +34,7 @@
         <OldPlantVariantMolecule
           @openCropImage="openCropImageForOldVariant"
           @changeSalePrice="changeSalePriceOfOldVariant"
+          @changeStatus="changeStatus"
           v-for="(toolVariant, index) in oldVariants"
           :key="toolVariant"
           :index="index"
@@ -111,6 +113,12 @@ export default {
     changeSalePriceOfOldVariant(isSale, salePrice, index) {
       this.oldVariants[index].is_sale = isSale;
       this.oldVariants[index].sale_price = salePrice;
+    },
+    changeStatus(status, index) {
+      this.oldVariants[index].status = status;
+    },
+    changeNewVariantStatus(status, index){
+      this.toolVariants[index].status = status;
     },
     savePlant() {
       this.$emit("savePlant", JSON.stringify(this.toolVariants), [

@@ -55,6 +55,8 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["showNotification"]),
+
     ...mapActions(["setUserLoginStatus"]),
     createOrder() {
       if (this.orderDetails.length > 0) {
@@ -87,7 +89,10 @@ export default {
           .finally(() => {
             this.success++;
           });
-      } 
+      } else {
+        this.showNotification(["Hãy chọn thêm sản phẩm !!!", false]);
+        this.$router.push("/cua-hang/cay");
+      }
     },
     createOrderDetail(orderId) {
       OrderDetailService.createOrderDetail(orderId, this.orderDetails)
