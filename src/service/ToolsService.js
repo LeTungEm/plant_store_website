@@ -58,6 +58,20 @@ class ToolsService {
         return axios.post(`${PRODUCT_API_URL}`, formData);
     }
 
+    getBySlug(toolSlug) {
+        let formData = new FormData();
+        formData.append('action', 'getBySlug');
+        formData.append('toolSlug', toolSlug);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
+    getVariantByToolId(toolId) {
+        let formData = new FormData();
+        formData.append('action', 'getVariantByToolId');
+        formData.append('toolId', toolId);
+        return axios.post(`${PRODUCT_API_URL}`, formData);
+    }
+
     insertTool(name, slug, description, status, image, supplier_id) {
         let formData = new FormData();
         formData.append('action', 'insertTool');

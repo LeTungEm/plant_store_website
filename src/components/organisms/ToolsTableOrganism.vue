@@ -42,7 +42,7 @@
               <span>{{ tool.status ? "Hiển thị" : "Ẩn" }}</span>
             </div>
             <div v-else>
-              {{ tool[key] }}
+              {{ subString(tool[key]) }}
             </div>
           </td>
           <td
@@ -92,6 +92,14 @@ export default {
   components: { FontAwesomeIcon, TableColumnMolecule, OptionNotificationAtom },
   emits: ["changeToolsStatus", "deleteProduct"],
   methods: {
+    subString(data){
+      if(typeof data === 'string'){
+        if(data.length > 100){
+          return data.substr(0,100)+'...';
+        }
+      }
+      return data;
+    },
     deleteProduct(index) {
       this.changeOptionNotificationStatus(
         "Bạn có muốn ẩn " + this.tools[index].name

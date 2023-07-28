@@ -90,6 +90,7 @@ import AccountsService from "@/service/AccountsService";
 import SiteFormMolecule from "../molecules/SiteFormMolecule.vue";
 import ShippingProvidersService from "@/service/ShippingProvidersService";
 import GreenButtonAtom from "../atoms/button/GreenButtonAtom.vue";
+import { mapActions } from "vuex";
 
 export default {
   name: "CheckoutUserOrganism",
@@ -106,12 +107,23 @@ export default {
   },
   emits: ["createOrder"],
   methods: {
+    ...mapActions(["showNotification"]),
+
     createOrder() {
       this.user.address = this.address;
       this.user.paymentMethodId = this.paymentMethodId;
       this.user.shippingProviderId = this.shippingProviderId;
       // kiem tra o day
-      this.$emit("createOrder", this.user);
+      if (this.isFullData()) {
+        this.$emit("createOrder", this.user);
+      }
+    },
+    isFullData() {
+      if (this.user.phone == "") {
+        this.showNotification(["Hãy điền số điện thoại !!!", true]);
+        return false;
+      }
+      return true;
     },
     openFormAddress() {
       this.formAddresStatus = true;

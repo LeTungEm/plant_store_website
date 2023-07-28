@@ -231,6 +231,7 @@ export default {
       sizes: [],
       colors: [],
       pickedSizes: [],
+      toolId: "",
       toolName: "",
       toolSlug: "",
       toolPrice: 0,
@@ -260,6 +261,7 @@ export default {
         this.showNotification(["Đường dẫn đã tồn tại !!!", true]);
       else {
         this.$emit("toNextForm", {
+          toolId: this.toolId,
           toolName: this.toolName,
           toolSlug: this.toolSlug,
           toolPrice: this.toolPrice,
@@ -320,10 +322,19 @@ export default {
     async isSlugExist() {
       let result = await ToolsService.isSlugExist(this.toolSlug.trim());
       console.log(result);
-      if (result.data.message && this.$route.params.slug == 0) {
-        return true;
+      if (result.data.message) {
+        if (this.$route.params.slug == 0) {
+          return true;
+        } else {
+          if (this.toolSlug != this.$route.params.slug) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      } else {
+        return false;
       }
-      return false;
     },
     moveColor(colorIndex, sizeIndex) {
       this.pickedSizes[sizeIndex].selfColors.splice(colorIndex, 1);
@@ -357,8 +368,8 @@ export default {
         this.categories = res.data;
       });
     },
-    getAllSize() {
-      SizesService.getAll().then((res) => {
+    async getAllSize() {
+      await SizesService.getAll().then((res) => {
         this.sizes = res.data;
       });
     },
@@ -392,10 +403,49 @@ export default {
       }
       this.changeCropImageStatus();
     },
+    async setDefaultData() {
+      let slug = this.$route.params.slug;
+      if (slug != 0) {
+        await ToolsService.getBySlug(slug).then(async (res) => {
+          await this.setDefault(res.data.data);
+        });
+      }
+    },
+    async setDefault(toolData) {
+      this.toolId = toolData.tool_id;
+      this.toolName = toolData.name;
+      this.toolSlug = toolData.slug;
+      this.toolPrice = toolData.price;
+      this.toolQuantity = toolData.quantity;
+      this.description = toolData.description;
+      this.status = toolData.status;
+      this.supplier = toolData.supplier_id;
+      this.image = toolData.image;
+      this.pickedCategories = toolData.category_ids
+        ? toolData.category_ids.toString().split(",")
+        : [];
+      await this.setPickedSize(toolData.tool_id);
+    },
+    async setPickedSize(toolId) {
+      await ToolsService.getVariantByToolId(toolId).then(async (res) => {
+        res.data.data.forEach((size, index) => {
+          this.pickedSizes.push({ name: size.name, size_id: size.size_id });
+          let selfColors = "[" + size.selfColors + "]";
+          selfColors = JSON.parse(selfColors);
+          this.pickedSizes[index].selfColors = selfColors;
+          let indexSizes = this.sizes.findIndex(
+            (pickSize) => pickSize.size_id == size.size_id
+          );
+          console.log("indexSizes", indexSizes);
+          this.sizes[indexSizes] = this.pickedSizes[index];
+        });
+      });
+    },
   },
   components: { CropImageMolecule, GreenButtonAtom },
-  created() {
-    this.getAllSize();
+  async created() {
+    await this.getAllSize();
+    await this.setDefaultData();
     this.getAllCategories();
     this.getAllColor();
     this.getAllSupplier();

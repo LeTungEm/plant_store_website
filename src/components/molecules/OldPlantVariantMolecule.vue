@@ -92,7 +92,6 @@
         </div>
       </div>
     </div>
-    {{ toolVariant }}
   </div>
 </template>
   

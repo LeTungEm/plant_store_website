@@ -312,6 +312,7 @@ export default {
         (res) => {
           if (res.data.message) {
             this.showNotification(["Sửa thành công !!!", false]);
+            this.$router.push('/quan-ly/quan-ly-don-hang')
           }
         }
       );

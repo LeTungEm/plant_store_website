@@ -241,6 +241,7 @@ export default {
       if (orderId != 0) {
         await OrderDetailService.getByOrderId(orderId).then(async (res) => {
           this.selectedList = res.data;
+          this.getTotal();
           await this.updateSelectedPlantSetId(res.data);
         });
       }

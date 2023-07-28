@@ -53,8 +53,11 @@ export default {
       if (this.$route.params.slug == 0) {
         this.insertTool();
       } else {
-        console.log("update");
+        this.updateTool();
       }
+    },
+    updateTool() {
+      //
     },
     insertTool() {
       console.log("insert");
@@ -65,15 +68,17 @@ export default {
         this.toolData.status,
         normalizeString(this.toolData.image).replace(/ /g, "-"),
         this.toolData.supplier
-      ).then((res) => {
-        console.log(res.data);
-        if (res.data.message) {
-          this.insertCategories(res.data.tool_id);
-          this.insertVariant(res.data.tool_id);
-        }
-      }).finally(() => {
-        this.$router.push('/quan-ly/quan-ly-chau')
-      })
+      )
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.message) {
+            this.insertCategories(res.data.tool_id);
+            this.insertVariant(res.data.tool_id);
+          }
+        })
+        .finally(() => {
+          this.$router.push("/quan-ly/quan-ly-chau");
+        });
     },
     insertCategories(toolId) {
       if (this.toolData.pickedCategories.length > 0) {
@@ -110,7 +115,7 @@ export default {
         quantity = color.toolQuantity;
       }
       return {
-        image:  normalizeString(image).replace(/ /g, "-"),
+        image: normalizeString(image).replace(/ /g, "-"),
         price: price,
         isSale: 0,
         salePrice: 0,

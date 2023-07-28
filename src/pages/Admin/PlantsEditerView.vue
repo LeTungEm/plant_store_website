@@ -77,20 +77,21 @@ export default {
       let arrBlob = [];
       let arrName = [];
       arrImage.forEach((objectImage) => {
-        if (Object.keys(objectImage).length > 0) {
-          let { blob } = objectImage;
-          if (blob) {
-            arrBlob.push(blob);
-            arrName.push(objectImage.name);
+        if (objectImage) {
+          if (Object.keys(objectImage).length > 0) {
+            let { blob } = objectImage;
+            if (blob) {
+              arrBlob.push(blob);
+              arrName.push(objectImage.name);
+            }
           }
         }
       });
 
       if (arrBlob.length > 0) {
         let result = await UploadFile.uploadImage(arrBlob, arrName);
-        if(result.data.message == false){
-          this.showNotification(['Tải ảnh thất bại !!!', true]);
-
+        if (result.data.message == false) {
+          this.showNotification(["Tải ảnh thất bại !!!", true]);
         }
       }
     },
